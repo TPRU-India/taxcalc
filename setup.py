@@ -17,18 +17,18 @@ version = versioneer.get_version()
 cmdclass = versioneer.get_cmdclass()
 
 config = {
-    'description': 'Tax Calculator',
-    'url': 'https://github.com/OpenSourcePolicyCenter/Tax-Calculator',
-    'download_url': 'https://github.com/OpenSourcePolicyCenter/Tax-Calculator',
-    'description': 'taxcalc',
+    'description': 'pitaxcalc-demo',
+    'url': 'https://github.com/TPRU-demo/pitaxcalc-demo',
+    'download_url': 'https://github.com/TPRU-demo/pitaxcalc-demo',
+    'description': 'pitaxcalc-demo',
     'long_description': longdesc,
     'version': version,
     'cmdclass': cmdclass,
     'license': 'MIT',
-    'packages': ['taxcalc', 'taxcalc.tbi', 'taxcalc.cli'],
+    'packages': ['taxcalc'],
     'include_package_data': True,
     'name': 'taxcalc',
-    'install_requires': ['numpy', 'pandas', 'bokeh', 'numba', 'toolz'],
+    'install_requires': ['numpy', 'pandas', 'numba', 'toolz'],
     'classifiers': [
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
