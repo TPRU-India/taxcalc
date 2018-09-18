@@ -42,12 +42,6 @@ class Records(object):
         None creates empty sample-weights DataFrame;
         default value is filename of the PUF weights.
 
-    adjust_ratios: string or Pandas DataFrame or None
-        string describes CSV file in which adjustment ratios reside;
-        DataFrame already contains adjustment ratios;
-        None creates empty adjustment-ratios DataFrame;
-        default value is filename of the PUF adjustment ratios.
-
     start_year: integer
         specifies calendar year of the input data;
         default value is PUFCSV_YEAR.
@@ -96,23 +90,18 @@ class Records(object):
     # suppress pylint warnings about too many class instance attributes:
     # pylint: disable=too-many-instance-attributes
 
-    PUFCSV_YEAR = 2011
     CPSCSV_YEAR = 2014
 
     CUR_PATH = os.path.abspath(os.path.dirname(__file__))
-    PUF_WEIGHTS_FILENAME = 'puf_weights.csv.gz'
-    PUF_RATIOS_FILENAME = 'puf_ratios.csv'
     CPS_WEIGHTS_FILENAME = 'cps_weights.csv.gz'
-    CPS_RATIOS_FILENAME = None
     VAR_INFO_FILENAME = 'records_variables.json'
 
     def __init__(self,
                  data='puf.csv',
                  exact_calculations=False,
                  gfactors=GrowFactors(),
-                 weights=PUF_WEIGHTS_FILENAME,
-                 adjust_ratios=PUF_RATIOS_FILENAME,
-                 start_year=PUFCSV_YEAR):
+                 weights=CPS_WEIGHTS_FILENAME,
+                 start_year=2011):
         # pylint: disable=too-many-arguments,too-many-locals
         self.__data_year = start_year
         # read specified data
@@ -152,8 +141,6 @@ class Records(object):
         # read sample weights
         self.WT = None
         self._read_weights(weights)
-        self.ADJ = None
-        self._read_ratios(adjust_ratios)
         # weights must be same size as tax record data
         if self.WT.size > 0 and self.array_length != len(self.WT.index):
             # scale-up sub-sample weights by year-specific factor
@@ -197,7 +184,6 @@ class Records(object):
                        exact_calculations=exact_calculations,
                        gfactors=gfactors,
                        weights=Records.CPS_WEIGHTS_FILENAME,
-                       adjust_ratios=Records.CPS_RATIOS_FILENAME,
                        start_year=Records.CPSCSV_YEAR)
 
     @property
@@ -233,8 +219,6 @@ class Records(object):
         # apply variable extrapolation grow factors
         if self.gfactors is not None:
             self._blowup(self.__current_year)
-        # apply variable adjustment ratios
-        self._adjust(self.__current_year)
         # specify current-year sample weights
         if self.WT.size > 0:
             wt_colname = 'WT{}'.format(self.__current_year)
@@ -402,15 +386,6 @@ class Records(object):
         self.tanf_ben *= self.gfactors.factor_value('ABENTANF', year)
         self.vet_ben *= self.gfactors.factor_value('ABENVET', year)
 
-    def _adjust(self, year):
-        """
-        Adjust value of income variables to match SOI distributions
-        Note: adjustment must leave variables as numpy.ndarray type
-        """
-        if self.ADJ.size > 0:
-            # Interest income
-            self.e00300 *= self.ADJ['INT{}'.format(year)][self.agi_bin].values
-
     def _read_data(self, data, exact_calcs):
         """
         Read Records data from file or use specified DataFrame as data.
@@ -516,31 +491,3 @@ class Records(object):
         assert isinstance(WT, pd.DataFrame)
         setattr(self, 'WT', WT.astype(np.int32))
         del WT
-
-    def _read_ratios(self, ratios):
-        """
-        Read Records adjustment ratios from file or
-        create empty DataFrame if None
-        """
-        if ratios is None:
-            setattr(self, 'ADJ', pd.DataFrame({'nothing': []}))
-            return
-        if isinstance(ratios, str):
-            ratios_path = os.path.join(Records.CUR_PATH, ratios)
-            if os.path.isfile(ratios_path):
-                ADJ = pd.read_csv(ratios_path,
-                                  index_col=0)
-            else:
-                # cannot call read_egg_ function in unit tests
-                ADJ = read_egg_csv(os.path.basename(ratios_path),
-                                   index_col=0)  # pragma: no cover
-        else:
-            msg = 'ratios is neither None nor a string'
-            raise ValueError(msg)
-        assert isinstance(ADJ, pd.DataFrame)
-        ADJ = ADJ.transpose()
-        if ADJ.index.name != 'agi_bin':
-            ADJ.index.name = 'agi_bin'
-        self.ADJ = pd.DataFrame()
-        setattr(self, 'ADJ', ADJ.astype(np.float32))
-        del ADJ

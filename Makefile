@@ -55,16 +55,14 @@ pytest-all:
 	@cd taxcalc ; pytest -n4 -m ""
 	@$(pytest-cleanup)
 
-TAXCALC_JSON_FILES := $(shell ls -l ./taxcalc/*json | awk '{print $$9}')
-TESTS_JSON_FILES := $(shell ls -l ./taxcalc/tests/*json | awk '{print $$9}')
 PYLINT_FILES := $(shell grep -rl --include="*py" disable=locally-disabled .)
 PYLINT_OPTIONS = --disable=locally-disabled --score=no --jobs=4
 
 .PHONY=cstest
 cstest:
 	pycodestyle taxcalc
-	@pycodestyle --ignore=E501,E121 $(TAXCALC_JSON_FILES)
-	@pycodestyle --ignore=E501,E121 $(TESTS_JSON_FILES)
+	@pycodestyle --ignore=E501,E121 taxcalc/current_law_policy.json
+	@pycodestyle --ignore=E501,E121 taxcalc/records_variables.json
 	@pylint $(PYLINT_OPTIONS) $(PYLINT_FILES)
 
 define coverage-cleanup

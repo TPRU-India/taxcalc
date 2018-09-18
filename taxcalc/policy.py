@@ -8,7 +8,6 @@ Tax-Calculator federal tax policy Policy class.
 import numpy as np
 from taxcalc.parameters import ParametersBase
 from taxcalc.growfactors import GrowFactors
-from taxcalc.growdiff import GrowDiff
 
 
 class Policy(ParametersBase):
@@ -246,9 +245,7 @@ class Policy(ParametersBase):
     }
 
     @staticmethod
-    def translate_json_reform_suffixes(indict,
-                                       growdiff_baseline_dict,
-                                       growdiff_response_dict):
+    def translate_json_reform_suffixes(indict):
         """
         Replace any array parameters with suffixes in the specified
         JSON-derived "policy" dictionary, indict, and
@@ -292,23 +289,11 @@ class Policy(ParametersBase):
             return gdict
 
         # define with_suffix function used only in this method
-        def with_suffix(gdict, growdiff_baseline_dict, growdiff_response_dict):
+        def with_suffix(gdict):
             """
             Return param_base:year dictionary having only suffix parameters.
             """
-            if bool(growdiff_baseline_dict) or bool(growdiff_response_dict):
-                gdiff_baseline = GrowDiff()
-                gdiff_baseline.update_growdiff(growdiff_baseline_dict)
-                gdiff_response = GrowDiff()
-                gdiff_response.update_growdiff(growdiff_response_dict)
-                growfactors = GrowFactors()
-                gdiff_baseline.apply_to(growfactors)
-                gdiff_response.apply_to(growfactors)
-            else:
-                gdiff_baseline = None
-                gdiff_response = None
-                growfactors = None
-            pol = Policy(gfactors=growfactors)
+            pol = Policy()
             pol.ignore_reform_errors()
             odict = dict()
             for param in gdict.keys():
@@ -325,9 +310,6 @@ class Policy(ParametersBase):
                         pol.implement_reform(udict,
                                              print_warnings=False,
                                              raise_errors=False)
-            del gdiff_baseline
-            del gdiff_response
-            del growfactors
             del pol
             return odict
 
@@ -338,9 +320,7 @@ class Policy(ParametersBase):
         gdict = suffix_group_dict(indict)
         # - add to odict the consolidated values for parameters with a suffix
         if gdict:
-            odict.update(with_suffix(gdict,
-                                     growdiff_baseline_dict,
-                                     growdiff_response_dict))
+            odict.update(with_suffix(gdict))
         # - return policy dictionary containing constructed parameter arrays
         return odict
 

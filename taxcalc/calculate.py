@@ -28,10 +28,6 @@ from taxcalc.functions import (TaxInc, SchXYZTax, GainsTax, AGIsurtax,
                                ExpandIncome, AfterTaxIncome)
 from taxcalc.policy import Policy
 from taxcalc.records import Records
-from taxcalc.consumption import Consumption
-from taxcalc.behavior import Behavior
-from taxcalc.growdiff import GrowDiff
-from taxcalc.growfactors import GrowFactors
 from taxcalc.utils import (DIST_VARIABLES, create_distribution_table,
                            DIFF_VARIABLES, create_difference_table,
                            create_diagnostic_table,
@@ -62,20 +58,6 @@ class Calculator(object):
         specifies whether or not to synchronize policy year and records year;
         default value is true.
 
-    consumption: Consumption class object
-        specifies consumption response assumptions used to calculate
-        "effective" marginal tax rates; default is None, which implies
-        no consumption responses assumed in marginal tax rate calculations;
-        when argument is an object it is copied for internal use;
-        also specifies consumption value of in-kind benefis with no in-kind
-        consumption values specified implying consumption value is equal to
-        government cost of providing the in-kind benefits
-
-    behavior: Behavior class object
-        specifies behavioral responses used by Calculator; default is None,
-        which implies no behavioral responses to policy reform;
-        when argument is an object it is copied for internal use
-
     Raises
     ------
     ValueError:
@@ -100,7 +82,7 @@ class Calculator(object):
     # pylint: disable=too-many-public-methods
 
     def __init__(self, policy=None, records=None, verbose=True,
-                 sync_years=True, consumption=None, behavior=None):
+                 sync_years=True):
         # pylint: disable=too-many-arguments,too-many-branches
         if isinstance(policy, Policy):
             self.__policy = copy.deepcopy(policy)
@@ -112,22 +94,6 @@ class Calculator(object):
             raise ValueError('must specify records as a Records object')
         if self.__policy.current_year < self.__records.data_year:
             self.__policy.set_year(self.__records.data_year)
-        if consumption is None:
-            self.__consumption = Consumption(start_year=policy.start_year)
-        elif isinstance(consumption, Consumption):
-            self.__consumption = copy.deepcopy(consumption)
-        else:
-            raise ValueError('consumption must be None or Consumption object')
-        if self.__consumption.current_year < self.__policy.current_year:
-            self.__consumption.set_year(self.__policy.current_year)
-        if behavior is None:
-            self.__behavior = Behavior(start_year=policy.start_year)
-        elif isinstance(behavior, Behavior):
-            self.__behavior = copy.deepcopy(behavior)
-        else:
-            raise ValueError('behavior must be None or Behavior object')
-        if self.__behavior.current_year < self.__policy.current_year:
-            self.__behavior.set_year(self.__policy.current_year)
         current_year_is_data_year = (
             self.__records.current_year == self.__records.data_year)
         if sync_years and current_year_is_data_year:
@@ -156,8 +122,6 @@ class Calculator(object):
         next_year = self.__policy.current_year + 1
         self.__records.increment_year()
         self.__policy.set_year(next_year)
-        self.__consumption.set_year(next_year)
-        self.__behavior.set_year(next_year)
 
     def advance_to_year(self, year):
         """
@@ -318,45 +282,6 @@ class Calculator(object):
         setattr(self.__policy, param_name, param_value)
         return None
 
-    def consump_param(self, param_name):
-        """
-        Return value of named parameter in embedded Consumption object.
-        """
-        return getattr(self.__consumption, param_name)
-
-    def consump_benval_params(self):
-        """
-        Return list of benefit-consumption-value parameter values
-        in embedded Consumption object.
-        """
-        return self.__consumption.benval_params()
-
-    def behavior_has_response(self):
-        """
-        Return True if embedded Behavior object has response;
-        otherwise return False.
-        """
-        return self.__behavior.has_response()
-
-    def behavior(self, param_name, param_value=None):
-        """
-        If param_value is None, return named parameter in
-         embedded Behavior object.
-        If param_value is not None, set named parameter in
-         embedded Behavior object to specified param_value and
-         return None (which can be ignored).
-        """
-        if param_value is None:
-            return getattr(self.__behavior, param_name)
-        setattr(self.__behavior, param_name, param_value)
-        return None
-
-    def records_include_behavioral_responses(self):
-        """
-        Mark embedded Records object as including behavioral responses
-        """
-        self.__records.behavioral_responses_are_included = True
-
     @property
     def reform_warnings(self):
         """
@@ -413,7 +338,6 @@ class Calculator(object):
         calc = copy.deepcopy(self)
         tlist = list()
         for iyr in range(1, num_years + 1):
-            assert calc.behavior_has_response() is False
             calc.calc_all()
             diag = create_diagnostic_table(calc.dataframe(diag_variables),
                                            calc.current_year)
@@ -491,8 +415,6 @@ class Calculator(object):
         else:
             assert calc.current_year == self.current_year
             assert calc.array_len == self.array_len
-            assert np.allclose(self.consump_benval_params(),
-                               calc.consump_benval_params())
             var_dataframe = calc.distribution_table_dataframe()
             if have_same_income_measure(self, calc):
                 imeasure = 'expanded_income'
@@ -547,8 +469,6 @@ class Calculator(object):
         assert isinstance(calc, Calculator)
         assert calc.current_year == self.current_year
         assert calc.array_len == self.array_len
-        assert np.allclose(self.consump_benval_params(),
-                           calc.consump_benval_params())
         self_var_dataframe = self.dataframe(DIFF_VARIABLES)
         calc_var_dataframe = calc.dataframe(DIFF_VARIABLES)
         diff = create_difference_table(self_var_dataframe,
@@ -691,8 +611,6 @@ class Calculator(object):
             self.array('e00600', divincome_var + finite_diff)
         elif variable_str == 'e26270':
             self.array('e02000', schEincome_var + finite_diff)
-        if self.__consumption.has_response():
-            self.__consumption.response(self.__records, finite_diff)
         self.calc_all(zero_out_calc_vars=zero_out_calculated_vars)
         payrolltax_chng = self.array('payrolltax')
         incometax_chng = self.array('iitax')
@@ -1179,11 +1097,7 @@ class Calculator(object):
                 txt = open(reform, 'r').read()
             else:
                 txt = reform
-            rpol_dict = (
-                Calculator._read_json_policy_reform_text(txt,
-                                                         gdiff_base_dict,
-                                                         gdiff_resp_dict)
-            )
+            rpol_dict = Calculator._read_json_policy_reform_text(txt)
         else:
             raise ValueError('reform is neither None nor string')
         # construct single composite dictionary
@@ -1228,7 +1142,7 @@ class Calculator(object):
             ----------
             years: list of change years
             change: dictionary of parameter changes
-            base: Policy or GrowDiff object with baseline values
+            base: Policy object with baseline values
             syear: parameter start calendar year
 
             Returns
@@ -1269,6 +1183,7 @@ class Calculator(object):
             # begin main logic of param_doc
             # pylint: disable=too-many-nested-blocks
             assert len(years) == len(change.keys())
+            assert isinstance(base, Policy)
             basex = copy.deepcopy(base)
             basevals = getattr(basex, '_vals', None)
             assert isinstance(basevals, dict)
@@ -1309,44 +1224,27 @@ class Calculator(object):
                         for line in lines('desc: ' + desc, 6):
                             doc += '  ' + line
                     # ... write baseline_value line
-                    if isinstance(basex, Policy):
-                        if param.endswith('_cpi'):
-                            rootparam = param[:-4]
-                            bval = basevals[rootparam].get('cpi_inflated',
-                                                           False)
-                        else:
-                            bval = getattr(basex, param[1:], None)
-                            if isinstance(bval, np.ndarray):
-                                bval = bval.tolist()
-                                if basevals[param]['boolean_value']:
-                                    bval = [True if item else
-                                            False for item in bval]
-                            elif basevals[param]['boolean_value']:
-                                bval = bool(bval)
-                        doc += '  baseline_value: {}\n'.format(bval)
-                    else:  # if basex is GrowDiff object
-                        # all GrowDiff parameters have zero as default value
-                        doc += '  baseline_value: 0.0\n'
+                    if param.endswith('_cpi'):
+                        rootparam = param[:-4]
+                        bval = basevals[rootparam].get('cpi_inflated',
+                                                       False)
+                    else:
+                        bval = getattr(basex, param[1:], None)
+                        if isinstance(bval, np.ndarray):
+                            bval = bval.tolist()
+                            if basevals[param]['boolean_value']:
+                                bval = [True if item else
+                                        False for item in bval]
+                        elif basevals[param]['boolean_value']:
+                            bval = bool(bval)
+                    doc += '  baseline_value: {}\n'.format(bval)
             return doc
 
         # begin main logic of reform_documentation
         # create Policy object with pre-reform (i.e., baseline) values
-        # ... create gdiff_baseline object
-        gdb = GrowDiff()
-        gdb.update_growdiff(params['growdiff_baseline'])
-        # ... create GrowFactors object that will incorporate gdiff_baseline
-        gfactors_clp = GrowFactors()
-        gdb.apply_to(gfactors_clp)
-        # ... create Policy object containing pre-reform parameter values
-        clp = Policy(gfactors=gfactors_clp)
+        clp = Policy()
         # generate documentation text
         doc = 'REFORM DOCUMENTATION\n'
-        doc += 'Baseline Growth-Difference Assumption Values by Year:\n'
-        years = sorted(params['growdiff_baseline'].keys())
-        if years:
-            doc += param_doc(years, params['growdiff_baseline'], gdb)
-        else:
-            doc += 'none: using default baseline growth assumptions\n'
         doc += 'Policy Reform Parameter Values by Year:\n'
         years = sorted(params['policy'].keys())
         if years:
@@ -1396,8 +1294,6 @@ class Calculator(object):
         assert isinstance(calc, Calculator)
         assert calc.array_len == self.array_len
         assert calc.current_year == self.current_year
-        assert np.allclose(calc.consump_benval_params(),
-                           self.consump_benval_params())
         # extract data from self and calc
         records_variables = ['s006', 'combined', 'expanded_income']
         df1 = self.dataframe(records_variables)
@@ -1487,17 +1383,12 @@ class Calculator(object):
         IITAX(self.__policy, self.__records)
 
     @staticmethod
-    def _read_json_policy_reform_text(text_string,
-                                      growdiff_baseline_dict,
-                                      growdiff_response_dict):
+    def _read_json_policy_reform_text(text_string):
         """
         Strip //-comments from text_string and return 1 dict based on the JSON.
 
         Specified text is JSON with at least 1 high-level key:object pair:
-        a "policy": {...} pair.
-
-        Other keys such as "consumption", "behavior", "growdiff_baseline",
-        "growdiff_response" or "growmodel" will raise a ValueError.
+        a "policy": {...} pair.  Other keys will raise a ValueError.
 
         The {...}  object may be empty (that is, be {}), or
         may contain one or more pairs with parameter string primary keys
@@ -1540,9 +1431,7 @@ class Calculator(object):
             msg = 'illegal key(s) "{}" in policy reform file'
             raise ValueError(msg.format(illegal_keys))
         # convert raw_dict['policy'] dictionary into prdict
-        tdict = Policy.translate_json_reform_suffixes(raw_dict['policy'],
-                                                      growdiff_baseline_dict,
-                                                      growdiff_response_dict)
+        tdict = Policy.translate_json_reform_suffixes(raw_dict['policy'])
         prdict = Calculator._convert_parameter_dict(tdict)
         return prdict
 
@@ -1628,11 +1517,7 @@ class Calculator(object):
         """
         Converts specified param_key_dict into a dictionary whose primary
         keys are calendar years, and hence, is suitable as the argument to
-        the Policy.implement_reform() method, or
-        the Consumption.update_consumption() method, or
-        the Behavior.update_behavior() method, or
-        the GrowDiff.update_growdiff() method, or
-        the GrowModel.update_growmodel() method.
+        the Policy.implement_reform() method.
 
         Specified input dictionary has string parameter primary keys and
         string years as secondary keys.

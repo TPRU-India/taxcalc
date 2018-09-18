@@ -21,9 +21,6 @@ def test_incorrect_Records_instantiation(cps_subsample):
     with pytest.raises(ValueError):
         recs = Records(data=cps_subsample, gfactors=None, weights=None,
                        start_year=list())
-    with pytest.raises(ValueError):
-        recs = Records(data=cps_subsample, gfactors=None, weights=None,
-                       adjust_ratios=list())
 
 
 def test_correct_Records_instantiation(cps_subsample):
@@ -41,7 +38,6 @@ def test_correct_Records_instantiation(cps_subsample):
                    exact_calculations=False,
                    gfactors=GrowFactors(),
                    weights=wghts_df,
-                   adjust_ratios=None,
                    start_year=Records.CPSCSV_YEAR)
     assert rec2
     assert np.all(rec2.MARS != 0)
