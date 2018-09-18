@@ -8,7 +8,6 @@ dependencies:
 - pytest
 - pytest-pep8
 - pytest-xdist
-- yaml
 - mock
 - pycodestyle
 - pylint
