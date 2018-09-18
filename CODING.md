@@ -1,12 +1,12 @@
-Tax-Calculator Coding Style
-===========================
+Coding Style
+============
 
-This description of Tax-Calculator coding style is written for a
-person who wants to contribute changes to Tax-Calculator source code.
+This description of pitaxcalc-demo coding style is written for a
+person who wants to contribute changes to pitaxcalc-demo source code.
 It assumes that you have read the [Contributor
 Guide](http://taxcalc.readthedocs.io/en/latest/contributor_guide.html),
-have cloned the [central GitHub Tax-Calculator
-repository](https://github.com/open-source-economics/Tax-Calculator)
+have cloned the [central GitHub pitaxcalc-demo
+repository](https://github.com/TPRU-demo/pitaxcalc-demo)
 to your GitHub account and to your local computer, and are familiar
 with how to prepare a pull request for consideration by the core
 development team.  This document describes the coding style you should
@@ -20,8 +20,7 @@ your new code is merged with existing code it should be difficult for
 somebody else to determine what you contributed.
 
 In order to achieve this objective any new policy parameter names must
-comply with the [parameter naming and placement
-conventions](http://taxcalc.readthedocs.io/en/latest/parameter_naming.html).
+comply with the TPRU naming conventions.
 
 In addition, any new or revised code must meet certain coding style
 guidelines.
@@ -89,7 +88,7 @@ The other of these tools, `pylint`, warns about deviations from a
 broader set coding styles than does `pycodestyle`.  The use of `pylint`,
 while being the number one recommendation in the [Google Python Style
 Guide](https://google.github.io/styleguide/pyguide.html), is
-strictly-speaking optional for Tax-Calculator work.  But several
+strictly-speaking optional for pitaxcalc-demo work.  But several
 important files in the repository are maintained in a way that their
 coding style does not generate any `pylint` warnings.  You can
 determine which files these are by looking for the comment near the
