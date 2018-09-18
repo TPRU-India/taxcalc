@@ -86,7 +86,7 @@ def test_growfactors_csv_values():
     Test numerical contents of growfactors.csv file.
     """
     gfo = GrowFactors()
-    min_data_year = min(Records.PUFCSV_YEAR, Records.CPSCSV_YEAR)
+    min_data_year = min(2011, Records.CPSCSV_YEAR)
     if min_data_year < Policy.JSON_START_YEAR:
         for gfname in GrowFactors.VALID_NAMES:
             val = gfo.factor_value(gfname, min_data_year)

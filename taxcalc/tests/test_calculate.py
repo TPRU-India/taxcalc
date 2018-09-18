@@ -9,7 +9,7 @@ import copy
 import pytest
 import numpy as np
 import pandas as pd
-from taxcalc import Policy, Records, Calculator, Behavior, Consumption
+from taxcalc import Policy, Records, Calculator
 
 
 RAWINPUTFILE_FUNITS = 4
@@ -59,11 +59,7 @@ def test_make_calculator(cps_subsample):
     pol = Policy(start_year=syr, num_years=9)
     assert pol.current_year == syr
     rec = Records.cps_constructor(data=cps_subsample)
-    consump = Consumption()
-    consump.update_consumption({syr: {'_MPC_e20400': [0.05]}})
-    assert consump.current_year == Consumption.JSON_START_YEAR
-    calc = Calculator(policy=pol, records=rec,
-                      consumption=consump, behavior=Behavior())
+    calc = Calculator(policy=pol, records=rec)
     assert calc.current_year == syr
     assert calc.records_current_year() == syr
     # test incorrect Calculator instantiation:
@@ -71,10 +67,6 @@ def test_make_calculator(cps_subsample):
         Calculator(policy=None, records=rec)
     with pytest.raises(ValueError):
         Calculator(policy=pol, records=None)
-    with pytest.raises(ValueError):
-        Calculator(policy=pol, records=rec, behavior=list())
-    with pytest.raises(ValueError):
-        Calculator(policy=pol, records=rec, consumption=list())
 
 
 def test_make_calculator_deepcopy(cps_subsample):
@@ -209,9 +201,9 @@ def test_calculator_mtr_when_PT_rates_differ():
                      '_PT_rt7': [0.30]}}
     funit = (
         u'RECID,MARS,FLPDYR,e00200,e00200p,e00900,e00900p,extraneous\n'
-        u'1,    1,   2009,  200000,200000, 100000,100000, 9999999999\n'
+        u'1,    1,   2014,  200000,200000, 100000,100000, 9999999999\n'
     )
-    rec = Records(pd.read_csv(StringIO(funit)))
+    rec = Records(pd.read_csv(StringIO(funit)), start_year=2014)
     pol = Policy()
     calc1 = Calculator(policy=pol, records=rec)
     (_, mtr1, _) = calc1.mtr(variable_str='p23250')
@@ -842,8 +834,6 @@ def test_noreform_documentation():
     actual_doc = Calculator.reform_documentation(params)
     expected_doc = (
         'REFORM DOCUMENTATION\n'
-        'Baseline Growth-Difference Assumption Values by Year:\n'
-        'none: using default baseline growth assumptions\n'
         'Policy Reform Parameter Values by Year:\n'
         'none: using current-law policy parameters\n'
     )

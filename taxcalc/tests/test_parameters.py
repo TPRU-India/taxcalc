@@ -11,7 +11,7 @@ import math
 import numpy as np
 import pytest
 # pylint: disable=import-error
-from taxcalc import ParametersBase, Policy, Consumption
+from taxcalc import ParametersBase, Policy
 
 
 def test_instantiation_and_usage():
@@ -46,11 +46,7 @@ def test_instantiation_and_usage():
         ParametersBase._expand_array(arr3d, False, False, True, [0.02], 1)
 
 
-@pytest.mark.parametrize("fname",
-                         [("behavior.json"),
-                          ("consumption.json"),
-                          ("current_law_policy.json"),
-                          ("growdiff.json")])
+@pytest.mark.parametrize("fname", [("current_law_policy.json")])
 def test_json_file_contents(tests_path, fname):
     """
     Check contents of JSON parameter files.
@@ -167,10 +163,7 @@ def test_json_file_contents(tests_path, fname):
 
 
 @pytest.mark.parametrize("jfname, pfname",
-                         [("behavior.json", "behavior.py"),
-                          ("consumption.json", "consumption.py"),
-                          ("current_law_policy.json", "functions.py"),
-                          ("growdiff.json", "growdiff.py")])
+                         [("current_law_policy.json", "functions.py")])
 def test_parameters_mentioned(tests_path, jfname, pfname):
     """
     Make sure each JSON parameter is mentioned in PYTHON code file.
@@ -182,19 +175,10 @@ def test_parameters_mentioned(tests_path, jfname, pfname):
     pfile.close()
     assert isinstance(allparams, dict)
     # read PYTHON code file text
-    if pfname == 'consumption.py':
-        # consumption.py does not explicitly name the parameters
-        code_text = ''
-        for var in Consumption.RESPONSE_VARS:
-            code_text += 'MPC_{}\n'.format(var)
-        for var in Consumption.BENEFIT_VARS:
-            code_text += 'BEN_{}_value\n'.format(var)
-    else:
-        # parameters are explicitly named in PYTHON file
-        path = os.path.join(tests_path, '..', pfname)
-        pfile = open(path, 'r')
-        code_text = pfile.read()
-        pfile.close()
+    path = os.path.join(tests_path, '..', pfname)
+    pfile = open(path, 'r')
+    code_text = pfile.read()
+    pfile.close()
     # check that each param (without leading _) is mentioned in code text
     for pname in allparams:
         assert pname[1:] in code_text
@@ -308,11 +292,7 @@ def test_expand_2d_partial_expand():
     assert np.allclose(res, exp, atol=0.01, rtol=0.0)
 
 
-@pytest.mark.parametrize('json_filename',
-                         ['current_law_policy.json',
-                          'behavior.json',
-                          'consumption.json',
-                          'growdiff.json'])
+@pytest.mark.parametrize('json_filename', ['current_law_policy.json'])
 def test_bool_int_value_info(tests_path, json_filename):
     """
     Check consistency of boolean_value and integer_value info in
@@ -363,11 +343,7 @@ def test_bool_int_value_info(tests_path, json_filename):
             assert msg == 'ERROR: boolean_value param has non-boolean value'
 
 
-@pytest.mark.parametrize('json_filename',
-                         ['current_law_policy.json',
-                          'behavior.json',
-                          'consumption.json',
-                          'growdiff.json'])
+@pytest.mark.parametrize('json_filename', ['current_law_policy.json'])
 def test_cpi_inflatable_info(tests_path, json_filename):
     """
     Check presence and consistency of cpi_inflatable info in

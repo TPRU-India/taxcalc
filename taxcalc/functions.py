@@ -69,17 +69,17 @@ def BenefitPrograms(calc):
     # calculate consumption value of all benefits
     # (assuming that cash benefits have full value)
     value = np.array(
-        calc.array('housing_ben') * calc.consump_param('BEN_housing_value') +
+        calc.array('housing_ben') +
         calc.array('ssi_ben') +
-        calc.array('snap_ben') * calc.consump_param('BEN_snap_value') +
-        calc.array('tanf_ben') * calc.consump_param('BEN_tanf_value') +
-        calc.array('vet_ben') * calc.consump_param('BEN_vet_value') +
-        calc.array('wic_ben') * calc.consump_param('BEN_wic_value') +
-        calc.array('mcare_ben') * calc.consump_param('BEN_mcare_value') +
-        calc.array('mcaid_ben') * calc.consump_param('BEN_mcaid_value') +
+        calc.array('snap_ben') +
+        calc.array('tanf_ben') +
+        calc.array('vet_ben') +
+        calc.array('wic_ben') +
+        calc.array('mcare_ben') +
+        calc.array('mcaid_ben') +
         calc.array('e02400') +
         calc.array('e02300') +
-        calc.array('other_ben') * calc.consump_param('BEN_other_value')
+        calc.array('other_ben')
     )
     calc.array('benefit_value_total', value)
 
