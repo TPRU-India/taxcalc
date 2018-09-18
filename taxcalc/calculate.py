@@ -30,11 +30,7 @@ from taxcalc.policy import Policy
 from taxcalc.records import Records
 from taxcalc.utils import (DIST_VARIABLES, create_distribution_table,
                            DIFF_VARIABLES, create_difference_table,
-                           create_diagnostic_table,
-                           ce_aftertax_expanded_income,
-                           mtr_graph_data, atr_graph_data, xtr_graph_plot,
-                           dec_graph_data, dec_graph_plot,
-                           pch_graph_data, pch_graph_plot)
+                           create_diagnostic_table)
 # import pdb
 
 
@@ -669,371 +665,8 @@ class Calculator(object):
         # return the three marginal tax rate arrays
         return (mtr_payrolltax, mtr_incometax, mtr_combined)
 
-    def mtr_graph(self, calc,
-                  mars='ALL',
-                  mtr_measure='combined',
-                  mtr_variable='e00200p',
-                  alt_e00200p_text='',
-                  mtr_wrt_full_compen=False,
-                  income_measure='expanded_income',
-                  dollar_weighting=False):
-        """
-        Create marginal tax rate graph that can be written to an HTML
-        file (using the write_graph_file utility function) or shown on
-        the screen immediately in an interactive or notebook session
-        (following the instructions in the documentation of the
-        xtr_graph_plot utility function).
-
-        Parameters
-        ----------
-        calc : Calculator object
-            calc represents the reform while self represents the baseline
-
-        mars : integer or string
-            specifies which filing status subgroup to show in the graph
-
-            - 'ALL': include all filing units in sample
-
-            - 1: include only single filing units
-
-            - 2: include only married-filing-jointly filing units
-
-            - 3: include only married-filing-separately filing units
-
-            - 4: include only head-of-household filing units
-
-        mtr_measure : string
-            specifies which marginal tax rate to show on graph's y axis
-
-            - 'itax': marginal individual income tax rate
-
-            - 'ptax': marginal payroll tax rate
-
-            - 'combined': sum of marginal income and payroll tax rates
-
-        mtr_variable : string
-            any string in the Calculator.VALID_MTR_VARS set
-            specifies variable to change in order to compute marginal tax rates
-
-        alt_e00200p_text : string
-            text to use in place of mtr_variable
-            when mtr_variable is 'e00200p';
-            if empty string then use 'e00200p'
-
-        mtr_wrt_full_compen : boolean
-            see documentation of Calculator.mtr()
-            argument wrt_full_compensation
-            (value has an effect only if mtr_variable is 'e00200p')
-
-        income_measure : string
-            specifies which income variable to show on the graph's x axis
-
-            - 'wages': wage and salary income (e00200)
-
-            - 'agi': adjusted gross income, AGI (c00100)
-
-            - 'expanded_income': broader than AGI (see definition in
-                                 functions.py file).
-
-        dollar_weighting : boolean
-            False implies both income_measure percentiles on x axis
-            and mtr values for each percentile on the y axis are
-            computed without using dollar income_measure weights (just
-            sampling weights); True implies both income_measure
-            percentiles on x axis and mtr values for each percentile
-            on the y axis are computed using dollar income_measure
-            weights (in addition to sampling weights).  Specifying
-            True produces a graph x axis that shows income_measure
-            (not filing unit) percentiles.
-
-        Returns
-        -------
-        graph that is a bokeh.plotting figure object
-        """
-        # pylint: disable=too-many-arguments,too-many-locals
-        # check that two Calculator objects are comparable
-        assert isinstance(calc, Calculator)
-        assert calc.current_year == self.current_year
-        assert calc.array_len == self.array_len
-        # check validity of mars parameter
-        assert mars == 'ALL' or (mars >= 1 and mars <= 4)
-        # check validity of income_measure
-        assert (income_measure == 'expanded_income' or
-                income_measure == 'agi' or
-                income_measure == 'wages')
-        if income_measure == 'expanded_income':
-            income_variable = 'expanded_income'
-        elif income_measure == 'agi':
-            income_variable = 'c00100'
-        elif income_measure == 'wages':
-            income_variable = 'e00200'
-        # check validity of mtr_measure parameter
-        assert (mtr_measure == 'combined' or
-                mtr_measure == 'itax' or
-                mtr_measure == 'ptax')
-        # calculate marginal tax rates
-        (mtr1_ptax, mtr1_itax,
-         mtr1_combined) = self.mtr(variable_str=mtr_variable,
-                                   wrt_full_compensation=mtr_wrt_full_compen)
-        (mtr2_ptax, mtr2_itax,
-         mtr2_combined) = calc.mtr(variable_str=mtr_variable,
-                                   wrt_full_compensation=mtr_wrt_full_compen)
-        if mtr_measure == 'combined':
-            mtr1 = mtr1_combined
-            mtr2 = mtr2_combined
-        elif mtr_measure == 'itax':
-            mtr1 = mtr1_itax
-            mtr2 = mtr2_itax
-        elif mtr_measure == 'ptax':
-            mtr1 = mtr1_ptax
-            mtr2 = mtr2_ptax
-        # extract datafames needed by mtr_graph_data utility function
-        record_variables = ['s006']
-        if mars != 'ALL':
-            record_variables.append('MARS')
-        record_variables.append(income_variable)
-        vdf = self.dataframe(record_variables)
-        vdf['mtr1'] = mtr1
-        vdf['mtr2'] = mtr2
-        # select filing-status subgroup, if any
-        if mars != 'ALL':
-            vdf = vdf[vdf['MARS'] == mars]
-        # construct data for graph
-        data = mtr_graph_data(vdf,
-                              year=self.current_year,
-                              mars=mars,
-                              mtr_measure=mtr_measure,
-                              alt_e00200p_text=alt_e00200p_text,
-                              mtr_wrt_full_compen=mtr_wrt_full_compen,
-                              income_measure=income_measure,
-                              dollar_weighting=dollar_weighting)
-        # delete intermediate variables
-        del vdf
-        del mtr1_ptax
-        del mtr1_itax
-        del mtr1_combined
-        del mtr1
-        del mtr2_ptax
-        del mtr2_itax
-        del mtr2_combined
-        del mtr2
-        del record_variables
-        # construct figure from data
-        fig = xtr_graph_plot(data,
-                             width=850,
-                             height=500,
-                             xlabel='',
-                             ylabel='',
-                             title='',
-                             legendloc='bottom_right')
-        del data
-        return fig
-
-    def atr_graph(self, calc,
-                  mars='ALL',
-                  atr_measure='combined'):
-        """
-        Create average tax rate graph that can be written to an HTML
-        file (using the write_graph_file utility function) or shown on
-        the screen immediately in an interactive or notebook session
-        (following the instructions in the documentation of the
-        xtr_graph_plot utility function).  The graph shows the mean
-        average tax rate for each expanded-income percentile excluding
-        any percentile that includes a filing unit with negative or
-        zero basline (self) expanded income.
-
-        Parameters
-        ----------
-        calc : Calculator object
-            calc represents the reform while self represents the baseline,
-            where both self and calc have calculated taxes for this year
-            before being used by this method
-
-        mars : integer or string
-            specifies which filing status subgroup to show in the graph
-
-            - 'ALL': include all filing units in sample
-
-            - 1: include only single filing units
-
-            - 2: include only married-filing-jointly filing units
-
-            - 3: include only married-filing-separately filing units
-
-            - 4: include only head-of-household filing units
-
-        atr_measure : string
-            specifies which average tax rate to show on graph's y axis
-
-            - 'itax': average individual income tax rate
-
-            - 'ptax': average payroll tax rate
-
-            - 'combined': sum of average income and payroll tax rates
-
-        Returns
-        -------
-        graph that is a bokeh.plotting figure object
-        """
-        # check that two Calculator objects are comparable
-        assert isinstance(calc, Calculator)
-        assert calc.current_year == self.current_year
-        assert calc.array_len == self.array_len
-        # check validity of function arguments
-        assert mars == 'ALL' or (mars >= 1 and mars <= 4)
-        assert (atr_measure == 'combined' or
-                atr_measure == 'itax' or
-                atr_measure == 'ptax')
-        # extract needed output that is assumed unchanged by reform from self
-        record_variables = ['s006']
-        if mars != 'ALL':
-            record_variables.append('MARS')
-        record_variables.append('expanded_income')
-        vdf = self.dataframe(record_variables)
-        # create 'tax1' and 'tax2' columns given specified atr_measure
-        if atr_measure == 'combined':
-            vdf['tax1'] = self.array('combined')
-            vdf['tax2'] = calc.array('combined')
-        elif atr_measure == 'itax':
-            vdf['tax1'] = self.array('iitax')
-            vdf['tax2'] = calc.array('iitax')
-        elif atr_measure == 'ptax':
-            vdf['tax1'] = self.array('payrolltax')
-            vdf['tax2'] = calc.array('payrolltax')
-        # select filing-status subgroup, if any
-        if mars != 'ALL':
-            vdf = vdf[vdf['MARS'] == mars]
-        # construct data for graph
-        data = atr_graph_data(vdf,
-                              year=self.current_year,
-                              mars=mars,
-                              atr_measure=atr_measure)
-        # delete intermediate variables
-        del vdf
-        del record_variables
-        # construct figure from data
-        fig = xtr_graph_plot(data,
-                             width=850,
-                             height=500,
-                             xlabel='',
-                             ylabel='',
-                             title='',
-                             legendloc='bottom_right')
-        del data
-        return fig
-
-    def pch_graph(self, calc):
-        """
-        Create percentage change in after-tax expanded income graph that
-        can be written to an HTML file (using the write_graph_file utility
-        function) or shown on the screen immediately in an interactive or
-        notebook session (following the instructions in the documentation
-        of the xtr_graph_plot utility function).  The graph shows the
-        dollar-weighted mean percentage change in after-tax expanded income
-        for each expanded-income percentile excluding any percentile that
-        includes a filing unit with negative or zero basline (self) expanded
-        income.
-
-        Parameters
-        ----------
-        calc : Calculator object
-            calc represents the reform while self represents the baseline,
-            where both self and calc have calculated taxes for this year
-            before being used by this method
-
-        Returns
-        -------
-        graph that is a bokeh.plotting figure object
-        """
-        # check that two Calculator objects are comparable
-        assert isinstance(calc, Calculator)
-        assert calc.current_year == self.current_year
-        assert calc.array_len == self.array_len
-        # extract needed output from baseline and reform Calculator objects
-        vdf1 = self.dataframe(['s006', 'expanded_income', 'aftertax_income'])
-        vdf2 = calc.dataframe(['s006', 'aftertax_income'])
-        assert np.allclose(vdf1['s006'], vdf2['s006'])
-        vdf = pd.DataFrame()
-        vdf['s006'] = vdf1['s006']
-        vdf['expanded_income'] = vdf1['expanded_income']
-        vdf['chg_aftinc'] = vdf2['aftertax_income'] - vdf1['aftertax_income']
-        # construct data for graph
-        data = pch_graph_data(vdf, year=self.current_year)
-        del vdf
-        del vdf1
-        del vdf2
-        # construct figure from data
-        fig = pch_graph_plot(data,
-                             width=850,
-                             height=500,
-                             xlabel='',
-                             ylabel='',
-                             title='')
-        del data
-        return fig
-
-    def decile_graph(self, calc,
-                     include_zero_incomes=True,
-                     include_negative_incomes=True):
-        """
-        Create graph that shows percentage change in aftertax expanded
-        income (from going from policy in self to policy in calc) for
-        each expanded-income decile and subgroups of the top decile.
-        The graph can be written to an HTML file (using the
-        write_graph_file utility function) or shown on the screen
-        immediately in an interactive or notebook session (following
-        the instructions in the documentation of the xtr_graph_plot
-        utility function).
-        NOTE: this method calls the distribution_tables method to
-              compute the values of the graphed statistic; consult
-              that method for details on how the values are computed.
-
-        Parameters
-        ----------
-        calc : Calculator object
-            calc represents the reform while self represents the baseline,
-            where both self and calc have calculated taxes for this year
-            before being used by this method
-
-        include_zero_incomes : boolean
-            if True (which is the default), the bottom decile does contain
-            filing units with zero expanded_income;
-            if False, the bottom decile does not contain filing units with
-            zero expanded_income.
-
-        include_negative_incomes : boolean
-            if True (which is the default), the bottom decile does contain
-            filing units with negative expanded_income;
-            if False, the bottom decile does not contain filing units with
-            negative expanded_income.
-
-        Returns
-        -------
-        graph that is a bokeh.plotting figure object
-        """
-        # check that two Calculator objects are comparable
-        assert isinstance(calc, Calculator)
-        assert calc.current_year == self.current_year
-        assert calc.array_len == self.array_len
-        dt1, dt2 = self.distribution_tables(calc, 'weighted_deciles')
-        # construct data for graph
-        data = dec_graph_data(
-            dt1, dt2, year=self.current_year,
-            include_zero_incomes=include_zero_incomes,
-            include_negative_incomes=include_negative_incomes)
-        # construct figure from data
-        fig = dec_graph_plot(data,
-                             width=850,
-                             height=500,
-                             xlabel='',
-                             ylabel='',
-                             title='')
-        del data
-        del dt1
-        del dt2
-        return fig
-
     REQUIRED_REFORM_KEYS = set(['policy'])
+    # THE REQUIRED_ASSUMP_KEYS ARE OBSOLETE BECAUSE NO ASSUMP FILES ARE USED
     REQUIRED_ASSUMP_KEYS = set(['consumption', 'behavior',
                                 'growdiff_baseline', 'growdiff_response',
                                 'growmodel'])
@@ -1041,7 +674,7 @@ class Calculator(object):
     @staticmethod
     def read_json_param_objects(reform, assump):
         """
-        Read JSON reform and assump objects and
+        Read JSON reform object [and formerly assump object] and
         return a single dictionary containing 6 key:dict pairs:
         'policy':dict, 'consumption':dict, 'behavior':dict,
         'growdiff_baseline':dict, 'growdiff_response':dict, and
@@ -1071,6 +704,7 @@ class Calculator(object):
         """
         # pylint: disable=too-many-branches
         # first process second assump parameter
+        assert assump is None
         if assump is None:
             cons_dict = dict()
             behv_dict = dict()
@@ -1265,46 +899,6 @@ class Calculator(object):
                 assert not base.parameter_errors
         return doc
 
-    def ce_aftertax_income(self, calc,
-                           custom_params=None,
-                           require_no_agg_tax_change=True):
-        """
-        Return dictionary that contains certainty-equivalent of the
-        expected utility of after-tax expanded income computed for
-        several constant-relative-risk-aversion parameter values
-        for each of two Calculator objects: self, which represents
-        the pre-reform situation, and calc, which represents the
-        post-reform situation, both of which MUST have had calc_call()
-        called before being passed to this function.
-
-        IMPORTANT NOTES: These normative welfare calculations are very
-        simple.  It is assumed that utility is a function of only
-        consumption, and that consumption is equal to after-tax
-        income.  This means that any assumed behavioral responses that
-        change work effort will not affect utility via the
-        correpsonding change in leisure.  And any saving response to
-        changes in after-tax income do not affect consumption.
-
-        The cmin value is the consumption level below which marginal
-        utility is considered to be constant.  This allows the handling
-        of filing units with very low or even negative after-tax expanded
-        income in the expected-utility and certainty-equivalent calculations.
-        """
-        # check that calc and self are consistent
-        assert isinstance(calc, Calculator)
-        assert calc.array_len == self.array_len
-        assert calc.current_year == self.current_year
-        # extract data from self and calc
-        records_variables = ['s006', 'combined', 'expanded_income']
-        df1 = self.dataframe(records_variables)
-        df2 = calc.dataframe(records_variables)
-        cedict = ce_aftertax_expanded_income(
-            df1, df2,
-            custom_params=custom_params,
-            require_no_agg_tax_change=require_no_agg_tax_change)
-        cedict['year'] = self.current_year
-        return cedict
-
     # ----- begin private methods of Calculator class -----
 
     def _taxinc_to_amt(self):
@@ -1439,29 +1033,23 @@ class Calculator(object):
     def _read_json_econ_assump_text(text_string):
         """
         Strip //-comments from text_string and return 5 dict based on the JSON.
-
         Specified text is JSON with at least 5 high-level key:value pairs:
         a "consumption": {...} pair,
         a "behavior": {...} pair,
         a "growdiff_baseline": {...} pair,
         a "growdiff_response": {...} pair, and
         a "growmodel": {...} pair.
-
         Other keys such as "policy" will raise a ValueError.
-
         The {...}  object may be empty (that is, be {}), or
         may contain one or more pairs with parameter string primary keys
         and string years as secondary keys.  See tests/test_calculate.py for
         an extended example of a commented JSON economic assumption text
         that can be read by this method.
-
         Note that an example is shown in the ASSUMP_CONTENTS string in
         the tests/test_calculate.py file.
-
         Returned dictionaries (cons_dict, behv_dict, gdiff_baseline_dict,
         gdiff_respose_dict, growmodel_dict) have integer years as primary
         keys and string parameters as secondary keys.
-
         These returned dictionaries are suitable as the arguments to
         the Consumption.update_consumption(cons_dict) method, or
         the Behavior.update_behavior(behv_dict) method, or

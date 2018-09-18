@@ -11,15 +11,8 @@ help:
 	@echo "TARGETS:"
 	@echo "help       : show help message"
 	@echo "clean      : remove .pyc files and local taxcalc package"
-	@echo "package    : build and install local taxcalc package"
-	@echo "pytest-cps : generate report for and cleanup after"
-	@echo "             pytest -m 'not requires_pufcsv and not pre_release'"
-	@echo "pytest     : generate report for and cleanup after"
-	@echo "             pytest -m 'not pre_release'"
-	@echo "pytest-all : generate report for and cleanup after"
-	@echo "             pytest -m ''"
-	@echo "cstest     : generate coding-style errors using the"
-	@echo "             pycodestyle (nee pep8) and pylint tools"
+	@echo "cstest     : generate coding-style errors using pycodestyle"
+	@echo "pytest     : generate report for and cleanup after pytest"
 	@echo "coverage   : generate test coverage report"
 	@echo "git-sync   : synchronize local, origin, and upstream Git repos"
 	@echo "git-pr N=n : create local pr-n branch containing upstream PR"
@@ -28,32 +21,10 @@ help:
 clean:
 	@find . -name *pyc -exec rm {} \;
 	@find . -name *cache -maxdepth 1 -exec rm -r {} \;
-	@./conda.recipe/remove_local_taxcalc_package.sh
-
-.PHONY=package
-package:
-	@./conda.recipe/install_local_taxcalc_package.sh
 
 define pytest-cleanup
 find . -name *cache -maxdepth 1 -exec rm -r {} \;
-rm -f df-??-#-*
-rm -f tmp??????-??-#-tmp*
 endef
-
-.PHONY=pytest-cps
-pytest-cps:
-	@cd taxcalc ; pytest -n4 -m "not requires_pufcsv and not pre_release"
-	@$(pytest-cleanup)
-
-.PHONY=pytest
-pytest:
-	@cd taxcalc ; pytest -n4 -m "not pre_release"
-	@$(pytest-cleanup)
-
-.PHONY=pytest-all
-pytest-all:
-	@cd taxcalc ; pytest -n4 -m ""
-	@$(pytest-cleanup)
 
 PYLINT_FILES := $(shell grep -rl --include="*py" disable=locally-disabled .)
 PYLINT_OPTIONS = --disable=locally-disabled --score=no --jobs=4
@@ -65,18 +36,21 @@ cstest:
 	@pycodestyle --ignore=E501,E121 taxcalc/records_variables.json
 	@pylint $(PYLINT_OPTIONS) $(PYLINT_FILES)
 
+.PHONY=pytest
+pytest:
+	@cd taxcalc ; pytest -n4 -m ""
+	@$(pytest-cleanup)
+
 define coverage-cleanup
 rm -f .coverage htmlcov/*
 endef
-
-COVMARK = "not requires_pufcsv and not pre_release"
 
 OS := $(shell uname -s)
 
 .PHONY=coverage
 coverage:
 	@$(coverage-cleanup)
-	@coverage run -m pytest -v -m $(COVMARK) > /dev/null
+	@coverage run -m pytest -v -m "" > /dev/null
 	@coverage html --ignore-errors
 ifeq ($(OS), Darwin) # on Mac OS X
 	@open htmlcov/index.html

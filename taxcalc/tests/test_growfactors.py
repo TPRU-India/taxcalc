@@ -58,16 +58,6 @@ def test_improper_usage(bad_gf_file):
         gfo.factor_value('AWAGE', lyr + 1)
 
 
-def test_update_after_use():
-    """
-    Test of improper update after GrowFactors object has been used.
-    """
-    gfo = GrowFactors()
-    gfo.price_inflation_rates(gfo.first_year, gfo.last_year)
-    with pytest.raises(ValueError):
-        gfo.update('AWAGE', 2013, 0.01)
-
-
 def test_proper_usage():
     """
     Test proper usage of GrowFactors object.

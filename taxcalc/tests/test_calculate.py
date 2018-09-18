@@ -421,45 +421,8 @@ def fixture_reform_file():
             pass  # sometimes we can't remove a generated temporary file
 
 
-ASSUMP_CONTENTS = """
-// Example of assump file suitable for the read_json_param_objects().
-// This JSON file can contain any number of trailing //-style comments, which
-// will be removed before the contents are converted from JSON to a dictionary.
-// Within each "behavior", "consumption" and "growth" object, the
-// primary keys are parameters and the secondary keys are years.
-// Both the primary and secondary key values must be enclosed in quotes (").
-// Boolean variables are specified as true or false (no quotes; all lowercase).
-{
-  "consumption": { "_MPC_e18400": {"2018": [0.05]} },
-  "behavior": {},
-  "growdiff_baseline": {},
-  "growdiff_response": {},
-  "growmodel": {}
-}
-"""
-
-
-@pytest.fixture(scope='module', name='assump_file')
-def fixture_assump_file():
-    """
-    Temporary assumption file for read_json_params_files() function.
-    """
-    afile = tempfile.NamedTemporaryFile(mode='a', delete=False)
-    afile.write(ASSUMP_CONTENTS)
-    afile.close()
-    # must close and then yield for Windows platform
-    yield afile
-    if os.path.isfile(afile.name):
-        try:
-            os.remove(afile.name)
-        except OSError:
-            pass  # sometimes we can't remove a generated temporary file
-
-
 @pytest.mark.parametrize("set_year", [False, True])
-def test_read_json_reform_file_and_implement_reform(reform_file,
-                                                    assump_file,
-                                                    set_year):
+def test_read_json_reform_file_and_implement_reform(reform_file, set_year):
     """
     Test reading and translation of reform file into a reform dictionary
     that is then used to call implement_reform method and Calculate.calc_all()
@@ -468,8 +431,7 @@ def test_read_json_reform_file_and_implement_reform(reform_file,
     pol = Policy()
     if set_year:
         pol.set_year(2015)
-    param_dict = Calculator.read_json_param_objects(reform_file.name,
-                                                    assump_file.name)
+    param_dict = Calculator.read_json_param_objects(reform_file.name, None)
     pol.implement_reform(param_dict['policy'])
     syr = pol.start_year
     amt_brk1 = pol._AMT_brk1
@@ -567,89 +529,6 @@ def test_read_bad_json_reform_file(bad1reformfile, bad2reformfile,
         Calculator.read_json_param_objects(bad3reformfile.name, None)
     with pytest.raises(ValueError):
         Calculator.read_json_param_objects(list(), None)
-    with pytest.raises(ValueError):
-        Calculator.read_json_param_objects(None, 'unknown_file_name')
-    with pytest.raises(ValueError):
-        Calculator.read_json_param_objects(None, list())
-
-
-@pytest.fixture(scope='module', name='bad1assumpfile')
-def fixture_bad1assumpfile():
-    # specify JSON text for assumptions
-    txt = """
-    {
-      "consumption": {},
-      "behavior": { // example of incorrect JSON because 'x' must be "x"
-        'x': {"2014": [0.25]}
-      },
-      "growdiff_baseline": {},
-      "growdiff_response": {},
-      "growmodel": {}
-    }
-    """
-    f = tempfile.NamedTemporaryFile(mode='a', delete=False)
-    f.write(txt + '\n')
-    f.close()
-    # Must close and then yield for Windows platform
-    yield f
-    os.remove(f.name)
-
-
-@pytest.fixture(scope='module', name='bad2assumpfile')
-def fixture_bad2assumpfile():
-    # specify JSON text for assumptions
-    txt = """
-    {
-      "consumption": {},
-      "behaviorx": {}, // example of assump file not containing "behavior" key
-      "growdiff_baseline": {},
-      "growdiff_response": {},
-      "growmodel": {}
-    }
-    """
-    f = tempfile.NamedTemporaryFile(mode='a', delete=False)
-    f.write(txt + '\n')
-    f.close()
-    # Must close and then yield for Windows platform
-    yield f
-    os.remove(f.name)
-
-
-@pytest.fixture(scope='module', name='bad3assumpfile')
-def fixture_bad3assumpfile():
-    # specify JSON text for assump
-    txt = """
-    {
-      "consumption": {},
-      "behavior": {},
-      "growdiff_baseline": {},
-      "growdiff_response": {},
-      "policy": { // example of misplaced policy key
-        "_SS_Earnings_c": {"2018": [9e99]}
-      },
-    "growmodel": {}
-    }
-    """
-    f = tempfile.NamedTemporaryFile(mode='a', delete=False)
-    f.write(txt + '\n')
-    f.close()
-    # Must close and then yield for Windows platform
-    yield f
-    os.remove(f.name)
-
-
-def test_read_bad_json_assump_file(bad1assumpfile, bad2assumpfile,
-                                   bad3assumpfile):
-    with pytest.raises(ValueError):
-        Calculator.read_json_param_objects(None, bad1assumpfile.name)
-    with pytest.raises(ValueError):
-        Calculator.read_json_param_objects(None, bad2assumpfile.name)
-    with pytest.raises(ValueError):
-        Calculator.read_json_param_objects(None, bad3assumpfile.name)
-    with pytest.raises(ValueError):
-        Calculator.read_json_param_objects(None, 'unknown_file_name')
-    with pytest.raises(ValueError):
-        Calculator.read_json_param_objects(None, list())
 
 
 def test_convert_parameter_dict():
@@ -820,16 +699,7 @@ def test_noreform_documentation():
     "policy": {}
     }
     """
-    assump_json = """
-    {
-    "consumption": {},
-    "behavior": {},
-    "growdiff_baseline": {},
-    "growdiff_response": {},
-    "growmodel": {}
-    }
-    """
-    params = Calculator.read_json_param_objects(reform_json, assump_json)
+    params = Calculator.read_json_param_objects(reform_json, None)
     assert isinstance(params, dict)
     actual_doc = Calculator.reform_documentation(params)
     expected_doc = (
@@ -861,18 +731,7 @@ def test_reform_documentation():
       }
     }
     """
-    assump_json = """
-    {
-    "consumption": {},
-    "behavior": {},
-    // increase baseline inflation rate by one percentage point in 2014+
-    // (has no effect on known policy parameter values)
-    "growdiff_baseline": {"_ACPIU": {"2014": [0.01]}},
-    "growdiff_response": {},
-    "growmodel": {}
-    }
-    """
-    params = Calculator.read_json_param_objects(reform_json, assump_json)
+    params = Calculator.read_json_param_objects(reform_json, None)
     assert isinstance(params, dict)
     doc = Calculator.reform_documentation(params)
     assert isinstance(doc, str)
@@ -927,29 +786,6 @@ def test_diagnostic_table(cps_subsample):
     calc = Calculator(policy=Policy(), records=recs)
     adt = calc.diagnostic_table(3)
     assert isinstance(adt, pd.DataFrame)
-
-
-def test_mtr_graph(cps_subsample):
-    recs = Records.cps_constructor(data=cps_subsample)
-    calc = Calculator(policy=Policy(), records=recs)
-    fig = calc.mtr_graph(calc,
-                         mars=2,
-                         income_measure='wages',
-                         mtr_measure='ptax')
-    assert fig
-    fig = calc.mtr_graph(calc,
-                         income_measure='agi',
-                         mtr_measure='itax')
-    assert fig
-
-
-def test_atr_graph(cps_subsample):
-    recs = Records.cps_constructor(data=cps_subsample)
-    calc = Calculator(policy=Policy(), records=recs)
-    fig = calc.atr_graph(calc, mars=2, atr_measure='itax')
-    assert fig
-    fig = calc.atr_graph(calc, atr_measure='ptax')
-    assert fig
 
 
 def test_privacy_of_embedded_objects(cps_subsample):

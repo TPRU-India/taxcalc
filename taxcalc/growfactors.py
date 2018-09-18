@@ -148,12 +148,3 @@ class GrowFactors(object):
             msg = 'year={} > GrowFactors.last_year={}'
             raise ValueError(msg.format(year, self.last_year))
         return self.gfdf[name][year]
-
-    def update(self, name, year, diff):
-        """
-        Add to self.gfdf[name][year] the specified diff amount.
-        """
-        if self.used:
-            msg = 'cannot update growfactors after they have been used'
-            raise ValueError(msg)
-        self.gfdf[name][year] += diff

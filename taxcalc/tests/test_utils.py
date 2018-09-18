@@ -7,9 +7,6 @@ Tests of Tax-Calculator utility functions.
 #
 # pylint: disable=missing-docstring,no-member,protected-access,too-many-lines
 
-import os
-import math
-import random
 import numpy as np
 import pandas as pd
 import pytest
@@ -22,17 +19,11 @@ from taxcalc.utils import (DIST_VARIABLES,
                            SOI_AGI_BINS,
                            create_distribution_table, create_difference_table,
                            weighted_count_lt_zero, weighted_count_gt_zero,
-                           weighted_count, weighted_sum, weighted_mean,
-                           wage_weighted, agi_weighted,
-                           expanded_income_weighted,
+                           weighted_count, weighted_sum,
                            add_income_table_row_variable,
                            add_quantile_table_row_variable,
-                           mtr_graph_data, atr_graph_data, dec_graph_data,
-                           xtr_graph_plot, write_graph_file,
-                           read_egg_csv, read_egg_json, delete_file,
+                           read_egg_csv, read_egg_json,
                            bootstrap_se_ci,
-                           certainty_equivalent,
-                           ce_aftertax_expanded_income,
                            nonsmall_diffs,
                            quantity_response)
 
@@ -507,34 +498,6 @@ def test_weighted_count():
     pd.util.testing.assert_series_equal(exp, diffs)
 
 
-def test_weighted_mean():
-    dfx = pd.DataFrame(data=DATA, columns=['tax_diff', 's006', 'label'])
-    grouped = dfx.groupby('label')
-    diffs = grouped.apply(weighted_mean, 'tax_diff')
-    exp = pd.Series(data=[16.0 / 12.0, 26.0 / 10.0], index=['a', 'b'])
-    exp.index.name = 'label'
-    pd.util.testing.assert_series_equal(exp, diffs)
-
-
-def test_wage_weighted():
-    dfx = pd.DataFrame(data=WEIGHT_DATA, columns=['var', 's006', 'e00200'])
-    wvar = wage_weighted(dfx, 'var')
-    assert round(wvar, 4) == 2.5714
-
-
-def test_agi_weighted():
-    dfx = pd.DataFrame(data=WEIGHT_DATA, columns=['var', 's006', 'c00100'])
-    wvar = agi_weighted(dfx, 'var')
-    assert round(wvar, 4) == 2.5714
-
-
-def test_expanded_income_weighted():
-    dfx = pd.DataFrame(data=WEIGHT_DATA,
-                       columns=['var', 's006', 'expanded_income'])
-    wvar = expanded_income_weighted(dfx, 'var')
-    assert round(wvar, 4) == 2.5714
-
-
 def test_weighted_sum():
     dfx = pd.DataFrame(data=DATA, columns=['tax_diff', 's006', 'label'])
     grouped = dfx.groupby('label')
@@ -613,163 +576,6 @@ def test_diff_table_sum_row(cps_subsample):
                 tdiff2[non_digit_cols][-1:])
 
 
-def test_mtr_graph_data(cps_subsample):
-    recs = Records.cps_constructor(data=cps_subsample)
-    calc = Calculator(policy=Policy(), records=recs)
-    year = calc.current_year
-    with pytest.raises(ValueError):
-        mtr_graph_data(None, year, mars='bad',
-                       income_measure='agi',
-                       dollar_weighting=True)
-    with pytest.raises(ValueError):
-        mtr_graph_data(None, year, mars=0,
-                       income_measure='expanded_income',
-                       dollar_weighting=True)
-    with pytest.raises(ValueError):
-        mtr_graph_data(None, year, mars=list())
-    with pytest.raises(ValueError):
-        mtr_graph_data(None, year, mars='ALL', mtr_variable='e00200s')
-    with pytest.raises(ValueError):
-        mtr_graph_data(None, year, mtr_measure='badtax')
-    with pytest.raises(ValueError):
-        mtr_graph_data(None, year, income_measure='badincome')
-    mtr = 0.20 * np.ones_like(cps_subsample['e00200'])
-    vdf = calc.dataframe(['s006', 'MARS', 'e00200'])
-    vdf['mtr1'] = mtr
-    vdf['mtr2'] = mtr
-    vdf = vdf[vdf['MARS'] == 1]
-    gdata = mtr_graph_data(vdf, year, mars=1,
-                           mtr_wrt_full_compen=True,
-                           income_measure='wages',
-                           dollar_weighting=True)
-    assert isinstance(gdata, dict)
-
-
-def test_atr_graph_data(cps_subsample):
-    pol = Policy()
-    rec = Records.cps_constructor(data=cps_subsample)
-    calc = Calculator(policy=pol, records=rec)
-    year = calc.current_year
-    with pytest.raises(ValueError):
-        atr_graph_data(None, year, mars='bad')
-    with pytest.raises(ValueError):
-        atr_graph_data(None, year, mars=0)
-    with pytest.raises(ValueError):
-        atr_graph_data(None, year, mars=list())
-    with pytest.raises(ValueError):
-        atr_graph_data(None, year, atr_measure='badtax')
-    calc.calc_all()
-    vdf = calc.dataframe(['s006', 'MARS', 'expanded_income'])
-    tax = 0.20 * np.ones_like(vdf['expanded_income'])
-    vdf['tax1'] = tax
-    vdf['tax2'] = tax
-    gdata = atr_graph_data(vdf, year, mars=1, atr_measure='combined')
-    gdata = atr_graph_data(vdf, year, atr_measure='itax')
-    gdata = atr_graph_data(vdf, year, atr_measure='ptax')
-    assert isinstance(gdata, dict)
-
-
-def test_xtr_graph_plot(cps_subsample):
-    recs = Records.cps_constructor(data=cps_subsample)
-    calc = Calculator(policy=Policy(), records=recs)
-    mtr = 0.20 * np.ones_like(cps_subsample['e00200'])
-    vdf = calc.dataframe(['s006', 'MARS', 'c00100'])
-    vdf['mtr1'] = mtr
-    vdf['mtr2'] = mtr
-    gdata = mtr_graph_data(vdf, calc.current_year, mtr_measure='ptax',
-                           income_measure='agi',
-                           dollar_weighting=False)
-    gplot = xtr_graph_plot(gdata)
-    assert gplot
-    vdf = calc.dataframe(['s006', 'expanded_income'])
-    vdf['mtr1'] = mtr
-    vdf['mtr2'] = mtr
-    gdata = mtr_graph_data(vdf, calc.current_year, mtr_measure='itax',
-                           alt_e00200p_text='Taxpayer Earnings',
-                           income_measure='expanded_income',
-                           dollar_weighting=False)
-    assert isinstance(gdata, dict)
-
-
-def temporary_filename(suffix=''):
-    # Return string containing the temporary filename.
-    return 'tmp{}{}'.format(random.randint(10000000, 99999999), suffix)
-
-
-def test_write_graph_file(cps_subsample):
-    recs = Records.cps_constructor(data=cps_subsample)
-    calc = Calculator(policy=Policy(), records=recs)
-    mtr = 0.20 * np.ones_like(cps_subsample['e00200'])
-    vdf = calc.dataframe(['s006', 'e00200', 'c00100'])
-    vdf['mtr1'] = mtr
-    vdf['mtr2'] = mtr
-    gdata = mtr_graph_data(vdf, calc.current_year, mtr_measure='ptax',
-                           alt_e00200p_text='Taxpayer Earnings',
-                           income_measure='agi',
-                           dollar_weighting=False)
-    gplot = xtr_graph_plot(gdata)
-    assert gplot
-    htmlfname = temporary_filename(suffix='.html')
-    try:
-        write_graph_file(gplot, htmlfname, 'title')
-    except Exception:  # pylint: disable=broad-except
-        if os.path.isfile(htmlfname):
-            try:
-                os.remove(htmlfname)
-            except OSError:
-                pass  # sometimes we can't remove a generated temporary file
-        assert 'write_graph_file()_ok' == 'no'
-    # if try was successful, try to remove the file
-    if os.path.isfile(htmlfname):
-        try:
-            os.remove(htmlfname)
-        except OSError:
-            pass  # sometimes we can't remove a generated temporary file
-
-
-def test_ce_aftertax_income(cps_subsample):
-    # test certainty_equivalent() function with con>cmin
-    con = 5000
-    cmin = 1000
-    assert con == round(certainty_equivalent(con, 0, cmin), 6)
-    assert con > round(certainty_equivalent((math.log(con) - 0.1), 1, cmin), 6)
-    # test certainty_equivalent() function with con<cmin
-    con = 500
-    cmin = 1000
-    assert con == round(certainty_equivalent(con, 0, cmin), 6)
-    # test with require_no_agg_tax_change equal to False
-    rec = Records.cps_constructor(data=cps_subsample)
-    cyr = 2020
-    # specify calc1 and calc_all() for cyr
-    pol = Policy()
-    calc1 = Calculator(policy=pol, records=rec)
-    calc1.advance_to_year(cyr)
-    calc1.calc_all()
-    # specify calc2 and calc_all() for cyr
-    reform = {2019: {'_II_em': [1000]}}
-    pol.implement_reform(reform)
-    calc2 = Calculator(policy=pol, records=rec)
-    calc2.advance_to_year(cyr)
-    calc2.calc_all()
-    df1 = calc1.dataframe(['s006', 'combined', 'expanded_income'])
-    df2 = calc2.dataframe(['s006', 'combined', 'expanded_income'])
-    cedict = ce_aftertax_expanded_income(df1, df2,
-                                         require_no_agg_tax_change=False)
-    assert isinstance(cedict, dict)
-    np.allclose(cedict['ceeu1'], [55641, 27167, 5726, 2229, 1565],
-                atol=0.5, rtol=0.0)
-    np.allclose(cedict['ceeu2'], [54629, 26698, 5710, 2229, 1565],
-                atol=0.5, rtol=0.0)
-    # test with require_no_agg_tax_change equal to True
-    with pytest.raises(ValueError):
-        ce_aftertax_expanded_income(df1, df2, require_no_agg_tax_change=True)
-    # test with require_no_agg_tax_change equal to False and custom_params
-    params = {'crra_list': [0, 2], 'cmin_value': 2000}
-    with pytest.raises(ValueError):
-        ce_aftertax_expanded_income(df1, df2, require_no_agg_tax_change=True,
-                                    custom_params=params)
-
-
 def test_read_egg_csv():
     with pytest.raises(ValueError):
         read_egg_csv('bad_filename')
@@ -778,16 +584,6 @@ def test_read_egg_csv():
 def test_read_egg_json():
     with pytest.raises(ValueError):
         read_egg_json('bad_filename')
-
-
-def test_create_delete_temp_file():
-    # test temporary_filename() and delete_file() functions
-    fname = temporary_filename()
-    with open(fname, 'w') as tmpfile:
-        tmpfile.write('any content will do')
-    assert os.path.isfile(fname) is True
-    delete_file(fname)
-    assert os.path.isfile(fname) is False
 
 
 def test_bootstrap_se_ci():
@@ -809,42 +605,6 @@ def test_table_columns_labels():
     # check that length of two lists are the same
     assert len(DIST_TABLE_COLUMNS) == len(DIST_TABLE_LABELS)
     assert len(DIFF_TABLE_COLUMNS) == len(DIFF_TABLE_LABELS)
-
-
-def test_dec_graph_plots(cps_subsample):
-    pol = Policy()
-    rec = Records.cps_constructor(data=cps_subsample)
-    calc1 = Calculator(policy=pol, records=rec)
-    year = 2020
-    calc1.advance_to_year(year)
-    reform = {
-        year: {
-            '_SS_Earnings_c': [9e99],  # OASDI FICA tax on all earnings
-            '_FICA_ss_trt': [0.107484]  # lower rate to keep revenue unchanged
-
-        }
-    }
-    pol.implement_reform(reform)
-    calc2 = Calculator(policy=pol, records=rec)
-    calc2.advance_to_year(year)
-    assert calc1.current_year == calc2.current_year
-    calc1.calc_all()
-    calc2.calc_all()
-    fig = calc1.decile_graph(calc2)
-    assert fig
-    dt1, dt2 = calc1.distribution_tables(calc2, 'weighted_deciles')
-    dta = dec_graph_data(dt1, dt2, year,
-                         include_zero_incomes=True,
-                         include_negative_incomes=False)
-    assert isinstance(dta, dict)
-    dta = dec_graph_data(dt1, dt2, year,
-                         include_zero_incomes=False,
-                         include_negative_incomes=True)
-    assert isinstance(dta, dict)
-    dta = dec_graph_data(dt1, dt2, year,
-                         include_zero_incomes=False,
-                         include_negative_incomes=False)
-    assert isinstance(dta, dict)
 
 
 def test_nonsmall_diffs():
