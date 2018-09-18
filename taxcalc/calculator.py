@@ -1,9 +1,9 @@
 """
-Tax-Calculator federal tax Calculator class.
+PIT (personal income tax) Calculator class.
 """
 # CODING-STYLE CHECKS:
-# pycodestyle calculate.py
-# pylint --disable=locally-disabled calculate.py
+# pycodestyle calculator.py
+# pylint --disable=locally-disabled calculator.py
 #
 # pylint: disable=invalid-name,no-value-for-parameter,too-many-lines
 
@@ -986,7 +986,7 @@ class Calculator(object):
 
         The {...}  object may be empty (that is, be {}), or
         may contain one or more pairs with parameter string primary keys
-        and string years as secondary keys.  See tests/test_calculate.py for
+        and string years as secondary keys.  See tests/test_calculator.py for
         an extended example of a commented JSON policy reform text
         that can be read by this method.
 
@@ -1042,11 +1042,11 @@ class Calculator(object):
         Other keys such as "policy" will raise a ValueError.
         The {...}  object may be empty (that is, be {}), or
         may contain one or more pairs with parameter string primary keys
-        and string years as secondary keys.  See tests/test_calculate.py for
+        and string years as secondary keys.  See tests/test_calculator.py for
         an extended example of a commented JSON economic assumption text
         that can be read by this method.
         Note that an example is shown in the ASSUMP_CONTENTS string in
-        the tests/test_calculate.py file.
+        the tests/test_calculator.py file.
         Returned dictionaries (cons_dict, behv_dict, gdiff_baseline_dict,
         gdiff_respose_dict, growmodel_dict) have integer years as primary
         keys and string parameters as secondary keys.
