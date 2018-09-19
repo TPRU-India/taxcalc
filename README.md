@@ -13,10 +13,11 @@ If you want to **propose code changes**, follow the directions in the
 Guide](http://taxcalc.readthedocs.io/en/latest/contributor_guide.html)
 on how to clone the pitaxcalc-demo git repository.  Before developing
 any code changes be sure to read completely the Contributor Guide and
-then read about our [coding style](CODING.md) and [testing
-procedures](TESTING.md).  You may find this [git
-cheat sheet](SIMPLE_GIT_USAGE.md) useful in preparing a GitHub pull
-request that contains your proposed code changes.
+then read about our [coding style](CODING.md#coding-style) and
+[testing procedures](TESTING.md#testing-procedures).  You may find
+this [git cheat sheet](SIMPLE_GIT_USAGE.md#simple-git-usage) useful in
+preparing a GitHub pull request that contains your proposed code
+changes.
 
 The pitaxcalc-demo [release history](RELEASES.md) provides a summary
 of past development work.

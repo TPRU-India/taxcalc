@@ -81,7 +81,7 @@ git branch -d [existing-branch-name]
 
 **Make a new local branch same as a pending GitHub pull request**
 ```
-gitpr PRNUM
+gitpr [PRNUM]
 ```
 or if master is the current branch
 ```
