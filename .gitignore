@@ -9,3 +9,6 @@ htmlcov/
 
 # Mac OS X
 *.DS_Store
+
+# Applications
+app_usa*
