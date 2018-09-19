@@ -57,6 +57,11 @@ git diff
 git add [new-file-name]
 ```
 
+**Revert uncommitted file changes on current branch**
+```
+git checkout -- [existing-file-name]
+```
+
 **Commit file changes to current branch**
 ```
 git commit -a -m "[short-description]"
