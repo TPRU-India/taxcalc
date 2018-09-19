@@ -6,24 +6,14 @@ Release numbering attempts to comply with [semantic
 versioning](https://semver.org/).
 
 
-2018-09-?? Release 2.0.0
+2018-09-19 Release 1.0.0
 ------------------------
 (last merged pull request is
-[#xxxx](https://github.com/TPRU-demo/pitaxcalc-demo/pull/xxxx))
-
-**API Changes**
-- None
-
-**New Features**
-- None
-
-**Bug Fixes**
-- None
-
-
-2018-09-?? Release 1.0.0
-------------------------
-(last merged pull request is
-[#xxxx](https://github.com/TPRU-demo/pitaxcalc-demo/pull/xxxx))
+[#14](https://github.com/TPRU-demo/pitaxcalc-demo/pull/14))
 
 **Initial version with data and tax logic for USA**
+
+See
+[app_usa.py](https://github.com/TPRU-demo/pitaxcalc-demo/blob/master/app_usa.py)
+for an example of how to use release 1.0.0 to analyze the effects of a
+tax reform.
