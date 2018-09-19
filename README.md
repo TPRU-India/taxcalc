@@ -22,5 +22,6 @@ sheet](https://github.com/TPRU-demo/pitaxcalc-demo/blob/master/SIMPLE_GIT_USAGE.
 useful in preparing a GitHub pull request that contains your proposed
 code changes.
 
-The pitaxcalc-demo [release history](RELEASES.md) provides a summary
-of past development work.
+The pitaxcalc-demo [release
+history](https://github.com/TPRU-demo/pitaxcalc-demo/blob/master/RELEASES.md#pitaxcalc-demo-release-history)
+provides a summary of past development work.
