@@ -121,7 +121,7 @@ class ParametersBase(object):
     @property
     def current_year(self):
         """
-        ParametersBase class current calendar year property.
+        ParametersBase class current assessment year property.
         """
         return self._current_year
 
@@ -141,12 +141,12 @@ class ParametersBase(object):
 
     def set_year(self, year):
         """
-        Set parameters to their values for the specified calendar year.
+        Set parameters to their values for the specified assessment year.
 
         Parameters
         ----------
         year: int
-            calendar year for which to current_year and parameter values
+            assessment year for which to current_year and parameter values
 
         Raises
         ------
@@ -286,7 +286,7 @@ class ParametersBase(object):
         that changes the values of some policy parameters in objects of
         inheriting classes.  This year_mods dictionary contains exactly one
         YEAR:MODS pair, where the integer YEAR key indicates the
-        calendar year for which the reform provisions in the MODS
+        assessment year for which the reform provisions in the MODS
         dictionary are implemented.  The MODS dictionary contains
         PARAM:VALUE pairs in which the PARAM is a string specifying
         the policy parameter (as used in the DEFAULTS_FILENAME default

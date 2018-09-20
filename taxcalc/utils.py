@@ -523,7 +523,7 @@ def create_diagnostic_table(vdf, year):
     ----------
     vdf : Pandas DataFrame object containing the variables
 
-    year : calendar year for which variables were drawn from Calculator object
+    year : assessment year for which variables are drawn from Calculator object
 
     Returns
     -------

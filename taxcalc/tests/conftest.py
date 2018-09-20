@@ -14,16 +14,16 @@ def tests_path():
 
 
 @pytest.fixture(scope='session')
-def cps_path(tests_path):
-    return os.path.join(tests_path, '..', 'cps.csv.gz')
+def pit_path(tests_path):
+    return os.path.join(tests_path, '..', 'pit.csv')
 
 
 @pytest.fixture(scope='session')
-def cps_fullsample(cps_path):
-    return pandas.read_csv(cps_path)
+def pit_fullsample(pit_path):
+    return pandas.read_csv(pit_path)
 
 
 @pytest.fixture(scope='session')
-def cps_subsample(cps_fullsample):
-    # draw smaller cps.csv subsample than in test_cpscsv.py
-    return cps_fullsample.sample(frac=0.01, random_state=123456789)
+def pit_subsample(pit_fullsample):
+    # TODO: when have larger pit_fullsample, draw fractional sample
+    return pit_fullsample.sample(frac=1.00, random_state=123456789)
