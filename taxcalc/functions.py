@@ -8,7 +8,7 @@ pitaxcalc-demo functions that calculate personal income tax liability.
 import math
 import copy
 import numpy as np
-from taxcalc.decorators import iterate_jit, jit
+from taxcalc.decorators import iterate_jit
 
 
 @iterate_jit(nopython=True)
