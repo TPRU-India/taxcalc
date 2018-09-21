@@ -77,7 +77,7 @@ def pit_liability(calc):
     by the (marginal tax) rate* and (upper tax bracket) brk* parameters and
     given taxable income (taxinc)
     """
-    taxinc = calc.array('TTI')
+    taxinc = np.maximum(0., calc.array('TTI'))
     AGEGRP = calc.array('AGEGRP')
     rate1 = calc.policy_param('rate1')
     rate2 = calc.policy_param('rate2')
