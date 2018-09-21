@@ -57,6 +57,21 @@ git diff
 git add [new-file-name]
 ```
 
+**Rename existing file in local repo**
+```
+git mv [existing-file-name] [new-file-name]
+```
+
+**Remove (that is, delete) existing file from local repo**
+```
+git rm [existing-file-name]
+```
+
+**Merge other branch contents into current branch**
+```
+git merge [other-branch-name]
+```
+
 **Revert uncommitted file changes on current branch**
 ```
 git checkout -- [existing-file-name]
