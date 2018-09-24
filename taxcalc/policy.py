@@ -1,5 +1,5 @@
 """
-Tax-Calculator federal tax policy Policy class.
+Personal income tax (PIT) Policy class.
 """
 # CODING-STYLE CHECKS:
 # pycodestyle policy.py
@@ -15,7 +15,7 @@ class Policy(ParametersBase):
     Policy is a subclass of the abstract ParametersBase class, and
     therefore, inherits its methods (none of which are shown here).
 
-    Constructor for the federal tax policy class.
+    Constructor for the PIT policy class.
 
     Parameters
     ----------
@@ -23,10 +23,10 @@ class Policy(ParametersBase):
         containing price inflation rates and wage growth rates
 
     start_year: integer
-        first calendar year for historical policy parameters.
+        first assessment year for historical policy parameters.
 
     num_years: integer
-        number of calendar years for which to specify policy parameter
+        number of assessment years for which to specify policy parameter
         values beginning with start_year.
 
     Raises
@@ -42,9 +42,9 @@ class Policy(ParametersBase):
     """
 
     DEFAULTS_FILENAME = 'current_law_policy.json'
-    JSON_START_YEAR = 2013  # remains the same unless earlier data added
+    JSON_START_YEAR = 2017  # remains the same unless earlier data added
     LAST_KNOWN_YEAR = 2017  # last year for which indexed param vals are known
-    LAST_BUDGET_YEAR = 2027  # increases by one every calendar year
+    LAST_BUDGET_YEAR = 2017  # increases by one for every new assessment year
     DEFAULT_NUM_YEARS = LAST_BUDGET_YEAR - JSON_START_YEAR + 1
 
     def __init__(self,
@@ -71,7 +71,6 @@ class Policy(ParametersBase):
         syr = start_year
         lyr = start_year + num_years - 1
         self._inflation_rates = self._gfactors.price_inflation_rates(syr, lyr)
-        self._apply_clp_cpi_offset(self._vals['_cpi_offset'], num_years)
         self._wage_growth_rates = self._gfactors.wage_growth_rates(syr, lyr)
 
         self.initialize(start_year, num_years)
@@ -143,7 +142,8 @@ class Policy(ParametersBase):
         current_year to the value of current_year when implement_reform
         was called with parameters set for that pre-call year.
 
-        An example of a multi-year, multi-parameter reform is as follows::
+        An example of a multi-year, multi-parameter reform for the USA version
+        is as follows::
 
             reform = {
                 2016: {
@@ -183,7 +183,7 @@ class Policy(ParametersBase):
         for year in reform_years:
             if not isinstance(year, int):
                 msg = 'ERROR: {} KEY {}'
-                details = 'KEY in reform is not an integer calendar year'
+                details = 'KEY in reform is not an integer assessment year'
                 raise ValueError(msg.format(year, details))
         # check range of remaining reform_years
         first_reform_year = min(reform_years)
@@ -203,10 +203,6 @@ class Policy(ParametersBase):
         self._validate_parameter_names_types(reform)
         if not self._ignore_errors and self.parameter_errors:
             raise ValueError(self.parameter_errors)
-        # optionally apply cpi_offset to inflation_rates and re-initialize
-        if Policy._cpi_offset_in_reform(reform):
-            known_years = self._apply_reform_cpi_offset(reform)
-            self.set_default_vals(known_years=known_years)
         # implement the reform year by year
         precall_current_year = self.current_year
         reform_parameters = set()
@@ -223,25 +219,10 @@ class Policy(ParametersBase):
             raise ValueError('\n' + self.parameter_errors)
 
     JSON_REFORM_SUFFIXES = {
-        # MARS-indexed suffixes and list index numbers
-        'single': 0,
-        'joint': 1,
-        'separate': 2,
-        'headhousehold': 3,
-        'widow': 4,
-        # EIC-indexed suffixes and list index numbers
-        '0kids': 0,
-        '1kid': 1,
-        '2kids': 2,
-        '3+kids': 3,
-        # idedtype-indexed suffixes and list index numbers
-        'medical': 0,
-        'statelocal': 1,
-        'realestate': 2,
-        'casualty': 3,
-        'misc': 4,
-        'interest': 5,
-        'charity': 6
+        # AGEGRP-indexed suffixes and list index numbers
+        '<60': 0,
+        '60-79': 1,
+        '>=80': 2,
     }
 
     @staticmethod
@@ -331,63 +312,6 @@ class Policy(ParametersBase):
         self._ignore_errors = True
 
     # ----- begin private methods of Policy class -----
-
-    def _apply_clp_cpi_offset(self, cpi_offset_clp_data, num_years):
-        """
-        Call this method from Policy constructor
-        after self._inflation_rates has been set and
-        before base class initialize method is called.
-        (num_years is number of years for which inflation rates are specified)
-        """
-        ovalues = cpi_offset_clp_data['value']
-        if len(ovalues) < num_years:  # extrapolate last known value
-            ovalues = ovalues + ovalues[-1:] * (num_years - len(ovalues))
-        for idx in range(0, num_years):
-            infrate = round(self._inflation_rates[idx] + ovalues[idx], 6)
-            self._inflation_rates[idx] = infrate
-
-    @staticmethod
-    def _cpi_offset_in_reform(reform):
-        """
-        Return true if cpi_offset is in reform; otherwise return false.
-        """
-        for year in reform:
-            for name in reform[year]:
-                if name == '_cpi_offset':
-                    return True
-        return False
-
-    def _apply_reform_cpi_offset(self, reform):
-        """
-        Call this method ONLY if _cpi_offset_in_reform returns True.
-        Apply CPI offset to inflation rates and
-        revert indexed parameter values in preparation for re-indexing.
-        Also, return known_years which is
-        (first cpi_offset year - start year + 1).
-        """
-        # extrapolate cpi_offset reform
-        self.set_year(self.start_year)
-        first_cpi_offset_year = 0
-        for year in sorted(reform.keys()):
-            self.set_year(year)
-            if '_cpi_offset' in reform[year]:
-                if first_cpi_offset_year == 0:
-                    first_cpi_offset_year = year
-                oreform = {'_cpi_offset': reform[year]['_cpi_offset']}
-                self._update({year: oreform})
-        self.set_year(self.start_year)
-        assert first_cpi_offset_year > 0
-        # adjust inflation rates
-        cpi_offset = getattr(self, '_cpi_offset')
-        for idx in range(0, self.num_years):
-            infrate = round(self._inflation_rates[idx] + cpi_offset[idx], 6)
-            self._inflation_rates[idx] = infrate
-        # revert CPI-indexed parameter values to current_law_policy.json values
-        for name in self._vals.keys():
-            if self._vals[name]['cpi_inflated']:
-                setattr(self, name, self._vals[name]['value'])
-        # return known_years
-        return first_cpi_offset_year - self.start_year + 1
 
     def _validate_parameter_names_types(self, reform):
         """

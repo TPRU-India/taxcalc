@@ -5,7 +5,8 @@ PIT (personal income tax) Calculator class.
 # pycodestyle calculator.py
 # pylint --disable=locally-disabled calculator.py
 #
-# pylint: disable=invalid-name,no-value-for-parameter,too-many-lines
+# pylint: disable=too-many-lines
+# pylintx: disable=no-value-for-parameter,too-many-lines
 
 import os
 import json
@@ -13,19 +14,10 @@ import re
 import copy
 import numpy as np
 import pandas as pd
-from taxcalc.functions import (TaxInc, SchXYZTax, GainsTax, AGIsurtax,
-                               NetInvIncTax, AMT, EI_PayrollTax, Adj,
-                               DependentCare, ALD_InvInc_ec_base, CapGains,
-                               SSBenefits, UBI, AGI, ItemDedCap, ItemDed,
-                               StdDed, AdditionalMedicareTax, F2441, EITC,
-                               ChildDepTaxCredit, AdditionalCTC, CTC_new,
-                               PersonalTaxCredit, SchR,
-                               AmOppCreditParts, EducationTaxCredit,
-                               CharityCredit,
-                               NonrefundableCredits, C1040, IITAX,
-                               BenefitSurtax, BenefitLimitation,
-                               FairShareTax, LumpSumTax, BenefitPrograms,
-                               ExpandIncome, AfterTaxIncome)
+from taxcalc.functions import (net_salary_income, net_rental_income,
+                               total_other_income, gross_total_income,
+                               itemized_deductions, taxable_total_income,
+                               pit_liability)
 from taxcalc.policy import Policy
 from taxcalc.records import Records
 from taxcalc.utils import (DIST_VARIABLES, create_distribution_table,
@@ -137,16 +129,21 @@ class Calculator(object):
         """
         Call all tax-calculation functions for the current_year.
         """
+        # pylint: disable=too-many-function-args,no-value-for-parameter
         # conducts static analysis of Calculator object for current_year
         assert self.__records.current_year == self.__policy.current_year
-        BenefitPrograms(self)
-        self._calc_one_year(zero_out_calc_vars)
-        BenefitSurtax(self)
-        BenefitLimitation(self)
-        FairShareTax(self.__policy, self.__records)
-        LumpSumTax(self.__policy, self.__records)
-        ExpandIncome(self.__policy, self.__records)
-        AfterTaxIncome(self.__policy, self.__records)
+        if zero_out_calc_vars:
+            self.__records.zero_out_changing_calculated_vars()
+        # pdb.set_trace()
+        net_salary_income(self.__policy, self.__records)
+        net_rental_income(self.__policy, self.__records)
+        total_other_income(self.__policy, self.__records)
+        gross_total_income(self.__policy, self.__records)
+        itemized_deductions(self.__policy, self.__records)
+        taxable_total_income(self.__policy, self.__records)
+        pit_liability(self)
+        # TODO: ADD: expanded_income(self.__policy, self.__records)
+        # TODO: ADD: aftertax_income(self.__policy, self.__records)
 
     def weighted_total(self, variable_name):
         """
@@ -300,7 +297,7 @@ class Calculator(object):
     @property
     def current_year(self):
         """
-        Calculator class current calendar year property.
+        Calculator class current assessment year property.
         """
         return self.__policy.current_year
 
@@ -594,7 +591,7 @@ class Calculator(object):
         elif variable_str == 'e00650':
             divincome_var = self.array('e00600')
         elif variable_str == 'e26270':
-            schEincome_var = self.array('e02000')
+            sche_income_var = self.array('e02000')
         # calculate level of taxes after a marginal increase in income
         self.array(variable_str, variable + finite_diff)
         if variable_str == 'e00200p':
@@ -606,7 +603,7 @@ class Calculator(object):
         elif variable_str == 'e00650':
             self.array('e00600', divincome_var + finite_diff)
         elif variable_str == 'e26270':
-            self.array('e02000', schEincome_var + finite_diff)
+            self.array('e02000', sche_income_var + finite_diff)
         self.calc_all(zero_out_calc_vars=zero_out_calculated_vars)
         payrolltax_chng = self.array('payrolltax')
         incometax_chng = self.array('iitax')
@@ -651,7 +648,7 @@ class Calculator(object):
         elif variable_str == 'e00650':
             del divincome_var
         elif variable_str == 'e26270':
-            del schEincome_var
+            del sche_income_var
         del payrolltax_chng
         del incometax_chng
         del combined_taxes_chng
@@ -777,7 +774,7 @@ class Calculator(object):
             years: list of change years
             change: dictionary of parameter changes
             base: Policy object with baseline values
-            syear: parameter start calendar year
+            syear: parameter start assessment year
 
             Returns
             -------
@@ -900,81 +897,6 @@ class Calculator(object):
         return doc
 
     # ----- begin private methods of Calculator class -----
-
-    def _taxinc_to_amt(self):
-        """
-        Call TaxInc through AMT functions.
-        """
-        TaxInc(self.__policy, self.__records)
-        SchXYZTax(self.__policy, self.__records)
-        GainsTax(self.__policy, self.__records)
-        AGIsurtax(self.__policy, self.__records)
-        NetInvIncTax(self.__policy, self.__records)
-        AMT(self.__policy, self.__records)
-
-    def _calc_one_year(self, zero_out_calc_vars=False):
-        """
-        Call all the functions except those in the calc_all() method.
-        """
-        if zero_out_calc_vars:
-            self.__records.zero_out_changing_calculated_vars()
-        # pdb.set_trace()
-        EI_PayrollTax(self.__policy, self.__records)
-        DependentCare(self.__policy, self.__records)
-        Adj(self.__policy, self.__records)
-        ALD_InvInc_ec_base(self.__policy, self.__records)
-        CapGains(self.__policy, self.__records)
-        SSBenefits(self.__policy, self.__records)
-        UBI(self.__policy, self.__records)
-        AGI(self.__policy, self.__records)
-        ItemDedCap(self.__policy, self.__records)
-        ItemDed(self.__policy, self.__records)
-        AdditionalMedicareTax(self.__policy, self.__records)
-        StdDed(self.__policy, self.__records)
-        # Store calculated standard deduction, calculate
-        # taxes with standard deduction, store AMT + Regular Tax
-        std = self.array('standard').copy()
-        item = self.array('c04470').copy()
-        item_no_limit = self.array('c21060').copy()
-        item_phaseout = self.array('c21040').copy()
-        self.zeroarray('c04470')
-        self.zeroarray('c21060')
-        self.zeroarray('c21040')
-        self._taxinc_to_amt()
-        std_taxes = self.array('c05800').copy()
-        # Set standard deduction to zero, calculate taxes w/o
-        # standard deduction, and store AMT + Regular Tax
-        self.zeroarray('standard')
-        self.array('c21060', item_no_limit)
-        self.array('c21040', item_phaseout)
-        self.array('c04470', item)
-        self._taxinc_to_amt()
-        item_taxes = self.array('c05800').copy()
-        # Replace standard deduction with zero where the taxpayer
-        # would be better off itemizing
-        self.array('standard', np.where(item_taxes < std_taxes,
-                                        0., std))
-        self.array('c04470', np.where(item_taxes < std_taxes,
-                                      item, 0.))
-        self.array('c21060', np.where(item_taxes < std_taxes,
-                                      item_no_limit, 0.))
-        self.array('c21040', np.where(item_taxes < std_taxes,
-                                      item_phaseout, 0.))
-        # Calculate taxes with optimal itemized deduction
-        self._taxinc_to_amt()
-        F2441(self.__policy, self.__records)
-        EITC(self.__policy, self.__records)
-        ChildDepTaxCredit(self.__policy, self.__records)
-        PersonalTaxCredit(self.__policy, self.__records)
-        AmOppCreditParts(self.__policy, self.__records)
-        SchR(self.__policy, self.__records)
-        EducationTaxCredit(self.__policy, self.__records)
-        CharityCredit(self.__policy, self.__records)
-        NonrefundableCredits(self.__policy, self.__records)
-        AdditionalCTC(self.__policy, self.__records)
-        C1040(self.__policy, self.__records)
-        CTC_new(self.__policy, self.__records)
-        IITAX(self.__policy, self.__records)
 
     @staticmethod
     def _read_json_policy_reform_text(text_string):
@@ -1104,8 +1026,8 @@ class Calculator(object):
     def _convert_parameter_dict(param_key_dict):
         """
         Converts specified param_key_dict into a dictionary whose primary
-        keys are calendar years, and hence, is suitable as the argument to
-        the Policy.implement_reform() method.
+        keys are assessment years, and hence, is suitable as the argument
+        to the Policy.implement_reform() method.
 
         Specified input dictionary has string parameter primary keys and
         string years as secondary keys.

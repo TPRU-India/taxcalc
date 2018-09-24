@@ -53,8 +53,7 @@ def test_json_file_contents(tests_path, fname):
     """
     # pylint: disable=too-many-locals,too-many-branches,too-many-statements
     # specify test information
-    reqkeys = ['long_name', 'description',
-               'section_1', 'section_2', 'notes',
+    reqkeys = ['long_name', 'description', 'notes',
                'row_var', 'row_label',
                'start_year', 'cpi_inflated',
                'col_var', 'col_label',
@@ -62,16 +61,6 @@ def test_json_file_contents(tests_path, fname):
     first_year = Policy.JSON_START_YEAR
     last_known_year = Policy.LAST_KNOWN_YEAR  # for indexed parameter values
     num_known_years = last_known_year - first_year + 1
-    long_params = ['_II_brk1', '_II_brk2', '_II_brk3', '_II_brk4',
-                   '_II_brk5', '_II_brk6', '_II_brk7',
-                   '_PT_brk1', '_PT_brk2', '_PT_brk3', '_PT_brk4',
-                   '_PT_brk5', '_PT_brk6', '_PT_brk7',
-                   '_PT_excl_wagelim_thd',
-                   '_ALD_BusinessLosses_c',
-                   '_STD', '_II_em',
-                   '_AMT_em', '_AMT_em_ps',
-                   '_ID_AllTaxes_c']
-    long_known_years = 2026 - first_year + 1  # for TCJA-revised long_params
     # read JSON parameter file into a dictionary
     path = os.path.join(tests_path, '..', fname)
     pfile = open(path, 'r')
@@ -96,7 +85,7 @@ def test_json_file_contents(tests_path, fname):
         if not param['description']:
             assert '{} description'.format(pname) == 'empty string'
         # check that row_var is FLPDYR
-        assert param['row_var'] == 'FLPDYR'
+        assert param['row_var'] == 'AYEAR'
         # check that start_year equals first_year
         syr = param['start_year']
         assert isinstance(syr, int) and syr == first_year
@@ -125,8 +114,8 @@ def test_json_file_contents(tests_path, fname):
         else:
             assert isinstance(clab, list)
             # check different possible col_var values
-            if cvar == 'MARS':
-                assert len(clab) == 5
+            if cvar == 'AGEGRP':
+                assert len(clab) == 3
             elif cvar == 'EIC':
                 assert len(clab) == 4
             elif cvar == 'idedtype':
@@ -140,14 +129,10 @@ def test_json_file_contents(tests_path, fname):
                 assert len(valuerow) == len(clab)
         # check that indexed parameters have all known years in rowlabel list
         # form_parameters are those whose value is available only on IRS form
-        form_parameters = ['_AMT_em_pe',
-                           '_ETC_pe_Single',
-                           '_ETC_pe_Married']
+        form_parameters = []
         if param['cpi_inflated']:
             error = False
             known_years = num_known_years
-            if pname in long_params:
-                known_years = long_known_years
             if pname in form_parameters:
                 if len(rowlabel) != (known_years - 1):
                     error = True

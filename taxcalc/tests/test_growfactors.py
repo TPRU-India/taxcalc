@@ -17,8 +17,8 @@ def fixture_bad_gf_file():
     """
     Fixture for invalid growfactors file.
     """
-    txt = (u'YEAR,AWAGE,ACPIU,ABADNAME,ASOCSEC\n'
-           u'2015,1.000,1.000,1.000000,1.00000\n')
+    txt = (u'YEAR,CPI,SALARY,RENT,BADNAME,DEDUCTION\n'
+           u'2017,1.000,1.000,1.000,1.000,1.000\n')
     tfile = tempfile.NamedTemporaryFile(mode='a', delete=False)
     tfile.write(txt)
     tfile.close()
@@ -42,20 +42,20 @@ def test_improper_usage(bad_gf_file):
         gfo.price_inflation_rates(fyr - 1, lyr)
     with pytest.raises(ValueError):
         gfo.price_inflation_rates(fyr, lyr + 1)
-    with pytest.raises(ValueError):
-        gfo.price_inflation_rates(lyr, fyr)
+    # with pytest.raises(ValueError):
+    #     gfo.price_inflation_rates(lyr, fyr)
     with pytest.raises(ValueError):
         gfo.wage_growth_rates(fyr - 1, lyr)
     with pytest.raises(ValueError):
         gfo.wage_growth_rates(fyr, lyr + 1)
-    with pytest.raises(ValueError):
-        gfo.wage_growth_rates(lyr, fyr)
+    # with pytest.raises(ValueError):
+    #     gfo.wage_growth_rates(lyr, fyr)
     with pytest.raises(ValueError):
         gfo.factor_value('BADNAME', fyr)
     with pytest.raises(ValueError):
-        gfo.factor_value('AWAGE', fyr - 1)
+        gfo.factor_value('CPI', fyr - 1)
     with pytest.raises(ValueError):
-        gfo.factor_value('AWAGE', lyr + 1)
+        gfo.factor_value('SALARY', lyr + 1)
 
 
 def test_proper_usage():
@@ -63,12 +63,10 @@ def test_proper_usage():
     Test proper usage of GrowFactors object.
     """
     gfo = GrowFactors()
-    pir = gfo.price_inflation_rates(2013, 2020)
-    assert len(pir) == 8
-    wgr = gfo.wage_growth_rates(2013, 2021)
-    assert len(wgr) == 9
-    val = gfo.factor_value('AWAGE', 2013)
-    assert val > 1.0
+    pir = gfo.price_inflation_rates(2017, 2017)
+    assert len(pir) == 1
+    wgr = gfo.wage_growth_rates(2017, 2017)
+    assert len(wgr) == 1
 
 
 def test_growfactors_csv_values():
@@ -76,7 +74,7 @@ def test_growfactors_csv_values():
     Test numerical contents of growfactors.csv file.
     """
     gfo = GrowFactors()
-    min_data_year = min(2011, Records.CPSCSV_YEAR)
+    min_data_year = min(2017, Records.PITCSV_YEAR)
     if min_data_year < Policy.JSON_START_YEAR:
         for gfname in GrowFactors.VALID_NAMES:
             val = gfo.factor_value(gfname, min_data_year)

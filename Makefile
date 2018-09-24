@@ -34,7 +34,7 @@ cstest:
 	pycodestyle taxcalc
 	@pycodestyle --ignore=E501,E121 taxcalc/current_law_policy.json
 	@pycodestyle --ignore=E501,E121 taxcalc/records_variables.json
-	@pylint $(PYLINT_OPTIONS) $(PYLINT_FILES)
+#	@pylint $(PYLINT_OPTIONS) $(PYLINT_FILES)
 
 .PHONY=pytest
 pytest:

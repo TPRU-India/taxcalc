@@ -40,14 +40,7 @@ class GrowFactors(object):
     FILENAME = 'growfactors.csv'
     FILE_PATH = os.path.join(CUR_PATH, FILENAME)
 
-    VALID_NAMES = set(['ABOOK', 'ACGNS', 'ACPIM', 'ACPIU',
-                       'ADIVS', 'AINTS',
-                       'AIPD', 'ASCHCI', 'ASCHCL',
-                       'ASCHEI', 'ASCHEL', 'ASCHF',
-                       'ASOCSEC', 'ATXPY', 'AUCOMP', 'AWAGE',
-                       'ABENOTHER', 'ABENMCARE', 'ABENMCAID',
-                       'ABENSSI', 'ABENSNAP', 'ABENWIC',
-                       'ABENHOUSING', 'ABENTANF', 'ABENVET'])
+    VALID_NAMES = set(['CPI', 'SALARY', 'RENT', 'OINCOME', 'DEDUCTIONS'])
 
     def __init__(self, growfactors_filename=FILE_PATH):
         # read grow factors from specified growfactors_filename
@@ -110,7 +103,7 @@ class GrowFactors(object):
             msg = 'last_year={} > GrowFactors.last_year={}'
             raise ValueError(msg.format(lastyear, self.last_year))
         # pylint: disable=no-member
-        rates = [round((self.gfdf['ACPIU'][cyr] - 1.0), 4)
+        rates = [round((self.gfdf['CPI'][cyr] - 1.0), 4)
                  for cyr in range(firstyear, lastyear + 1)]
         return rates
 
@@ -129,7 +122,7 @@ class GrowFactors(object):
             msg = 'lastyear={} > GrowFactors.last_year={}'
             raise ValueError(msg.format(lastyear, self.last_year))
         # pylint: disable=no-member
-        rates = [round((self.gfdf['AWAGE'][cyr] - 1.0), 4)
+        rates = [round((self.gfdf['SALARY'][cyr] - 1.0), 4)
                  for cyr in range(firstyear, lastyear + 1)]
         return rates
 
