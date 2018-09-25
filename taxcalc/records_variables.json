@@ -17,10 +17,10 @@
       "desc": "Assessment year of ITR form that include prior year information",
       "form": {"2017": "ITR-1 Assessment Year (first year)"}
     },
-    "net_salary": {
+    "SALARIES": {
       "type": "float",
-      "desc": "Salary net of u/s 16 deductions",
-      "form": {"2017": "ITR-1 line B1"}
+      "desc": "Income from salary",
+      "form": {"2017": "ITR-3 Part B-TI-1"}
     },
     "net_rent": {
       "type": "float",
