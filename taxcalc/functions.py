@@ -12,13 +12,13 @@ from taxcalc.decorators import iterate_jit
 
 
 @iterate_jit(nopython=True)
-def net_salary_income(net_salary):
+def net_salary_income(SALARIES):
     """
     Compute net salary as gross salary minus u/s 16 deductions.
     """
     # TODO: when gross salary and deductions are avaiable, do the calculation
     # TODO: when using net_salary as function argument, no calculations neeed
-    return net_salary
+    return SALARIES
 
 
 @iterate_jit(nopython=True)
@@ -44,11 +44,11 @@ def total_other_income(other_income):
 
 
 @iterate_jit(nopython=True)
-def gross_total_income(net_salary, net_rent, other_income, GTI):
+def gross_total_income(SALARIES, net_rent, other_income, GTI):
     """
     Compute GTI.
     """
-    GTI = net_salary + net_rent + other_income
+    GTI = SALARIES + net_rent + other_income
     return GTI
 
 
@@ -69,6 +69,13 @@ def taxable_total_income(GTI, deductions, TTI):
     """
     TTI = GTI - deductions
     return TTI
+
+@iterate_jit(nopython=True)
+def calc_rebate(calc, taxinc):
+    """
+    Compute Rebate.
+    """
+    return rebate
 
 
 def pit_liability(calc):
@@ -93,4 +100,11 @@ def pit_liability(calc):
            rate3 * np.minimum(tbrk3 - tbrk2,
                               np.maximum(0., taxinc - tbrk2)) +
            rate4 * np.maximum(0., taxinc - tbrk3))
+
+    #rebate = calc_rebate(calc, taxinc)
+    rebate_rate = calc.policy_param('rebate_rate')
+    rebate_tbrk = calc.policy_param('rebate_tbrk')
+    rebate_ceiling = calc.policy_param('rebate_ceiling')
+    rebate = np.where(taxinc < rebate_tbrk, rebate_rate*taxinc, rebate_ceiling)
+    tax = np.where(rebate > tax, 0, tax - rebate)
     calc.array('pitax', tax)
