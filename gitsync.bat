@@ -4,7 +4,7 @@ SETLOCAL
 git branch
 
 :PROMPT
-SET /P ONMASTER=Are you on the master branch (y|[n])?
+SET /P ONMASTER=Are you on the master branch (y/n)?
 IF /I "%ONMASTER%" NEQ "y" GOTO END
 
 git fetch upstream
