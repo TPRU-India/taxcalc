@@ -17,7 +17,7 @@
       "desc": "Assessment year of ITR form that include prior year information",
       "form": {"2017": "ITR-1 Assessment Year (first year)"}
     },
-    "salaries": {
+    "SALARIES": {
       "type": "float",
       "desc": "Income from salary",
       "form": {"2017": "ITR-3 Part B-TI-1"}
