@@ -70,13 +70,6 @@ def taxable_total_income(GTI, deductions, TTI):
     TTI = GTI - deductions
     return TTI
 
-@iterate_jit(nopython=True)
-def calc_rebate(calc, taxinc):
-    """
-    Compute Rebate.
-    """
-    return rebate
-
 
 def pit_liability(calc):
     """
