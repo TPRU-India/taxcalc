@@ -93,7 +93,8 @@ def pit_liability(calc):
            rate3 * np.minimum(tbrk3 - tbrk2,
                               np.maximum(0., taxinc - tbrk2)) +
            rate4 * np.maximum(0., taxinc - tbrk3))
-'''Incorporating rebate to the tax calculation'''
+
+    #Incorporating rebate to the tax calculation
     thd = calc.policy_param('rebate_thd')
     ceiling = calc.policy_param('rebate_ceiling')
     rebate_rate = calc.policy_param('rebate_rate')
