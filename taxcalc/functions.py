@@ -101,7 +101,6 @@ def pit_liability(calc):
                               np.maximum(0., taxinc - tbrk2)) +
            rate4 * np.maximum(0., taxinc - tbrk3))
 
-    #rebate = calc_rebate(calc, taxinc)
     rebate_rate = calc.policy_param('rebate_rate')
     rebate_tbrk = calc.policy_param('rebate_tbrk')
     rebate_ceiling = calc.policy_param('rebate_ceiling')
