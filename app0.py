@@ -31,27 +31,12 @@ assert calc1.current_year == 2017
 
 calc1.calc_all()
 
-dump_vars = Records.USABLE_READ_VARS | Records.CALCULATED_VARS
-dumpdf = calc1.dataframe(list(dump_vars))
-column_order = sorted(dumpdf.columns)
+dump_vars = ['FILING_SEQ_NO', 'AGEGRP', 'SALARIES', 'INCOME_HP',
+             'TOTAL_PROFTS_GAINS_BP', 'TOTAL_INCOME_OS', 'GTI', 'TTI', 'pitax']
+dumpdf = calc1.dataframe(dump_vars)
+column_order = dumpdf.columns
 
 assert len(dumpdf.index) == calc1.array_len
 
-dumpdf.to_csv('app0-dump.res', columns=column_order,
+dumpdf.to_csv('app0-dump.csv', columns=column_order,
               index=False, float_format='%.0f')
-
-"""
-iMac:pitaxcalc-demo mrh$ python app0.py
-iMac:pitaxcalc-demo mrh$ awk -F, '{print $1,$5,$10}' app0-dump.res
-AGEGRP TTI pitax
-0 230000 0
-0 281000 1550
-0 301000 2550
-0 329000 3950
-0 373000 6150
-0 450000 10000
-0 492000 12100
-0 654000 43300
-1 682000 46400
-2 2269000 480700
-"""
