@@ -44,11 +44,12 @@ def total_other_income(other_income):
 
 
 @iterate_jit(nopython=True)
-def gross_total_income(SALARIES, net_rent, other_income, GTI):
+def gross_total_income(SALARIES, INCOME_HP, TOTAL_PROFTS_GAINS_BP,
+                       TOTAL_INCOME_OS, GTI):
     """
     Compute GTI.
     """
-    GTI = SALARIES + net_rent + other_income
+    GTI = SALARIES + INCOME_HP + TOTAL_PROFTS_GAINS_BP + TOTAL_INCOME_OS
     return GTI
 
 
