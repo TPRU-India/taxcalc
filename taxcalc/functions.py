@@ -12,13 +12,13 @@ from taxcalc.decorators import iterate_jit
 
 
 @iterate_jit(nopython=True)
-def net_salary_income(net_salary):
+def net_salary_income(SALARIES):
     """
     Compute net salary as gross salary minus u/s 16 deductions.
     """
     # TODO: when gross salary and deductions are avaiable, do the calculation
     # TODO: when using net_salary as function argument, no calculations neeed
-    return net_salary
+    return SALARIES
 
 
 @iterate_jit(nopython=True)
@@ -44,11 +44,11 @@ def total_other_income(other_income):
 
 
 @iterate_jit(nopython=True)
-def gross_total_income(net_salary, net_rent, other_income, GTI):
+def gross_total_income(SALARIES, net_rent, other_income, GTI):
     """
     Compute GTI.
     """
-    GTI = net_salary + net_rent + other_income
+    GTI = SALARIES + net_rent + other_income
     return GTI
 
 
