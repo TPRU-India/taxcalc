@@ -93,5 +93,4 @@ def pit_liability(calc):
            rate3 * np.minimum(tbrk3 - tbrk2,
                               np.maximum(0., taxinc - tbrk2)) +
            rate4 * np.maximum(0., taxinc - tbrk3))
-
     calc.array('pitax', tax)
