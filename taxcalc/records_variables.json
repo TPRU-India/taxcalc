@@ -1,6 +1,6 @@
 {
   "read": {
-    "RECID": {
+    "FILING_SEQ_NO": {
       "required": true,
       "type": "int",
       "desc": "Unique positive numeric identifier for filing unit",
@@ -19,7 +19,7 @@
     },
     "SALARIES": {
       "type": "float",
-      "desc": "Income from salary",
+      "desc": "Income from SALARIES",
       "form": {"2017": "ITR-3 Part B-TI-1"}
     },
     "net_rent": {

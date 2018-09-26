@@ -12,13 +12,13 @@ from taxcalc.decorators import iterate_jit
 
 
 @iterate_jit(nopython=True)
-def net_salary_income(net_salary):
+def net_salary_income(SALARIES):
     """
     Compute net salary as gross salary minus u/s 16 deductions.
     """
     # TODO: when gross salary and deductions are avaiable, do the calculation
     # TODO: when using net_salary as function argument, no calculations neeed
-    return net_salary
+    return SALARIES
 
 
 @iterate_jit(nopython=True)
@@ -44,11 +44,11 @@ def total_other_income(other_income):
 
 
 @iterate_jit(nopython=True)
-def gross_total_income(net_salary, net_rent, other_income, GTI):
+def gross_total_income(SALARIES, net_rent, other_income, GTI):
     """
     Compute GTI.
     """
-    GTI = net_salary + net_rent + other_income
+    GTI = SALARIES + net_rent + other_income
     return GTI
 
 
@@ -87,10 +87,19 @@ def pit_liability(calc):
     tbrk2 = calc.policy_param('tbrk2')
     tbrk3 = calc.policy_param('tbrk3')
     tbrk4 = calc.policy_param('tbrk4')
+    rebate_ceiling = calc.policy_param('rebate_ceiling')
+    rebate_rate = calc.policy_param('rebate_rate')
+    rebate_thd = calc.policy_param('rebate_thd')
+    rebate_87a = calc.policy_param('rebate_87a')
+
     tax = (rate1 * np.minimum(taxinc, tbrk1) +
            rate2 * np.minimum(tbrk2 - tbrk1,
                               np.maximum(0., taxinc - tbrk1)) +
            rate3 * np.minimum(tbrk3 - tbrk2,
                               np.maximum(0., taxinc - tbrk2)) +
            rate4 * np.maximum(0., taxinc - tbrk3))
+    rebate_87a = np.minimum(rebate_ceiling,tax,(rebate_rate * (np.maximum(0.,(rebate_thd - taxinc)))))
+    tax = tax - rebate_87a                        
+                            
+
     calc.array('pitax', tax)

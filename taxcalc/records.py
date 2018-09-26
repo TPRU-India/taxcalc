@@ -215,11 +215,11 @@ class Records(object):
         Apply to variables the grow factors for specified year.
         """
         # pylint: disable=too-many-locals,too-many-statements
-        SALARY = self.gfactors.factor_value('SALARY', year)
+        SALARIES = self.gfactors.factor_value('SALARIES', year)
         RENT = self.gfactors.factor_value('RENT', year)
         OINCOME = self.gfactors.factor_value('OINCOME', year)
         DEDUCTIONS = self.gfactors.factor_value('DEDUCTIONS', year)
-        self.net_salary *= SALARY
+        self.net_salary *= SALARIES
         self.net_rent *= RENT
         self.other_income *= OINCOME
         self.deductions *= DEDUCTIONS
