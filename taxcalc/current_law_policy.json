@@ -165,5 +165,46 @@
         "out_of_range_minmsg": "",
         "out_of_range_maxmsg": "",
         "out_of_range_action": "stop"
+    },
+    "_rebate_rate": {
+        "long_name": "Rate of rebate u/s 87A",
+        "description": "This is the rate of rebate",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": true,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [0.10],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+    "_rebate_thd": {
+        "long_name": "Rebate threshold limit u/s 87A",
+        "description": "This is the thershold of rebate",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": true,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [5000],
+        "range": {"min": 0, "max": 9e99},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
     }
+
 }
