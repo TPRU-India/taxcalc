@@ -234,6 +234,7 @@
         "long_name": "rate at which surcharge is levied",
         "description": "rate applied to tax liability if income is above a threshold",
         "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
         "row_var": "AYEAR",
         "row_label": ["2017"],
         "start_year": 2017,
