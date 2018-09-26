@@ -17,7 +17,7 @@ import pandas as pd
 from taxcalc.functions import (net_salary_income, net_rental_income,
                                total_other_income, gross_total_income,
                                itemized_deductions, taxable_total_income,
-                               pit_liability)
+                               pit_liability, rebate)
 from taxcalc.policy import Policy
 from taxcalc.records import Records
 from taxcalc.utils import (DIST_VARIABLES, create_distribution_table,
@@ -29,32 +29,25 @@ from taxcalc.utils import (DIST_VARIABLES, create_distribution_table,
 class Calculator(object):
     """
     Constructor for the Calculator class.
-
     Parameters
     ----------
     policy: Policy class object
         this argument must be specified and object is copied for internal use
-
     records: Records class object
         this argument must be specified and object is copied for internal use
-
     verbose: boolean
         specifies whether or not to write to stdout data-loaded and
         data-extrapolated progress reports; default value is true.
-
     sync_years: boolean
         specifies whether or not to synchronize policy year and records year;
         default value is true.
-
     Raises
     ------
     ValueError:
         if parameters are not the appropriate type.
-
     Returns
     -------
     class instance: Calculator
-
     Notes
     -----
     The most efficient way to specify current-law and reform Calculator
@@ -136,6 +129,7 @@ class Calculator(object):
             self.__records.zero_out_changing_calculated_vars()
         # pdb.set_trace()
         net_salary_income(self.__policy, self.__records)
+        rebate(self.__policy, self.__records)
         net_rental_income(self.__policy, self.__records)
         total_other_income(self.__policy, self.__records)
         gross_total_income(self.__policy, self.__records)
@@ -312,14 +306,12 @@ class Calculator(object):
         """
         Generate multi-year diagnostic table containing aggregate statistics;
         this method leaves the Calculator object unchanged.
-
         Parameters
         ----------
         num_years : Integer
             number of years to include in diagnostic table starting
             with the Calculator object's current_year (must be at least
             one and no more than what would exceed Policy end_year)
-
         Returns
         -------
         Pandas DataFrame object containing the multi-year diagnostic table
@@ -351,17 +343,14 @@ class Calculator(object):
         Note that the returned tables have consistent income groups (based
         on the self expanded_income) even though the baseline expanded_income
         in self and the reform expanded_income in calc are different.
-
         Parameters
         ----------
         calc : Calculator object or None
             typically represents the reform while self represents the baseline;
             if calc is None, the second returned table is None
-
         groupby : String object
             options for input: 'weighted_deciles', 'standard_income_bins'
             determines how the columns in resulting Pandas DataFrame are sorted
-
         Return and typical usage
         ------------------------
         dist1, dist2 = calc1.distribution_tables(calc2, 'weighted_deciles')
@@ -427,20 +416,16 @@ class Calculator(object):
         Note that the returned tables have consistent income groups (based
         on the self expanded_income) even though the baseline expanded_income
         in self and the reform expanded_income in calc are different.
-
         Parameters
         ----------
         calc : Calculator object
             calc represents the reform while self represents the baseline
-
         groupby : String object
             options for input: 'weighted_deciles', 'standard_income_bins'
             determines how the columns in resulting Pandas DataFrame are sorted
-
         tax_to_diff : String object
             options for input: 'iitax', 'payrolltax', 'combined'
             specifies which tax to difference
-
         Returns and typical usage
         -------------------------
         diff = calc1.difference_table(calc2, 'weighted_deciles', 'iitax')
@@ -490,50 +475,41 @@ class Calculator(object):
         Calculates the marginal payroll, individual income, and combined
         tax rates for every tax filing unit, leaving the Calculator object
         in exactly the same state as it would be in after a calc_all() call.
-
         The marginal tax rates are approximated as the change in tax
         liability caused by a small increase (the finite_diff) in the variable
         specified by the variable_str divided by that small increase in the
         variable, when wrt_full_compensation is false.
-
         If wrt_full_compensation is true, then the marginal tax rates
         are computed as the change in tax liability divided by the change
         in total compensation caused by the small increase in the variable
         (where the change in total compensation is the sum of the small
         increase in the variable and any increase in the employer share of
         payroll taxes caused by the small increase in the variable).
-
         If using 'e00200s' as variable_str, the marginal tax rate for all
         records where MARS != 2 will be missing.  If you want to perform a
         function such as np.mean() on the returned arrays, you will need to
         account for this.
-
         Parameters
         ----------
         variable_str: string
             specifies type of income or expense that is increased to compute
             the marginal tax rates.  See Notes for list of valid variables.
-
         negative_finite_diff: boolean
             specifies whether or not marginal tax rates are computed by
             subtracting (rather than adding) a small finite_diff amount
             to the specified variable.
-
         zero_out_calculated_vars: boolean
             specifies value of zero_out_calc_vars parameter used in calls
             of Calculator.calc_all() method.
-
         calc_all_already_called: boolean
             specifies whether self has already had its Calculor.calc_all()
             method called, in which case this method will not do a final
             calc_all() call but use the incoming embedded Records object
             as the outgoing Records object embedding in self.
-
         wrt_full_compensation: boolean
             specifies whether or not marginal tax rates on earned income
             are computed with respect to (wrt) changes in total compensation
             that includes the employer share of OASDI and HI payroll taxes.
-
         Returns
         -------
         A tuple of numpy arrays in the following order:
@@ -541,12 +517,10 @@ class Calculator(object):
         mtr_incometax: an array of marginal individual income tax rates.
         mtr_combined: an array of marginal combined tax rates, which is
                       the sum of mtr_payrolltax and mtr_incometax.
-
         Notes
         -----
         The arguments zero_out_calculated_vars and calc_all_already_called
         cannot both be true.
-
         Valid variable_str values are:
         'e00200p', taxpayer wage/salary earnings (also included in e00200);
         'e00200s', spouse wage/salary earnings (also included in e00200);
@@ -676,16 +650,13 @@ class Calculator(object):
         'policy':dict, 'consumption':dict, 'behavior':dict,
         'growdiff_baseline':dict, 'growdiff_response':dict, and
         'growmodel':dict.
-
         Note that either of the two function arguments can be None.
         If reform is None, the dict in the 'policy':dict pair is empty.
         If assump is None, the dict in the all the key:dict pairs is empty.
-
         Also note that either of the two function arguments can be strings
         containing a valid JSON string (rather than a filename),
         in which case the file reading is skipped and the appropriate
         read_json_*_text method is called.
-
         The reform file contents or JSON string must be like this:
         {"policy": {...}}
         and the assump file contents or JSON string must be like this:
@@ -696,7 +667,6 @@ class Calculator(object):
          "growmodel": {...}}
         The {...} should be empty like this {} if not specifying a policy
         reform or if not specifying any economic assumptions of that type.
-
         The returned dictionary contains parameter lists (not arrays).
         """
         # pylint: disable=too-many-branches
@@ -746,19 +716,16 @@ class Calculator(object):
     def reform_documentation(params, policy_dicts=None):
         """
         Generate reform documentation.
-
         Parameters
         ----------
         params: dict
             dictionary is structured like dict returned from
             the static Calculator method read_json_param_objects()
-
         policy_dicts : list of dict or None
             each dictionary in list is a params['policy'] dictionary
             representing second and subsequent elements of a compound
             reform; None implies no compound reform with the simple
             reform characterized in the params['policy'] dictionary
-
         Returns
         -------
         doc: String
@@ -775,7 +742,6 @@ class Calculator(object):
             change: dictionary of parameter changes
             base: Policy object with baseline values
             syear: parameter start assessment year
-
             Returns
             -------
             doc: String
@@ -902,16 +868,13 @@ class Calculator(object):
     def _read_json_policy_reform_text(text_string):
         """
         Strip //-comments from text_string and return 1 dict based on the JSON.
-
         Specified text is JSON with at least 1 high-level key:object pair:
         a "policy": {...} pair.  Other keys will raise a ValueError.
-
         The {...}  object may be empty (that is, be {}), or
         may contain one or more pairs with parameter string primary keys
         and string years as secondary keys.  See tests/test_calculator.py for
         an extended example of a commented JSON policy reform text
         that can be read by this method.
-
         Returned dictionary prdict has integer years as primary keys and
         string parameters as secondary keys.  This returned dictionary is
         suitable as the argument to the Policy implement_reform(prdict) method.
@@ -1028,10 +991,8 @@ class Calculator(object):
         Converts specified param_key_dict into a dictionary whose primary
         keys are assessment years, and hence, is suitable as the argument
         to the Policy.implement_reform() method.
-
         Specified input dictionary has string parameter primary keys and
         string years as secondary keys.
-
         Returned dictionary has integer years as primary keys and
         string parameters as secondary keys.
         """
