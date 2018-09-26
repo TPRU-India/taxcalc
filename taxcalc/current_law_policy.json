@@ -259,7 +259,7 @@
         "row_var": "AYEAR",
         "row_label": ["2017"],
         "start_year": 2017,
-        "cpi_inflatable": false,
+        "cpi_inflatable": true,
         "cpi_inflated": false,
         "col_var": "",
         "col_label": "",
