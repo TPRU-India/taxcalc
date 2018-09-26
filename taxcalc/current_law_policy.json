@@ -224,7 +224,7 @@
           "col_label": "",
           "boolean_value": false,
           "integer_value": false,
-          "value": [.10],
+          "value": [0.10],
           "range": {"min": 0, "max": 1},
           "out_of_range_minmsg": "",
           "out_of_range_maxmsg": "",
