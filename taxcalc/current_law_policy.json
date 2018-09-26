@@ -165,68 +165,6 @@
         "out_of_range_minmsg": "",
         "out_of_range_maxmsg": "",
         "out_of_range_action": "stop"
-    },
-
-    "_rebate_rate": {
-        "long_name": "PIT tax rate 1",
-        "description": "The lowest tax rate, applied to the portion of taxable income below tax bracket 1.",
-        "itr_ref": "ITR-1 instructions, Tax Computation Table",
-        "notes": "",
-        "row_var": "AYEAR",
-        "row_label": ["2017"],
-        "start_year": 2017,
-        "cpi_inflatable": false,
-        "cpi_inflated": false,
-        "col_var": "",
-        "col_label": "",
-        "boolean_value": false,
-        "integer_value": false,
-        "value": [0.10],
-        "range": {"min": 0, "max": 1},
-        "out_of_range_minmsg": "",
-        "out_of_range_maxmsg": "",
-        "out_of_range_action": "stop"
-    },
-
-    "_rebate_tbrk": {
-        "long_name": "PIT tax bracket 1 (upper threshold)",
-        "description": "Taxable income below this threshold is taxed at tax rate 1.",
-        "itr_ref": "ITR-1 instructions, Tax Computation Table",
-        "notes": "",
-        "row_var": "AYEAR",
-        "row_label": ["2017"],
-        "start_year": 2017,
-        "cpi_inflatable": true,
-        "cpi_inflated": true,
-        "col_var": "",
-        "col_label": "",
-        "boolean_value": false,
-        "integer_value": false,
-        "value": [500000],
-        "range": {"min": 0, "max": 9e99},
-        "out_of_range_minmsg": "",
-        "out_of_range_maxmsg": "",
-        "out_of_range_action": "stop"
-    },
-
-    "_rebate_ceiling": {
-        "long_name": "PIT tax bracket 1 (upper threshold)",
-        "description": "Taxable income below this threshold is taxed at tax rate 1.",
-        "itr_ref": "ITR-1 instructions, Tax Computation Table",
-        "notes": "",
-        "row_var": "AYEAR",
-        "row_label": ["2017"],
-        "start_year": 2017,
-        "cpi_inflatable": true,
-        "cpi_inflated": true,
-        "col_var": "",
-        "col_label": "",
-        "boolean_value": false,
-        "integer_value": false,
-        "value": [5000],
-        "range": {"min": 0, "max": 9e99},
-        "out_of_range_minmsg": "",
-        "out_of_range_maxmsg": "",
-        "out_of_range_action": "stop"
     }
+
 }
