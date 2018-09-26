@@ -12,6 +12,21 @@
       "desc": "Age group (0 ==> <60, 1 ==> 60-79, 2 ==> >=80)",
       "form": {"2017": "ITR-1 didn't see this on the form"}
     },
+    "TOTAL_INCOME_OS": {
+      "type": "float",
+      "desc": "to be filled later",
+      "form": {"2017": "ITR random line"}
+    },
+    "INCOME_HP": {
+      "type": "float",
+      "desc": "",
+      "form": {"2017": ""}
+    },
+    "TOTAL_PROFITS_GAINS_BP": {
+      "type": "float",
+      "desc": "",
+      "form": {"2017": ""}
+    },
     "AYEAR": {
       "type": "int",
       "desc": "Assessment year of ITR form that include prior year information",
@@ -62,6 +77,11 @@
     "GTI": {
       "type": "float",
       "desc": "Gross Total Income (GTI)",
+      "form": {"2017": "ITR-1 line B4"}
+    },
+    "Salaries_after_rebate": {
+      "type": "float",
+      "desc": "Net salary after rebate",
       "form": {"2017": "ITR-1 line B4"}
     },
     "TTI": {

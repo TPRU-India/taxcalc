@@ -17,7 +17,7 @@ import pandas as pd
 from taxcalc.functions import (net_salary_income, net_rental_income,
                                total_other_income, gross_total_income,
                                itemized_deductions, taxable_total_income,
-                               pit_liability)
+                               pit_liability, rebate)
 from taxcalc.policy import Policy
 from taxcalc.records import Records
 from taxcalc.utils import (DIST_VARIABLES, create_distribution_table,
@@ -136,6 +136,7 @@ class Calculator(object):
             self.__records.zero_out_changing_calculated_vars()
         # pdb.set_trace()
         net_salary_income(self.__policy, self.__records)
+        rebate(self.__policy, self.__records)
         net_rental_income(self.__policy, self.__records)
         total_other_income(self.__policy, self.__records)
         gross_total_income(self.__policy, self.__records)

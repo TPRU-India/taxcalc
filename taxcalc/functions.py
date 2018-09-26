@@ -104,3 +104,10 @@ def pit_liability(calc):
     surcharge = np.where(taxinc > surcharge_thd, tax * surcharge_rate, 0.)
     tax = tax + surcharge
     calc.array('pitax', tax)
+
+
+def rebate(SALARIES):
+    "compute the rebate under section 87A of Income Tax Act"
+    Salaries_after_rebate = SALARIES
+    if SALARIES < 500000:
+        Salaries_after_rebate = SALARIES - 2000
