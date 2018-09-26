@@ -87,10 +87,20 @@ def pit_liability(calc):
     tbrk2 = calc.policy_param('tbrk2')
     tbrk3 = calc.policy_param('tbrk3')
     tbrk4 = calc.policy_param('tbrk4')
+    rebate_rate = calc.policy_param('rebate_rate')
+    rebate_thd = calc.policy_param('rebate_thd')
+    rebate_ceiling = calc.policy_param('rebate_ceiling')
+    surcharge_rate = calc.policy_param('surcharge_rate')
+    surcharge_thd = calc.policy_param('surcharge_thd')
+    rebate = np.where(taxinc > rebate_thd, 0.,
+                      np.minimum(rebate_rate * taxinc, rebate_ceiling))
     tax = (rate1 * np.minimum(taxinc, tbrk1) +
            rate2 * np.minimum(tbrk2 - tbrk1,
                               np.maximum(0., taxinc - tbrk1)) +
            rate3 * np.minimum(tbrk3 - tbrk2,
                               np.maximum(0., taxinc - tbrk2)) +
            rate4 * np.maximum(0., taxinc - tbrk3))
+    tax = np.where(rebate > tax, 0, tax - rebate)
+    surcharge = np.where(taxinc > surcharge_thd, tax * surcharge_rate, 0.)
+    tax = tax + surcharge
     calc.array('pitax', tax)
