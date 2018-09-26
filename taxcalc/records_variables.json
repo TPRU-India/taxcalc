@@ -37,16 +37,6 @@
       "desc": "Income from Other Sources",
       "form": {"2017": "ITR-3 Part B-TI-5d"}
     },
-    "net_rent": {
-      "type": "float",
-      "desc": "House property rent net of taxes, depreciation, and interest",
-      "form": {"2017": "ITR-1 line B2"}
-    },
-    "other_income": {
-      "type": "float",
-      "desc": "Other income total",
-      "form": {"2017": "ITR-1 line B3"}
-    },
     "deductions": {
       "type": "float",
       "desc": "Total itemized deductions",
