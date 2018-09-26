@@ -93,11 +93,11 @@ def pit_liability(calc):
            rate3 * np.minimum(tbrk3 - tbrk2,
                               np.maximum(0., taxinc - tbrk2)) +
            rate4 * np.maximum(0., taxinc - tbrk3))
-    #Rebate calculation u/s 87A
+# Rebate calculation u/s 87A
     rebate_thd = calc.policy_param('rebate_thd')
     rebate_ceiling = calc.policy_param('rebate_ceiling')
     rebate_rate = calc.policy_param('rebate_rate')
-    rebate = np.where(taxinc>rebate_thd, 0,
+    rebate = np.where(taxinc > rebate_thd, 0,
                       np.minimum(rebate_rate*taxinc, rebate_ceiling))
     taxliab = np.maximum(0, tax-rebate)
     calc.array('pitax', taxliab)
