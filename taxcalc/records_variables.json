@@ -1,6 +1,6 @@
 {
   "read": {
-    "RECID": {
+    "FILING_SEQ_NO": {
       "required": true,
       "type": "int",
       "desc": "Unique positive numeric identifier for filing unit",
