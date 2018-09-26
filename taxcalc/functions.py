@@ -22,7 +22,7 @@ def net_salary_income(SALARIES):
 
 
 @iterate_jit(nopython=True)
-def net_rental_income(net_rent):
+def net_rental_income(INCOME_HP):
     """
     Compute house-property rental income net of taxes, depreciation, and
     mortgage interest.
@@ -30,25 +30,26 @@ def net_rental_income(net_rent):
     # TODO: when gross rental income and taxes, depreciation, and interest
     #       are available, do the calculation
     # TODO: when using net_rent as function argument, no calculations neeed
-    return net_rent
+    return INCOME_HP
 
 
 @iterate_jit(nopython=True)
-def total_other_income(other_income):
+def total_other_income(TOTAL_INCOME_OS):
     """
     Compute other_income from its components.
     """
     # TODO: when components of other income are available, do the calculation
     # TODO: when using other_income as function argument, no calculations neeed
-    return other_income
+    return TOTAL_INCOME_OS
 
 
 @iterate_jit(nopython=True)
-def gross_total_income(SALARIES, net_rent, other_income, GTI):
+def gross_total_income(SALARIES, INCOME_HP, TOTAL_PROFTS_GAINS_BP,
+                       TOTAL_INCOME_OS, GTI):
     """
     Compute GTI.
     """
-    GTI = SALARIES + net_rent + other_income
+    GTI = SALARIES + INCOME_HP + TOTAL_PROFTS_GAINS_BP + TOTAL_INCOME_OS
     return GTI
 
 
