@@ -1,6 +1,6 @@
 {
   "read": {
-    "FILING_SEQ_NO": {
+    "RECID": {
       "required": true,
       "type": "int",
       "desc": "Unique positive numeric identifier for filing unit",
@@ -19,7 +19,7 @@
     },
     "SALARIES": {
       "type": "float",
-      "desc": "Income from salary",
+      "desc": "Income from Salary",
       "form": {"2017": "ITR-3 Part B-TI-1"}
     },
     "INCOME_HP": {
@@ -29,12 +29,12 @@
     },
     "TOTAL_PROFTS_GAINS_BP": {
       "type": "float",
-      "desc": "Total Profits from Business and Profession",
+      "desc": "Profits and Gains from Business or Profession",
       "form": {"2017": "ITR-3 Part B-TI-3v"}
     },
     "TOTAL_INCOME_OS": {
       "type": "float",
-      "desc": "Total Income from Other Sources",
+      "desc": "Income from Other Sources",
       "form": {"2017": "ITR-3 Part B-TI-5d"}
     },
     "net_rent": {
