@@ -59,6 +59,21 @@
       "desc": "Taxable Total Income (TTI)",
       "form": {"2017": "ITR-1 line C2"}
     },
+    "tax_TTI": {
+      "type": "float",
+      "desc": "Tax liability on TTI",
+      "form": {"2017": "ITR-3 Part B TTI-2d"}
+    },
+    "rebate": {
+      "type": "float",
+      "desc": "Rebate as non-refundable tax credit",
+      "form": {"2017": "ITR-3 Part B TTI-2e"}
+    },
+    "surcharge": {
+      "type": "float",
+      "desc": "Surcharge on income above surcharge_thd",
+      "form": {"2017": "ITR-3 Part B TTI-2giii"}
+    },
     "pitax": {
       "type": "float",
       "desc": "PIT liability",
