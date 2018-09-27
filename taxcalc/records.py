@@ -155,7 +155,7 @@ class Records(object):
         # specify current-year sample weights
         if self.WT.size > 0:
             wt_colname = 'WT{}'.format(self.__current_year)
-            self.weight = self.WT[wt_colname] * 0.01
+            self.weight = self.WT[wt_colname]
 
     def set_current_year(self, new_current_year):
         """
@@ -217,11 +217,13 @@ class Records(object):
         # pylint: disable=too-many-locals,too-many-statements
         SALARY = self.gfactors.factor_value('SALARY', year)
         RENT = self.gfactors.factor_value('RENT', year)
+        BOPINCOME = self.gfactors.factor_value('BOPINCOME', year)
         OINCOME = self.gfactors.factor_value('OINCOME', year)
         DEDUCTIONS = self.gfactors.factor_value('DEDUCTIONS', year)
-        self.net_salary *= SALARY
-        self.net_rent *= RENT
-        self.other_income *= OINCOME
+        self.SALARIES *= SALARY
+        self.INCOME_HP *= RENT
+        self.TOTAL_PROFTS_GAINS_BP *= BOPINCOME
+        self.TOTAL_INCOME_OS *= OINCOME
         self.deductions *= DEDUCTIONS
 
     def _read_data(self, data):

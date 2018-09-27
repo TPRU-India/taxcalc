@@ -40,7 +40,8 @@ class GrowFactors(object):
     FILENAME = 'growfactors.csv'
     FILE_PATH = os.path.join(CUR_PATH, FILENAME)
 
-    VALID_NAMES = set(['CPI', 'SALARY', 'RENT', 'OINCOME', 'DEDUCTIONS'])
+    VALID_NAMES = set(['CPI', 'SALARY', 'RENT', 'BOPINCOME', 'OINCOME',
+                       'DEDUCTIONS'])
 
     def __init__(self, growfactors_filename=FILE_PATH):
         # read grow factors from specified growfactors_filename
