@@ -149,14 +149,14 @@ class Calculator(object):
         """
         Return all-filing-unit weighted total of named Records variable.
         """
-        return (self.array(variable_name) * self.array('s006')).sum()
+        return (self.array(variable_name) * self.array('weight')).sum()
 
     def total_weight(self):
         """
         Return all-filing-unit total of sampling weights.
         NOTE: var_weighted_mean = calc.weighted_total(var)/calc.total_weight()
         """
-        return self.array('s006').sum()
+        return self.array('weight').sum()
 
     def dataframe(self, variable_list):
         """
@@ -176,13 +176,13 @@ class Calculator(object):
         """
         pdf = self.dataframe(DIST_VARIABLES)
         # weighted count of itemized-deduction returns
-        pdf['num_returns_ItemDed'] = pdf['s006'].where(
+        pdf['num_returns_ItemDed'] = pdf['weight'].where(
             pdf['c04470'] > 0., 0.)
         # weighted count of standard-deduction returns
-        pdf['num_returns_StandardDed'] = pdf['s006'].where(
+        pdf['num_returns_StandardDed'] = pdf['weight'].where(
             pdf['standard'] > 0., 0.)
         # weight count of returns with positive Alternative Minimum Tax (AMT)
-        pdf['num_returns_AMT'] = pdf['s006'].where(
+        pdf['num_returns_AMT'] = pdf['weight'].where(
             pdf['c09600'] > 0., 0.)
         return pdf
 
@@ -397,8 +397,8 @@ class Calculator(object):
         assert (groupby == 'weighted_deciles' or
                 groupby == 'standard_income_bins')
         if calc is not None:
-            assert np.allclose(self.array('s006'),
-                               calc.array('s006'))  # check rows in same order
+            assert np.allclose(self.array('weight'),
+                               calc.array('weight'))  # rows in same order
         var_dataframe = self.distribution_table_dataframe()
         imeasure = 'expanded_income'
         dt1 = create_distribution_table(var_dataframe, groupby, imeasure)

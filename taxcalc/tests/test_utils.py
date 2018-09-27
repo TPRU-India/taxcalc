@@ -52,7 +52,7 @@ DATA_FLOAT = [[1.0, 2, 'a'],
 def xtest_validity_of_name_lists():
     assert len(DIST_TABLE_COLUMNS) == len(DIST_TABLE_LABELS)
     Records.read_var_info()
-    assert set(DIST_VARIABLES).issubset(Records.CALCULATED_VARS | {'s006'})
+    assert set(DIST_VARIABLES).issubset(Records.CALCULATED_VARS | {'weight'})
     extra_vars_set = set(['num_returns_StandardDed',
                           'num_returns_ItemDed',
                           'num_returns_AMT'])
@@ -460,13 +460,14 @@ def test_diff_count_precision():
 
 
 def test_weighted_count_lt_zero():
-    df1 = pd.DataFrame(data=DATA, columns=['tax_diff', 's006', 'label'])
+    df1 = pd.DataFrame(data=DATA, columns=['tax_diff', 'weight', 'label'])
     grped = df1.groupby('label')
     diffs = grped.apply(weighted_count_lt_zero, 'tax_diff')
     exp = pd.Series(data=[4, 0], index=['a', 'b'])
     exp.index.name = 'label'
     pd.util.testing.assert_series_equal(exp, diffs)
-    df2 = pd.DataFrame(data=DATA_FLOAT, columns=['tax_diff', 's006', 'label'])
+    df2 = pd.DataFrame(data=DATA_FLOAT, columns=['tax_diff', 'weight',
+                                                 'label'])
     grped = df2.groupby('label')
     diffs = grped.apply(weighted_count_lt_zero, 'tax_diff')
     exp = pd.Series(data=[4, 0], index=['a', 'b'])
@@ -475,13 +476,13 @@ def test_weighted_count_lt_zero():
 
 
 def test_weighted_count_gt_zero():
-    df1 = pd.DataFrame(data=DATA, columns=['tax_diff', 's006', 'label'])
+    df1 = pd.DataFrame(data=DATA, columns=['tax_diff', 'weight', 'label'])
     grped = df1.groupby('label')
     diffs = grped.apply(weighted_count_gt_zero, 'tax_diff')
     exp = pd.Series(data=[8, 10], index=['a', 'b'])
     exp.index.name = 'label'
     pd.util.testing.assert_series_equal(exp, diffs)
-    df2 = pd.DataFrame(data=DATA, columns=['tax_diff', 's006', 'label'])
+    df2 = pd.DataFrame(data=DATA, columns=['tax_diff', 'weight', 'label'])
     grped = df2.groupby('label')
     diffs = grped.apply(weighted_count_gt_zero, 'tax_diff')
     exp = pd.Series(data=[8, 10], index=['a', 'b'])
@@ -490,7 +491,7 @@ def test_weighted_count_gt_zero():
 
 
 def test_weighted_count():
-    dfx = pd.DataFrame(data=DATA, columns=['tax_diff', 's006', 'label'])
+    dfx = pd.DataFrame(data=DATA, columns=['tax_diff', 'weight', 'label'])
     grouped = dfx.groupby('label')
     diffs = grouped.apply(weighted_count)
     exp = pd.Series(data=[12, 10], index=['a', 'b'])
@@ -499,7 +500,7 @@ def test_weighted_count():
 
 
 def test_weighted_sum():
-    dfx = pd.DataFrame(data=DATA, columns=['tax_diff', 's006', 'label'])
+    dfx = pd.DataFrame(data=DATA, columns=['tax_diff', 'weight', 'label'])
     grouped = dfx.groupby('label')
     diffs = grouped.apply(weighted_sum, 'tax_diff')
     exp = pd.Series(data=[16.0, 26.0], index=['a', 'b'])
@@ -523,7 +524,8 @@ def test_add_income_trow_var():
 
 
 def test_add_quantile_trow_var():
-    dfx = pd.DataFrame(data=DATA, columns=['expanded_income', 's006', 'label'])
+    dfx = pd.DataFrame(data=DATA, columns=['expanded_income', 'weight',
+                                           'label'])
     dfb = add_quantile_table_row_variable(dfx, 'expanded_income',
                                           100, decile_details=False,
                                           weight_by_income_measure=False)
