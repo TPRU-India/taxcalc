@@ -42,7 +42,7 @@
       "desc": "Total itemized deductions",
       "form": {"2017": "ITR-1 line C1"}
     },
-    "s006": {
+    "weight": {
       "type": "float",
       "desc": "Filing unit sampling weight",
       "form": {"2017": "not used in filing unit tax calculations"}

@@ -1,4 +1,4 @@
-AGEGRP,AYEAR,GTI,RECID,TTI,deductions,net_rent,net_salary,other_income,pitax,s006
+AGEGRP,AYEAR,GTI,RECID,TTI,deductions,net_rent,net_salary,other_income,pitax,weight
 0,2017,230000,1,230000,0,0,230000,0,0,6620000
 0,2017,281000,2,281000,0,0,281000,0,1550,6620000
 0,2017,301000,3,301000,0,0,301000,0,2550,6620000

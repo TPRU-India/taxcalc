@@ -588,7 +588,7 @@
       "form": {"2013-2016": "8863 Part I line 1 and 8863 Part III line 30"},
       "availability": "taxdata_puf"
     },
-    "s006": {
+    "weight": {
       "type": "float",
       "desc": "Filing unit sampling weight; appears as WEIGHT variable in tc CLI minimal output",
       "form": {"2013-2016": "not used in filing unit tax calculations"},
