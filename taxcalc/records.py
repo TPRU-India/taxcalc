@@ -119,7 +119,7 @@ class Records(object):
         if self.WT.size > 0:
             wt_colname = 'WT{}'.format(self.current_year)
             if wt_colname in self.WT.columns:
-                self.s006 = self.WT[wt_colname]
+                self.weight = self.WT[wt_colname]
 
     @property
     def data_year(self):
@@ -155,7 +155,7 @@ class Records(object):
         # specify current-year sample weights
         if self.WT.size > 0:
             wt_colname = 'WT{}'.format(self.__current_year)
-            self.s006 = self.WT[wt_colname] * 0.01
+            self.weight = self.WT[wt_colname] * 0.01
 
     def set_current_year(self, new_current_year):
         """

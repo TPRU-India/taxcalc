@@ -25,10 +25,10 @@ from taxcalc.utilsprvt import (weighted_count_lt_zero,
 DIST_VARIABLES = ['expanded_income', 'c00100', 'aftertax_income', 'standard',
                   'c04470', 'c04600', 'c04800', 'taxbc', 'c62100', 'c09600',
                   'c05800', 'othertaxes', 'refund', 'c07100',
-                  'iitax', 'payrolltax', 'combined', 's006', 'ubi',
+                  'iitax', 'payrolltax', 'combined', 'weight', 'ubi',
                   'benefit_cost_total', 'benefit_value_total']
 
-DIST_TABLE_COLUMNS = ['s006',
+DIST_TABLE_COLUMNS = ['weight',
                       'c00100',
                       'num_returns_StandardDed',
                       'standard',
@@ -83,7 +83,7 @@ DIST_TABLE_LABELS = ['Returns',
 # labels list to map a label to the correct column in a difference table.
 
 DIFF_VARIABLES = ['expanded_income', 'c00100', 'aftertax_income',
-                  'iitax', 'payrolltax', 'combined', 's006', 'ubi',
+                  'iitax', 'payrolltax', 'combined', 'weight', 'ubi',
                   'benefit_cost_total', 'benefit_value_total']
 
 DIFF_TABLE_COLUMNS = ['count',
@@ -140,7 +140,7 @@ def weighted_sum(pdf, col_name):
     """
     Return weighted sum of Pandas DataFrame col_name items.
     """
-    return (pdf[col_name] * pdf['s006']).sum()
+    return (pdf[col_name] * pdf['weight']).sum()
 
 
 def add_quantile_table_row_variable(pdf, income_measure, num_quantiles,
@@ -152,7 +152,7 @@ def add_quantile_table_row_variable(pdf, income_measure, num_quantiles,
     filing units when weight_by_income_measure=False or equal number of
     income dollars when weight_by_income_measure=True.  Assumes that
     specified pdf contains columns for the specified income_measure and
-    for sample weights, s006.  When num_quantiles is 10 and decile_details
+    for sample weights, weight.  When num_quantiles is 10 and decile_details
     is True, the bottom decile is broken up into three subgroups (neg, zero,
     and pos income_measure ) and the top decile is broken into three subgroups
     (90-95, 95-99, and top 1%).
@@ -165,11 +165,11 @@ def add_quantile_table_row_variable(pdf, income_measure, num_quantiles,
     pdf.sort_values(by=income_measure, inplace=True)
     if weight_by_income_measure:
         pdf['cumsum_temp'] = np.cumsum(np.multiply(pdf[income_measure].values,
-                                                   pdf['s006'].values))
+                                                   pdf['weight'].values))
         min_cumsum = pdf['cumsum_temp'].values[0]
     else:
-        pdf['cumsum_temp'] = np.cumsum(pdf['s006'].values)
-        min_cumsum = 0.  # because s006 values are non-negative
+        pdf['cumsum_temp'] = np.cumsum(pdf['weight'].values)
+        min_cumsum = 0.  # because weight values are non-negative
     max_cumsum = pdf['cumsum_temp'].values[-1]
     cumsum_range = max_cumsum - min_cumsum
     bin_width = cumsum_range / float(num_quantiles)
@@ -279,7 +279,7 @@ def create_distribution_table(vdf, groupby, income_measure):
         Returns calculated distribution table column statistics derived from
         the specified grouped Dataframe object, gpdf.
         """
-        unweighted_columns = ['s006', 'num_returns_StandardDed',
+        unweighted_columns = ['weight', 'num_returns_StandardDed',
                               'num_returns_ItemDed', 'num_returns_AMT']
         sdf = pd.DataFrame()
         for col in DIST_TABLE_COLUMNS:
@@ -415,7 +415,7 @@ def create_difference_table(vdf1, vdf2, groupby, tax_to_diff):
     # main logic of create_difference_table
     assert isinstance(vdf1, pd.DataFrame)
     assert isinstance(vdf2, pd.DataFrame)
-    assert np.allclose(vdf1['s006'], vdf2['s006'])  # check rows in same order
+    assert np.allclose(vdf1['weight'], vdf2['weight'])  # rows in same order
     assert (groupby == 'weighted_deciles' or
             groupby == 'standard_income_bins' or
             groupby == 'soi_agi_bins')
@@ -548,7 +548,7 @@ def create_diagnostic_table(vdf, year):
         in_billions = 1.0e-9
         odict = collections.OrderedDict()
         # total number of filing units
-        wghts = vdf['s006']
+        wghts = vdf['weight']
         odict['Returns (#m)'] = wghts.sum() * in_millions
         # adjusted gross income
         agi = vdf['c00100']

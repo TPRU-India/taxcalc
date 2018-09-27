@@ -15,7 +15,7 @@ def weighted_count_lt_zero(pdf, col_name, tolerance=-0.001):
     If condition is not met by any items, the result of applying sum to an
     empty dataframe is NaN.  This is undesirable and 0 is returned instead.
     """
-    return pdf[pdf[col_name] < tolerance]['s006'].sum()
+    return pdf[pdf[col_name] < tolerance]['weight'].sum()
 
 
 def weighted_count_gt_zero(pdf, col_name, tolerance=0.001):
@@ -24,11 +24,11 @@ def weighted_count_gt_zero(pdf, col_name, tolerance=0.001):
     If condition is not met by any items, the result of applying sum to an
     empty dataframe is NaN.  This is undesirable and 0 is returned instead.
     """
-    return pdf[pdf[col_name] > tolerance]['s006'].sum()
+    return pdf[pdf[col_name] > tolerance]['weight'].sum()
 
 
 def weighted_count(pdf):
     """
     Return weighted count of items in Pandas DataFrame.
     """
-    return pdf['s006'].sum()
+    return pdf['weight'].sum()

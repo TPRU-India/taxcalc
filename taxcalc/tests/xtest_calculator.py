@@ -794,7 +794,7 @@ def test_privacy_of_embedded_objects(cps_subsample):
     with pytest.raises(AttributeError):
         cyr = calc.__policy.current_year
     with pytest.raises(AttributeError):
-        wgh = calc.__records.s006
+        wgh = calc.__records.weight
     with pytest.raises(AttributeError):
         cyr = calc.__consumption.current_year
     with pytest.raises(AttributeError):
