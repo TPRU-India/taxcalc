@@ -1,0 +1,12 @@
+{
+    "policy": {
+	// reduce rebate threshold from 500000 to 350000
+	"_rebate_thd": {"2017": [350000]},
+	// reduce rebate ceilling from 5000 to 3500
+	"_rebate_ceiling": {"2017": [3500]},
+	//reduce surcharge threshold from 100000000 to 5000000
+	"_surcharge_thd": {"2017": [1000000]},
+	//reduce surcharge rate from 15% to 10% 
+	"_surcharge_rate": {"2017": [0.10]}
+	}
+}
