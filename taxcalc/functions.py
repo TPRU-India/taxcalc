@@ -92,7 +92,7 @@ def pit_liability(calc):
     rebate_rate = calc.policy_param('rebate_rate')
     rebate_thd = calc.policy_param('rebate_thd')
     rebate_ceiling = calc.policy_param('rebate_ceiling')
-    surcharge_rate = calc.policy_param('surcharge_rate')
+    surcharge_rate = calc.policy_param('surcharge_rate')[AGEGRP]
     surcharge_thd = calc.policy_param('surcharge_thd')
     rebate = np.where(taxinc > rebate_thd, 0.,
                       np.minimum(rebate_rate * taxinc, rebate_ceiling))
