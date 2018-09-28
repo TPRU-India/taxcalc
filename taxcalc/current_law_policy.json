@@ -270,5 +270,25 @@
         "out_of_range_minmsg": "",
         "out_of_range_maxmsg": "",
         "out_of_range_action": "stop"
+    },
+    "_cess_rate": {
+        "long_name": "rate at which cess is levied",
+        "description": "cess applied to sum of tax and surcharge",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [0.03],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
     }
 }
