@@ -1,0 +1,12 @@
+{
+  "policy": {
+	// reduce rebate threshold from 5,00,000 to 3,50,000
+	"_rebate_thd": {"2017": [350000]},
+	// reduce the rebate ceiling from 5,000 to 3,500
+  "_rebate_ceiling": {"2017": [3500]},
+  // reduce surcharge threshold from 1,00,00,000 to 50,00,000
+  "_surcharge_thd": {"2017": [5000000]},
+  // reduce surcharge rate from 15% to 10% for seniors and 5% for super seniors
+  "_surcharge_rate": {"2017": [[0.15, 0.10, 0.05]]}
+  }
+}
