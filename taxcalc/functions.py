@@ -34,6 +34,19 @@ def net_rental_income(INCOME_HP):
 
 
 @iterate_jit(nopython=True)
+def short_term_apprate(SCTG_APPRATE):
+    """
+    Compute short term capital gain net of cost of acquisition and
+    cost of improvement.
+    """
+    # TODO: when short term capital gain net of cost of acquisition and cost
+    #       of improvement are available, do the calculation
+    # TODO: when using short_term_apprate as function argument, no
+    #       calculations neeed
+    return SCTG_APPRATE
+
+
+@iterate_jit(nopython=True)
 def total_other_income(TOTAL_INCOME_OS):
     """
     Compute other_income from its components.
