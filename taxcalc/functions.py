@@ -34,6 +34,16 @@ def net_rental_income(INCOME_HP):
 
 
 @iterate_jit(nopython=True)
+def stcg_app_rate(SHORT_TERM_APPRATE):
+    """
+    Compute other_income from its components.
+    """
+    # TODO: when components of other income are available, do the calculation
+    # TODO: when using other_income as function argument, no calculations neeed
+    return SHORT_TERM_APPRATE
+
+
+@iterate_jit(nopython=True)
 def total_other_income(TOTAL_INCOME_OS):
     """
     Compute other_income from its components.
@@ -45,11 +55,12 @@ def total_other_income(TOTAL_INCOME_OS):
 
 @iterate_jit(nopython=True)
 def gross_total_income(SALARIES, INCOME_HP, TOTAL_PROFTS_GAINS_BP,
-                       TOTAL_INCOME_OS, GTI):
+                       SHORT_TERM_APPRATE, TOTAL_INCOME_OS, GTI):
     """
     Compute GTI.
     """
-    GTI = SALARIES + INCOME_HP + TOTAL_PROFTS_GAINS_BP + TOTAL_INCOME_OS
+    GTI = (SALARIES + INCOME_HP + TOTAL_PROFTS_GAINS_BP + SHORT_TERM_APPRATE +
+           TOTAL_INCOME_OS)
     return GTI
 
 
