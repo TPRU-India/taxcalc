@@ -22,8 +22,8 @@ calc2 = Calculator(policy=pol, records=recs)
 
 
 
-# loop through years 2017, 2018 and 2019 and print out pitax
-for year in range(2017, 2020):
+# loop through years 2017, 2018 ,2019 and 2020 print out pitax
+for year in range(2017, 2021):
 
 	calc1.advance_to_year(year)
 	calc2.advance_to_year(year)
@@ -36,7 +36,7 @@ for year in range(2017, 2020):
 	print(f'Tax 2 {weighted_tax2 * 1e-9:,.2f}')
 	print(f'Total weight for {year}:{total_weights * 1e-6:,.2f}')
 
-# dump out records for 2019
+# dump out records for 2020
 dump_vars = ['FILING_SEQ_NO', 'AGEGRP', 'SALARIES', 'INCOME_HP',
              'TOTAL_PROFTS_GAINS_BP', 'TOTAL_INCOME_OS', 'GTI', 'TTI']
 dumpdf = calc1.dataframe(dump_vars)
