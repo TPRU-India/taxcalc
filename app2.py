@@ -1,8 +1,12 @@
 """
 app1.py illustrates use of pitaxcalc-demo release 2.0.0 (India version).
+<<<<<<< HEAD
 USAGE: python app1.py > app1.res
 CHECK: Use your favorite Windows diff utility to confirm that app1.res is
        the same as the app1.out file that is in the repository.
+=======
+USAGE: python app2.py
+>>>>>>> upstream/master
 """
 from taxcalc import *
 
@@ -20,6 +24,7 @@ reform = Calculator.read_json_param_objects('app1_reform.json', None)
 pol.implement_reform(reform['policy'])
 calc2 = Calculator(policy=pol, records=recs)
 
+<<<<<<< HEAD
 # compare aggregate results from two calculators
 weighted_tax1 = calc1.weighted_total('pitax')
 weighted_tax2 = calc2.weighted_total('pitax')
@@ -30,6 +35,10 @@ print(f'Total weight {total_weights * 1e-6:,.2f}')
 
 # Loop through years 2017, 2018 and 2019 and print out pitax
 for year in range(2017,2020):
+=======
+# loop through years 2017, 2018, and 2019 and print out pitax
+for year in range(2017, 2020):
+>>>>>>> upstream/master
     calc1.advance_to_year(year)
     calc2.advance_to_year(year)
     calc1.calc_all()
@@ -37,11 +46,19 @@ for year in range(2017,2020):
     weighted_tax1 = calc1.weighted_total('pitax')
     weighted_tax2 = calc2.weighted_total('pitax')
     total_weights = calc1.total_weight()
+<<<<<<< HEAD
     print(f'Tax 1 for{year}: {weighted_tax1 * 1e-9:,.2f}')
     print(f'Tax 2 for{year}: {weighted_tax2 * 1e-9:,.2f}')
     print(f'Total weight for{year}: {total_weights * 1e-6:,.2f}')
 
 # dump out records
+=======
+    print(f'Tax 1 for {year}: {weighted_tax1 * 1e-9:,.2f}')
+    print(f'Tax 2 for {year}: {weighted_tax2 * 1e-9:,.2f}')
+    print(f'Total weight for {year}: {total_weights * 1e-6:,.2f}')
+
+# dump out records for 2019
+>>>>>>> upstream/master
 dump_vars = ['FILING_SEQ_NO', 'AGEGRP', 'SALARIES', 'INCOME_HP',
              'TOTAL_PROFTS_GAINS_BP', 'TOTAL_INCOME_OS', 'GTI', 'TTI']
 dumpdf = calc1.dataframe(dump_vars)
@@ -52,5 +69,9 @@ column_order = dumpdf.columns
 
 assert len(dumpdf.index) == calc1.array_len
 
+<<<<<<< HEAD
 dumpdf.to_csv('app1-dump.csv', columns=column_order,
+=======
+dumpdf.to_csv('app2-dump.csv', columns=column_order,
+>>>>>>> upstream/master
               index=False, float_format='%.0f')
