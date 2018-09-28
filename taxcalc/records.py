@@ -218,11 +218,13 @@ class Records(object):
         SALARY = self.gfactors.factor_value('SALARY', year)
         RENT = self.gfactors.factor_value('RENT', year)
         BOPINCOME = self.gfactors.factor_value('BOPINCOME', year)
+        STCG_APPRATE = self.gfactors.factor_value('STCG_APPRATE', year)
         OINCOME = self.gfactors.factor_value('OINCOME', year)
         DEDUCTIONS = self.gfactors.factor_value('DEDUCTIONS', year)
         self.SALARIES *= SALARY
         self.INCOME_HP *= RENT
         self.TOTAL_PROFTS_GAINS_BP *= BOPINCOME
+        self.SHORT_TERM_APPRATE *= STCG_APPRATE
         self.TOTAL_INCOME_OS *= OINCOME
         self.deductions *= DEDUCTIONS
 
