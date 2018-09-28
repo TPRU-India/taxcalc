@@ -32,6 +32,11 @@
       "desc": "Profits and Gains from Business or Profession",
       "form": {"2017": "ITR-3 Part B-TI-3v"}
     },
+    "SHORT_TERM_APPRATE": {
+      "type": "float",
+      "desc": "Income from short term capital gains taxed at regular rates",
+      "form": {"2017": "ITR-3 Part B-TI-4a(iii)"}
+    },
     "TOTAL_INCOME_OS": {
       "type": "float",
       "desc": "Income from Other Sources",
