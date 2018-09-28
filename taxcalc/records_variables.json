@@ -32,6 +32,13 @@
       "desc": "Income from House Property",
       "form": {"2017": "ITR-3 Part B-TI-2"}
     },
+
+    "SHORT_TERM_APPRATE": {
+      "type": "float",
+      "desc": "Income from short term capital Gains",
+      "form": {"2017": "ITR-3 Part B-TI-4a(iii)"}
+},
+
     "TOTAL_PROFTS_GAINS_BP": {
       "type": "float",
       "desc": "Profits and Gains from Business or Profession",

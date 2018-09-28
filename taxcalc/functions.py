@@ -45,7 +45,7 @@ def total_other_income(TOTAL_INCOME_OS):
 
 @iterate_jit(nopython=True)
 def gross_total_income(SALARIES, INCOME_HP, TOTAL_PROFTS_GAINS_BP,
-                       TOTAL_INCOME_OS, GTI):
+                       SHORT_TERM_APPRATE, TOTAL_INCOME_OS, GTI):
     """
     Compute GTI.
     """
