@@ -32,10 +32,30 @@
       "desc": "Profits and Gains from Business or Profession",
       "form": {"2017": "ITR-3 Part B-TI-3v"}
     },
+    "SHORT_TERM_15PER": {
+      "type": "float",
+      "desc": "Profits and Gains from Business or Profession",
+      "form": {"2017": "ITR-3 Part B-TI-4a-i"}
+    },
+    "SHORT_TERM_30PER": {
+      "type": "float",
+      "desc": "Profits and Gains from Business or Profession",
+      "form": {"2017": "ITR-3 Part B-TI-4a-ii"}
+    },
     "SHORT_TERM_APPRATE": {
       "type": "float",
       "desc": "Income from short term capital gains taxed at regular rates",
       "form": {"2017": "ITR-3 Part B-TI-4a(iii)"}
+    },
+    "LONG_TERM_10PER": {
+      "type": "float",
+      "desc": "Profits and Gains from Business or Profession",
+      "form": {"2017": "ITR-3 Part B-TI-4b-i"}
+    },
+    "LONG_TERM_20PER": {
+      "type": "float",
+      "desc": "Profits and Gains from Business or Profession",
+      "form": {"2017": "ITR-3 Part B-TI-4b-ii"}
     },
     "TOTAL_INCOME_OS": {
       "type": "float",
@@ -54,6 +74,46 @@
     }
   },
   "calc": {
+    "Tax_SHORT_TERM_15PER": {
+      "type": "float",
+      "desc": "Tax on Short Term Capital Gains at 15% (Tax_SHORT_TERM_15PER)",
+      "form": {"2017": "ITR-3 Schedule SI line 1"}
+    },
+    "Tax_SHORT_TERM_30PER": {
+      "type": "float",
+      "desc": "Tax on Short Term Capital Gains at 30% (Tax_SHORT_TERM_30PER)",
+      "form": {"2017": "ITR-3 Schedule SI line 2"}
+    },
+    "Tax_SHORT_TERM_APPRATE": {
+      "type": "float",
+      "desc": "Tax on Short Term Capital Gains at the Regular Rate (Tax_SHORT_TERM_APPRATE)",
+      "form": {"2017": "ITR-3 Schedule SI line 2"}
+    },
+    "Total_Tax_STCG": {
+      "type": "float",
+      "desc": "Tax on all Short Term Capital Gains Tax_SHORT_TERM_15PER + Tax_SHORT_TERM_30PER + Tax_SHORT_TERM_APPRATE (Total_Tax_STCG)",
+      "form": {"2017": "Not in Form"}
+    },
+    "Tax_LONG_TERM_10PER": {
+      "type": "float",
+      "desc": "Tax on Long Term Capital Gains at 10% (Tax_LONG_TERM_10PER)",
+      "form": {"2017": "ITR-3 Schedule SI sum of lines 3-9"}
+    },
+    "Tax_LONG_TERM_20PER": {
+      "type": "float",
+      "desc": "Tax on Long Term Capital Gains at 20% (Tax_LONG_TERM_20PER)",
+      "form": {"2017": "ITR-3 Schedule SI line 10"}
+    },
+    "Total_Tax_LTCG": {
+      "type": "float",
+      "desc": "Tax on all Long Term Capital Gains Tax_LONG_TERM_10PER + Tax_LONG_TERM_20PER (Total_Tax_LTCG)",
+      "form": {"2017": "Not in Form"}
+    },
+    "Total_Tax_Cap_Gains": {
+      "type": "float",
+      "desc": "Total Capital Gains Total_Tax_STCG + Total_Tax_LTCG (Total_Tax_Cap_Gains)",
+      "form": {"2017": "Not in Form"}
+    },
     "GTI": {
       "type": "float",
       "desc": "Gross Total Income (GTI)",
@@ -63,6 +123,26 @@
       "type": "float",
       "desc": "Taxable Total Income (TTI)",
       "form": {"2017": "ITR-1 line C2"}
+    },
+    "TI_special_rates": {
+      "type": "float",
+      "desc": "Taxable Total Income (TTI) taxed at special rates",
+      "form": {"2017": "ITR-3 Part B-TI line 15"}
+    },
+    "Aggregate_Income": {
+      "type": "float",
+      "desc": "Income taxed at normal rates TTI minus TI_special_rates",
+      "form": {"2017": "ITR-3 Part B-TI line 17"}
+    },
+    "tax_Aggregate_Income": {
+      "type": "float",
+      "desc": "Tax liability on Income taxed at normal rates",
+      "form": {"2017": "ITR-3 Part B TTI-2a"}
+    },
+    "tax_TI_special_rates": {
+      "type": "float",
+      "desc": "Tax liability on TI taxed at special rates",
+      "form": {"2017": "ITR-3 Part B TTI-2b"}
     },
     "tax_TTI": {
       "type": "float",
