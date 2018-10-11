@@ -4,85 +4,85 @@
       "required": true,
       "type": "int",
       "desc": "Unique positive numeric identifier for filing unit",
-      "form": {"2017-2017": "private info"}
+      "form": {"2017": "private info"}
     },
     "AGEGRP": {
       "required": true,
       "type": "int",
       "desc": "Age group (0 ==> <60, 1 ==> 60-79, 2 ==> >=80)",
-      "form": {"2017-2017": "ITR-1 didn't see this on the form"}
+      "form": {"2017": "ITR-1 didn't see this on the form"}
     },
     "AYEAR": {
       "type": "int",
       "desc": "Assessment year of ITR form that include prior year information",
-      "form": {"2017-2017": "ITR-1 Assessment Year (first year)"}
+      "form": {"2017": "ITR-1 Assessment Year (first year)"}
     },
     "SALARIES": {
       "type": "float",
       "desc": "Income from Salary",
-      "form": {"2017-2017": "ITR-3 Part B-TI-1"}
+      "form": {"2017": "ITR-3 Part B-TI-1"}
     },
     "INCOME_HP": {
       "type": "float",
       "desc": "Income from House Property",
-      "form": {"2017-2017": "ITR-3 Part B-TI-2"}
+      "form": {"2017": "ITR-3 Part B-TI-2"}
     },
     "TOTAL_PROFTS_GAINS_BP": {
       "type": "float",
       "desc": "Profits and Gains from Business or Profession",
-      "form": {"2017-2017": "ITR-3 Part B-TI-3v"}
+      "form": {"2017": "ITR-3 Part B-TI-3v"}
     },
     "SHORT_TERM_APPRATE": {
       "type": "float",
       "desc": "Income from short term capital gains taxed at regular rates",
-      "form": {"2017-2017": "ITR-3 Part B-TI-4a(iii)"}
+      "form": {"2017": "ITR-3 Part B-TI-4a(iii)"}
     },
     "TOTAL_INCOME_OS": {
       "type": "float",
       "desc": "Income from Other Sources",
-      "form": {"2017-2017": "ITR-3 Part B-TI-5d"}
+      "form": {"2017": "ITR-3 Part B-TI-5d"}
     },
     "deductions": {
       "type": "float",
       "desc": "Total itemized deductions",
-      "form": {"2017-2017": "ITR-1 line C1"}
+      "form": {"2017": "ITR-1 line C1"}
     },
     "weight": {
       "type": "float",
       "desc": "Filing unit sampling weight",
-      "form": {"2017-2017": "not used in filing unit tax calculations"}
+      "form": {"2017": "not used in filing unit tax calculations"}
     }
   },
   "calc": {
     "GTI": {
       "type": "float",
       "desc": "Gross Total Income (GTI)",
-      "form": {"2017-2017": "ITR-1 line B4"}
+      "form": {"2017": "ITR-1 line B4"}
     },
     "TTI": {
       "type": "float",
       "desc": "Taxable Total Income (TTI)",
-      "form": {"2017-2017": "ITR-1 line C2"}
+      "form": {"2017": "ITR-1 line C2"}
     },
     "tax_TTI": {
       "type": "float",
       "desc": "Tax liability on TTI",
-      "form": {"2017-2017": "ITR-3 Part B TTI-2d"}
+      "form": {"2017": "ITR-3 Part B TTI-2d"}
     },
     "rebate": {
       "type": "float",
       "desc": "Rebate as non-refundable tax credit",
-      "form": {"2017-2017": "ITR-3 Part B TTI-2e"}
+      "form": {"2017": "ITR-3 Part B TTI-2e"}
     },
     "surcharge": {
       "type": "float",
       "desc": "Surcharge on income above surcharge_thd",
-      "form": {"2017-2017": "ITR-3 Part B TTI-2giii"}
+      "form": {"2017": "ITR-3 Part B TTI-2giii"}
     },
     "pitax": {
       "type": "float",
       "desc": "PIT liability",
-      "form": {"2017-2017": "ITR-1 line D11"}
+      "form": {"2017": "ITR-1 line D11"}
     }
   }
 }

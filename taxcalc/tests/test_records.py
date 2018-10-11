@@ -90,31 +90,10 @@ def test_records_variables_content(tests_path):
             # check that required is true if it is present
             if 'required' in variable:
                 assert variable['required'] is True
-            # check that forminfo is dictionary with sensible year ranges
+            # check that forminfo is dictionary with sensible years
             forminfo = variable['form']
             assert isinstance(forminfo, dict)
-            yranges = sorted(forminfo.keys())
-            num_yranges = len(yranges)
-            prior_eyr = first_year - 1
-            yrange_num = 0
-            for yrange in yranges:
-                yrange_num += 1
-                yrlist = yrange.split('-')
-                fyr = int(yrlist[0])
-                if yrlist[1] == '20??':
-                    indefinite_yrange = True
-                    assert yrange_num == num_yranges
-                else:
-                    indefinite_yrange = False
-                    eyr = int(yrlist[1])
-                    if fyr != (prior_eyr + 1):
-                        msg1 = '{} fyr {}'.format(vname, fyr)
-                        msg2 = '!= prior_eyr_1 {}'.format(prior_eyr + 1)
-                        assert msg1 == msg2
-                    if eyr > last_form_year:
-                        msg1 = '{} eyr {}'.format(vname, eyr)
-                        msg2 = '> last_form_year {}'.format(last_form_year)
-                        assert msg1 == msg2
-                    prior_eyr = eyr
-            if not indefinite_yrange and len(yranges) > 0:
-                assert prior_eyr == last_form_year
+            for year_str in sorted(forminfo.keys()):
+                year = int(year_str)
+                assert year >= first_year
+                assert year <= last_form_year
