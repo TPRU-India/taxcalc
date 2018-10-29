@@ -108,5 +108,8 @@ def pit_liability(calc):
     tax = np.where(rebate > tax, 0, tax - rebate)
     surcharge = np.where(taxinc > surcharge_thd, tax * surcharge_rate, 0.)
     calc.array('surcharge', surcharge)
-    tax = (tax + surcharge)*(1 + cess_rate)
+    tax = tax + surcharge
+    cess = tax * cess_rate
+    calc.array('cess', cess)
+    tax = tax + cess
     calc.array('pitax', tax)
