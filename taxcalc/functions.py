@@ -106,7 +106,7 @@ def pit_liability(calc):
            rate4 * np.maximum(0., taxinc - tbrk3))
     calc.array('tax_TTI', tax)
     tax = np.where(rebate > tax, 0, tax - rebate)
-    surcharge = np.where(taxinc > surcharge_thd, tax * surcharge_rate, 0.)
+    surcharge = np.where(taxinc > surcharge_thd, tax * surcharge_rate, 0)
     calc.array('surcharge', surcharge)
     tax = tax + surcharge
     cess = tax * cess_rate
