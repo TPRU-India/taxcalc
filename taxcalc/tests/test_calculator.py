@@ -29,7 +29,7 @@ def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample):
     assert pol.current_year == syr
     # specify expected number of filers and aggregate PIT liability
     expect_weight = 60e6
-    expect_pitax = 1920.575e9
+    expect_pitax = 1978.193e9
     # create full-sample Calculator object
     rec_full = Records(data=pit_fullsample)
     calc_full = Calculator(policy=pol, records=rec_full)
