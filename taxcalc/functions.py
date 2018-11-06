@@ -86,9 +86,9 @@ def pit_liability(calc):
     rate3 = calc.policy_param('rate3')
     rate4 = calc.policy_param('rate4')
     tbrk1 = calc.policy_param('tbrk1')[AGEGRP]
-    tbrk2 = calc.policy_param('tbrk2')
-    tbrk3 = calc.policy_param('tbrk3')
-    tbrk4 = calc.policy_param('tbrk4')
+    tbrk2 = calc.policy_param('tbrk2')[AGEGRP]
+    tbrk3 = calc.policy_param('tbrk3')[AGEGRP]
+    tbrk4 = calc.policy_param('tbrk4')[AGEGRP]
     rebate_rate = calc.policy_param('rebate_rate')
     rebate_thd = calc.policy_param('rebate_thd')
     rebate_ceiling = calc.policy_param('rebate_ceiling')
