@@ -1,5 +1,4 @@
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
-[![Build Status](https://travis-ci.org/TPRU-demo/pitaxcalc-demo.svg?branch=master)](https://travis-ci.org/TPRU-demo/pitaxcalc-demo)
 [![Codecov](https://codecov.io/gh/TPRU-demo/pitaxcalc-demo/branch/master/graph/badge.svg)](https://codecov.io/gh/TPRU-demo/pitaxcalc-demo)
 
 
