@@ -215,18 +215,26 @@ class Records(object):
         Apply to variables the grow factors for specified year.
         """
         # pylint: disable=too-many-locals,too-many-statements
-        SALARY = self.gfactors.factor_value('SALARY', year)
-        RENT = self.gfactors.factor_value('RENT', year)
-        BOPINCOME = self.gfactors.factor_value('BOPINCOME', year)
-        STCG_APPRATE = self.gfactors.factor_value('STCG_APPRATE', year)
-        OINCOME = self.gfactors.factor_value('OINCOME', year)
-        DEDUCTIONS = self.gfactors.factor_value('DEDUCTIONS', year)
-        self.SALARIES *= SALARY
-        self.INCOME_HP *= RENT
-        self.TOTAL_PROFTS_GAINS_BP *= BOPINCOME
-        self.SHORT_TERM_APPRATE *= STCG_APPRATE
-        self.TOTAL_INCOME_OS *= OINCOME
-        self.deductions *= DEDUCTIONS
+        GF_SALARY = self.gfactors.factor_value('SALARY', year)
+        GF_RENT = self.gfactors.factor_value('RENT', year)
+        GF_BOPINCOME = self.gfactors.factor_value('BOPINCOME', year)
+        GF_STCG_APPRATE = self.gfactors.factor_value('STCG_APPRATE', year)
+        GF_OINCOME = self.gfactors.factor_value('OINCOME', year)
+        GF_DEDUCTIONS = self.gfactors.factor_value('DEDUCTIONS', year)
+        GF_ST_CG_AMT_1 = self.gfactors.factor_value('ST_CG_AMT_1', year)
+        GF_ST_CG_AMT_2 = self.gfactors.factor_value('ST_CG_AMT_2', year)
+        GF_LT_CG_AMT_1 = self.gfactors.factor_value('LT_CG_AMT_1', year)
+        GF_LT_CG_AMT_2 = self.gfactors.factor_value('LT_CG_AMT_2', year)
+        self.SALARIES *= GF_SALARY
+        self.INCOME_HP *= GF_RENT
+        self.TOTAL_PROFTS_GAINS_BP *= GF_BOPINCOME
+        self.SHORT_TERM_APPRATE *= GF_STCG_APPRATE
+        self.TOTAL_INCOME_OS *= GF_OINCOME
+        self.deductions *= GF_DEDUCTIONS
+        self.ST_CG_AMT_1 *= GF_ST_CG_AMT_1
+        self.ST_CG_AMT_2 *= GF_ST_CG_AMT_2
+        self.LT_CG_AMT_1 *= GF_LT_CG_AMT_1
+        self.LT_CG_AMT_2 *= GF_LT_CG_AMT_2
 
     def _read_data(self, data):
         """
