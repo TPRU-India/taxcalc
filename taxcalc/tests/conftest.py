@@ -25,5 +25,5 @@ def pit_fullsample(pit_path):
 
 @pytest.fixture(scope='session')
 def pit_subsample(pit_fullsample):
-    # TODO: when have larger pit_fullsample, draw fractional sample
-    return pit_fullsample.sample(frac=1.00, random_state=123456789)
+    # TODO: when have larger pit_fullsample, reduce value of frac
+    return pit_fullsample.sample(frac=0.10, random_state=123456789)

@@ -164,6 +164,11 @@
       "desc": "Surcharge on income above surcharge_thd",
       "form": {"2017": "ITR-3 Part B TTI-2giii"}
     },
+    "cess": {
+      "type": "float",
+      "desc": "cess on tax and surcharge",
+      "form": {"2017": "ITR-3 Part B TTI-2giii"}
+    },
     "pitax": {
       "type": "float",
       "desc": "PIT liability",

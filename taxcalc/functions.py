@@ -123,14 +123,15 @@ def pit_liability(calc):
     rate3 = calc.policy_param('rate3')
     rate4 = calc.policy_param('rate4')
     tbrk1 = calc.policy_param('tbrk1')[AGEGRP]
-    tbrk2 = calc.policy_param('tbrk2')
-    tbrk3 = calc.policy_param('tbrk3')
-    tbrk4 = calc.policy_param('tbrk4')
+    tbrk2 = calc.policy_param('tbrk2')[AGEGRP]
+    tbrk3 = calc.policy_param('tbrk3')[AGEGRP]
+    tbrk4 = calc.policy_param('tbrk4')[AGEGRP]
     rebate_rate = calc.policy_param('rebate_rate')
     rebate_thd = calc.policy_param('rebate_thd')
     rebate_ceiling = calc.policy_param('rebate_ceiling')
     surcharge_rate = calc.policy_param('surcharge_rate')
     surcharge_thd = calc.policy_param('surcharge_thd')
+    cess_rate = calc.policy_param('cess_rate')
     rebate = np.where(taxinc > rebate_thd, 0.,
                       np.minimum(rebate_rate * taxinc, rebate_ceiling))
     calc.array('rebate', rebate)
@@ -144,7 +145,10 @@ def pit_liability(calc):
     tax = tax_normal_rates + tax_TI_special_rates
     calc.array('tax_TTI', tax)
     tax = np.where(rebate > tax, 0, tax - rebate)
-    surcharge = np.where(taxinc > surcharge_thd, tax * surcharge_rate, 0.)
+    surcharge = np.where(taxinc > surcharge_thd, tax * surcharge_rate, 0)
     calc.array('surcharge', surcharge)
     tax = tax + surcharge
+    cess = tax * cess_rate
+    calc.array('cess', cess)
+    tax = tax + cess
     calc.array('pitax', tax)

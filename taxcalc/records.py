@@ -228,7 +228,7 @@ class Records(object):
         self.SALARIES *= GF_SALARY
         self.INCOME_HP *= GF_RENT
         self.TOTAL_PROFTS_GAINS_BP *= GF_BOPINCOME
-        self.SHORT_TERM_APPRATE *= GF_STCG_APPRATE
+        self.ST_CG_AMT_APPRATE *= GF_STCG_APPRATE
         self.TOTAL_INCOME_OS *= GF_OINCOME
         self.deductions *= GF_DEDUCTIONS
         self.ST_CG_AMT_1 *= GF_ST_CG_AMT_1

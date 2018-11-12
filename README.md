@@ -1,3 +1,7 @@
+[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![Codecov](https://codecov.io/gh/TPRU-demo/pitaxcalc-demo/branch/master/graph/badge.svg)](https://codecov.io/gh/TPRU-demo/pitaxcalc-demo)
+
+
 Demonstration repository for Personal Income Tax (PIT) microsimulation model
 ============================================================================
 
@@ -20,7 +24,9 @@ procedures](https://github.com/TPRU-demo/pitaxcalc-demo/blob/master/TESTING.md#t
 You may find this [git cheat
 sheet](https://github.com/TPRU-demo/pitaxcalc-demo/blob/master/SIMPLE_GIT_USAGE.md#simple-git-usage)
 useful in preparing a GitHub pull request that contains your proposed
-code changes.
+code changes.  The step-by-step workflow used to create and modify a
+new pull request has been documented for the USA Tax-Calculator in this
+[workflow document](https://github.com/open-source-economics/Tax-Calculator/blob/master/WORKFLOW.md#tax-calculator-pull-request-workflow).
 
 The pitaxcalc-demo [release
 history](https://github.com/TPRU-demo/pitaxcalc-demo/blob/master/RELEASES.md#pitaxcalc-demo-release-history)
