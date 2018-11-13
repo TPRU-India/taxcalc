@@ -40,7 +40,7 @@ class Calculator(object):
         this argument must be specified and object is copied for internal use
 
     verbose: boolean
-        speci                                                                                                                                                            fies whether or not to write to stdout data-loaded and
+        specifies whether or not to write to stdout data-loaded and
         data-extrapolated progress reports; default value is true.
 
     sync_years: boolean

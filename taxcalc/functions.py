@@ -32,6 +32,7 @@ def net_rental_income(INCOME_HP):
     # TODO: when using net_rent as function argument, no calculations neeed
     return INCOME_HP
 
+
 @iterate_jit(nopython=True)
 def total_other_income(TOTAL_INCOME_OS):
     """
@@ -71,6 +72,7 @@ def taxable_total_income(GTI, deductions, TTI):
     TTI = GTI - deductions
     return TTI
 
+
 def tax_stcg_splrate(calc):
     """
     Calculates the tax on short term capital gains which are taxed at spl rate
@@ -80,15 +82,18 @@ def tax_stcg_splrate(calc):
     ST_CG_RATE2 = calc.policy_param('ST_CG_RATE2')
     ST_CG_AMT_1 = calc.array('ST_CG_AMT_1')
     ST_CG_AMT_2 = calc.array('ST_CG_AMT_2')
+    """
     tax_TI_special_rates = calc.array('tax_TI_special_rates')
+    """
     Tax_ST_CG_RATE1 = ST_CG_AMT_1 * ST_CG_RATE1
     Tax_ST_CG_RATE2 = ST_CG_AMT_2 * ST_CG_RATE2
     Total_Tax_STCG = Tax_ST_CG_RATE1 + Tax_ST_CG_RATE2
     calc.array('Tax_ST_CG_RATE1', Tax_ST_CG_RATE1)
     calc.array('Tax_ST_CG_RATE2', Tax_ST_CG_RATE2)
     calc.array('Total_Tax_STCG', Total_Tax_STCG)
-    tax_TI_special_rates += Total_Tax_STCG
-    calc.array('tax_TI_special_rates', tax_TI_special_rates)
+    #tax_TI_special_rates += Total_Tax_STCG
+    calc.array('tax_TI_special_rates', Total_Tax_STCG)
+
 
 def tax_ltcg_splrate(calc):
     """
@@ -107,7 +112,6 @@ def tax_ltcg_splrate(calc):
     calc.array('Total_Tax_LTCG', Total_Tax_LTCG)
     tax_TI_special_rates += Total_Tax_LTCG
     calc.array('tax_TI_special_rates', tax_TI_special_rates)
-
 
 
 def pit_liability(calc):
