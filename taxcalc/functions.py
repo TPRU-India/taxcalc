@@ -91,7 +91,7 @@ def tax_stcg_splrate(calc):
     calc.array('Tax_ST_CG_RATE1', Tax_ST_CG_RATE1)
     calc.array('Tax_ST_CG_RATE2', Tax_ST_CG_RATE2)
     calc.array('Total_Tax_STCG', Total_Tax_STCG)
-    #tax_TI_special_rates += Total_Tax_STCG
+    # tax_TI_special_rates += Total_Tax_STCG
     calc.array('tax_TI_special_rates', Total_Tax_STCG)
 
 

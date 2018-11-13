@@ -51,4 +51,3 @@ def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample):
     assert np.allclose([actual_sub_weight], [expect_weight])
     assert np.allclose([actual_sub_pitax], [expect_pitax], rtol=0.07)
     """
-    
