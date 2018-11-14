@@ -32,10 +32,30 @@
       "desc": "Profits and Gains from Business or Profession",
       "form": {"2017": "ITR-3 Part B-TI-3v"}
     },
-    "SHORT_TERM_APPRATE": {
+    "ST_CG_AMT_1": {
       "type": "float",
-      "desc": "Income from short term capital gains taxed at regular rates",
-      "form": {"2017": "ITR-3 Part B-TI-4a(iii)"}
+      "desc": "111A (STCG on shares units on which where STT paid) @ 15% under current law",
+      "form": {"2017": "ITR-3 Part B-TI-4a-i"}
+    },
+    "ST_CG_AMT_2": {
+      "type": "float",
+      "desc": "115AD (STCG for FIIs on securities where STT not paid) @ 30% under current law",
+      "form": {"2017": "ITR-3 Part B-TI-4a-ii"}
+    },
+    "ST_CG_AMT_APPRATE": {
+      "type": "float",
+      "desc": "STCG at regular rates as per current law",
+      "form": {"2017": "ITR-3 Part B-TI-4a-iii"}
+    },
+    "LT_CG_AMT_1": {
+      "type": "float",
+      "desc": "LTCG at special rate 10% under current law",
+      "form": {"2017": "ITR-3 Part B-TI-4b-i"}
+    },
+    "LT_CG_AMT_2": {
+      "type": "float",
+      "desc": "LTCG at special rate 20% under current law",
+      "form": {"2017": "ITR-3 Part B-TI-4b-ii"}
     },
     "TOTAL_INCOME_OS": {
       "type": "float",
@@ -54,19 +74,84 @@
     }
   },
   "calc": {
+    "Tax_ST_CG_RATE1": {
+      "type": "float",
+      "desc": "Tax on Short Term Capital Gains at 15% under current law(Tax_SHORT_TERM_RATE1)",
+      "form": {"2017": "ITR-3 Schedule SI line 1"}
+    },
+    "Tax_ST_CG_RATE2": {
+      "type": "float",
+      "desc": "Tax on Short Term Capital Gains at 30% under current law (Tax_SHORT_TERM_RATE2)",
+      "form": {"2017": "ITR-3 Schedule SI line 2"}
+    },
+    "Tax_ST_CG_APPRATE": {
+      "type": "float",
+      "desc": "Tax on Short Term Capital Gains at the Regular Rate (Tax_SHORT_TERM_APPRATE)",
+      "form": {"2017": "ITR-3 Included in Part-B-TTI (2)(a)"}
+    },
+    "Total_Tax_STCG": {
+      "type": "float",
+      "desc": "Tax on all Short Term Capital Gains Tax_SHORT_TERM_RATE1 + Tax_SHORT_TERM_RATE2 + Tax_SHORT_TERM_APPRATE (Total_Tax_STCG)",
+      "form": {"2017": "Not in Form"}
+    },
+    "Tax_LT_CG_RATE1": {
+      "type": "float",
+      "desc": "Tax on Long Term Capital Gains at 10% under current law(Tax_LONG_TERM_RATE1)",
+      "form": {"2017": "ITR-3 Schedule SI sum of lines 3-9"}
+    },
+    "Tax_LT_CG_RATE2": {
+      "type": "float",
+      "desc": "Tax on Long Term Capital Gains at 20% under current law (Tax_LONG_TERM_RATE2)",
+      "form": {"2017": "ITR-3 Schedule SI line 10"}
+    },
+    "Total_Tax_LTCG": {
+      "type": "float",
+      "desc": "Tax on all Long Term Capital Gains Tax_LONG_TERM_RATE1 + Tax_LONG_TERM_RATE2 under current law(Total_Tax_LTCG)",
+      "form": {"2017": "Not in Form"}
+    },
+    "Total_Tax_Cap_Gains": {
+      "type": "float",
+      "desc": "Total Capital Gains Total_Tax_STCG + Total_Tax_LTCG (Total_Tax_Cap_Gains)",
+      "form": {"2017": "Not in Form"}
+    },
     "GTI": {
       "type": "float",
       "desc": "Gross Total Income (GTI)",
-      "form": {"2017": "ITR-1 line B4"}
+      "form": {"2017": "ITR-3 Part B-TI line 10"}
     },
     "TTI": {
       "type": "float",
       "desc": "Taxable Total Income (TTI)",
-      "form": {"2017": "ITR-1 line C2"}
+      "form": {"2017": "ITR-3 Part B-TI line 14"}
+    },
+    "TI_special_rates": {
+      "type": "float",
+      "desc": "Taxable Total Income (TTI) taxed at special rates",
+      "form": {"2017": "ITR-3 Part B-TI line 15"}
+    },
+    "Aggregate_Income": {
+      "type": "float",
+      "desc": "Income taxed at normal rates TTI minus TI_special_rates",
+      "form": {"2017": "ITR-3 Part B-TI line 17"}
+    },
+    "tax_Aggregate_Income": {
+      "type": "float",
+      "desc": "Tax liability on Income taxed at normal rates",
+      "form": {"2017": "ITR-3 Part B TTI-2a"}
+    },
+    "tax_TI_special_rates": {
+      "type": "float",
+      "desc": "Tax liability on TI taxed at special rates",
+      "form": {"2017": "ITR-3 Part B TTI-2b"}
+    },
+    "rebate_agri": {
+      "type": "float",
+      "desc": "Rebate on agricultural income",
+      "form": {"2017": "ITR-3 Part B TTI-2c"}
     },
     "tax_TTI": {
       "type": "float",
-      "desc": "Tax liability on TTI",
+      "desc": "Tax liability on TI which is tax_Aggregate_Income plus tax_TI_special_rates less agricultural rebate",
       "form": {"2017": "ITR-3 Part B TTI-2d"}
     },
     "rebate": {
@@ -77,6 +162,11 @@
     "surcharge": {
       "type": "float",
       "desc": "Surcharge on income above surcharge_thd",
+      "form": {"2017": "ITR-3 Part B TTI-2giii"}
+    },
+    "cess": {
+      "type": "float",
+      "desc": "cess on tax and surcharge",
       "form": {"2017": "ITR-3 Part B TTI-2giii"}
     },
     "pitax": {

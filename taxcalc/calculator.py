@@ -17,6 +17,7 @@ import pandas as pd
 from taxcalc.functions import (net_salary_income, net_rental_income,
                                total_other_income, gross_total_income,
                                itemized_deductions, taxable_total_income,
+                               tax_stcg_splrate, tax_ltcg_splrate,
                                pit_liability)
 from taxcalc.policy import Policy
 from taxcalc.records import Records
@@ -141,6 +142,8 @@ class Calculator(object):
         gross_total_income(self.__policy, self.__records)
         itemized_deductions(self.__policy, self.__records)
         taxable_total_income(self.__policy, self.__records)
+        tax_stcg_splrate(self)
+        tax_ltcg_splrate(self)
         pit_liability(self)
         # TODO: ADD: expanded_income(self.__policy, self.__records)
         # TODO: ADD: aftertax_income(self.__policy, self.__records)
