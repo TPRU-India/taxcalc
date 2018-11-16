@@ -62,10 +62,10 @@
       "desc": "Income from Other Sources",
       "form": {"2017": "ITR-3 Part B-TI-5d"}
     },
-    "deductions": {
+    "TOTAL_DEDUC_VIA": {
       "type": "float",
       "desc": "Total itemized deductions",
-      "form": {"2017": "ITR-1 line C1"}
+      "form": {"2017": "ITR-1 Part C-C1 and ITR-3 Part B-TI-13c"}
     },
     "weight": {
       "type": "float",
@@ -133,6 +133,11 @@
       "type": "float",
       "desc": "Income taxed at normal rates TTI minus TI_special_rates",
       "form": {"2017": "ITR-3 Part B-TI line 17"}
+    },
+    "deductions": {
+      "type": "float",
+      "desc": "Total itemized deductions",
+      "form": {"2017": "ITR-1 Part C-C1 and ITR-3 Part B-TI-13c"}
     },
     "tax_Aggregate_Income": {
       "type": "float",
