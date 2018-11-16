@@ -55,12 +55,13 @@ def gross_total_income(SALARIES, INCOME_HP, TOTAL_PROFTS_GAINS_BP,
 
 
 @iterate_jit(nopython=True)
-def itemized_deductions(deductions):
+def itemized_deductions(deductions, TOTAL_DEDUC_VIA):
     """
     Compute deductions from itemizeable expenses and caps.
     """
     # TODO: when expenses and caps policy are available, do the calculation
     # TODO: when using deductions as function argument, no calculations neeed
+    deductions = TOTAL_DEDUC_VIA
     return deductions
 
 
