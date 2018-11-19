@@ -1,0 +1,8 @@
+{
+  "policy": {
+	// increased cess rate from 3% to 4%
+  "_cess_rate": {"2019": [0.04]},
+  // reduce rate 2 from 5% to 0%
+  "_rate2":{"2019": [0.0]}
+  }
+}

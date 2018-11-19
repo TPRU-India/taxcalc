@@ -116,6 +116,10 @@ def test_json_file_contents(tests_path, fname):
             # check different possible col_var values
             if cvar == 'AGEGRP':
                 assert len(clab) == 3
+            elif cvar == 'TTI1':
+                assert len(clab) == 3
+            elif cvar == 'TTI2':
+                assert len(clab) == 2
             elif cvar == 'EIC':
                 assert len(clab) == 4
             elif cvar == 'idedtype':
