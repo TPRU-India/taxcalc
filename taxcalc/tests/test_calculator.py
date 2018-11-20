@@ -52,7 +52,7 @@ def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample):
     assert np.allclose([actual_sub_pitax], [expect_pitax], rtol=0.07)
     """
 
-@pytest.mark.one
+
 def test_Calculator_results_consistency(pit_fullsample):
     # generate calculated-variable dataframe for full sample in second year
     recs = Records(data=pit_fullsample)
