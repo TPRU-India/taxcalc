@@ -45,11 +45,15 @@ def total_other_income(TOTAL_INCOME_OS):
 
 @iterate_jit(nopython=True)
 def gross_total_income(SALARIES, INCOME_HP, TOTAL_PROFTS_GAINS_BP,
-                       ST_CG_AMT_APPRATE, TOTAL_INCOME_OS, GTI):
+                       ST_CG_AMT_1, ST_CG_AMT_2, ST_CG_AMT_APPRATE,
+                       LT_CG_AMT_1, LT_CG_AMT_2, TOTAL_INCOME_OS,
+                       GTI):
     """
-    Compute GTI.
+    Compute GTI including capital gains amounts taxed at special rates.
     """
-    GTI = (SALARIES + INCOME_HP + TOTAL_PROFTS_GAINS_BP + ST_CG_AMT_APPRATE +
+    GTI = (SALARIES + INCOME_HP + TOTAL_PROFTS_GAINS_BP +
+           ST_CG_AMT_1 + ST_CG_AMT_2 + ST_CG_AMT_APPRATE +
+           LT_CG_AMT_1 + LT_CG_AMT_2 +
            TOTAL_INCOME_OS)
     return GTI
 
@@ -83,17 +87,20 @@ def tax_stcg_splrate(calc):
     ST_CG_RATE2 = calc.policy_param('ST_CG_RATE2')
     ST_CG_AMT_1 = calc.array('ST_CG_AMT_1')
     ST_CG_AMT_2 = calc.array('ST_CG_AMT_2')
-    """
-    tax_TI_special_rates = calc.array('tax_TI_special_rates')
-    """
     Tax_ST_CG_RATE1 = ST_CG_AMT_1 * ST_CG_RATE1
     Tax_ST_CG_RATE2 = ST_CG_AMT_2 * ST_CG_RATE2
     Total_Tax_STCG = Tax_ST_CG_RATE1 + Tax_ST_CG_RATE2
     calc.array('Tax_ST_CG_RATE1', Tax_ST_CG_RATE1)
     calc.array('Tax_ST_CG_RATE2', Tax_ST_CG_RATE2)
     calc.array('Total_Tax_STCG', Total_Tax_STCG)
-    # tax_TI_special_rates += Total_Tax_STCG
-    calc.array('tax_TI_special_rates', Total_Tax_STCG)
+    # update TI_special_rates
+    TI_special_rates = calc.array('TI_special_rates')
+    TI_special_rates += ST_CG_AMT_1 + ST_CG_AMT_2
+    calc.array('TI_special_rates', TI_special_rates)
+    # update tax_TI_special_rates
+    tax_TI_special_rates = calc.array('tax_TI_special_rates')
+    tax_TI_special_rates += Total_Tax_STCG
+    calc.array('tax_TI_special_rates', tax_TI_special_rates)
 
 
 def tax_ltcg_splrate(calc):
@@ -104,13 +111,18 @@ def tax_ltcg_splrate(calc):
     LT_CG_RATE2 = calc.policy_param('LT_CG_RATE2')
     LT_CG_AMT_1 = calc.array('LT_CG_AMT_1')
     LT_CG_AMT_2 = calc.array('LT_CG_AMT_2')
-    tax_TI_special_rates = calc.array('tax_TI_special_rates')
     Tax_LT_CG_RATE1 = LT_CG_AMT_1 * LT_CG_RATE1
     Tax_LT_CG_RATE2 = LT_CG_AMT_2 * LT_CG_RATE2
     Total_Tax_LTCG = Tax_LT_CG_RATE1 + Tax_LT_CG_RATE2
     calc.array('Tax_LT_CG_RATE1', Tax_LT_CG_RATE1)
     calc.array('Tax_LT_CG_RATE2', Tax_LT_CG_RATE2)
     calc.array('Total_Tax_LTCG', Total_Tax_LTCG)
+    # update TI_special_rates
+    TI_special_rates = calc.array('TI_special_rates')
+    TI_special_rates += LT_CG_AMT_1 + LT_CG_AMT_2
+    calc.array('TI_special_rates', TI_special_rates)
+    # update tax_TI_special_rates
+    tax_TI_special_rates = calc.array('tax_TI_special_rates')
     tax_TI_special_rates += Total_Tax_LTCG
     calc.array('tax_TI_special_rates', tax_TI_special_rates)
 
@@ -121,7 +133,12 @@ def pit_liability(calc):
     by the (marginal tax) rate* and (upper tax bracket) brk* parameters and
     given taxable income (taxinc)
     """
-    taxinc = np.maximum(0., calc.array('TTI'))
+    # subtract TI_special_rates from TTI to get Aggregate_Income, which is
+    # the portion of TTI that is taxed at normal rates
+    agginc = calc.array('TTI') - calc.array('TI_special_rates')
+    taxinc = np.maximum(0., agginc)
+    calc.array('Aggregate_Income', taxinc)
+    # calculate tax on taxable income subject to taxation at normal rates
     AGEGRP = calc.array('AGEGRP')
     rate1 = calc.policy_param('rate1')
     rate2 = calc.policy_param('rate2')
