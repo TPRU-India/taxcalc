@@ -83,7 +83,6 @@ def test_Calculator_results_consistency(pit_fullsample):
                        vdf['Tax_LT_CG_RATE1'] + vdf['Tax_LT_CG_RATE2'])
     assert np.allclose(vdf['Total_Tax_Cap_Gains'],
                        vdf['Total_Tax_STCG'] + vdf['Total_Tax_LTCG'])
-
     assert np.all(vdf['tax_Aggregate_Income'] >= 0.)
     assert np.all(vdf['tax_TI_special_rates'] >= 0.)
     assert np.all(vdf['rebate_agri'] == 0.)
