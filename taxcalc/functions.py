@@ -139,6 +139,9 @@ def pit_liability(calc):
     taxinc = np.maximum(0., agginc)
     calc.array('Aggregate_Income', taxinc)
     # calculate tax on taxable income subject to taxation at normal rates
+    # NOTE: Tax_ST_CG_APPRATE is not calculated here because its stacking
+    #       and scope assumptions have not been specified.  If it is ever
+    #       calculated here, be sure to add it to Total_Tax_STCG variable.
     AGEGRP = calc.array('AGEGRP')
     rate1 = calc.policy_param('rate1')
     rate2 = calc.policy_param('rate2')
@@ -181,3 +184,6 @@ def pit_liability(calc):
     calc.array('cess', cess)
     tax = tax + cess
     calc.array('pitax', tax)
+    # calculate Total_Tax_Cap_Gains
+    calc.array('Total_Tax_Cap_Gains',
+               calc.array('Total_Tax_STCG') + calc.array('Total_Tax_LTCG'))
