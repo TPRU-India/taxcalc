@@ -126,15 +126,14 @@ class Calculator(object):
             self.increment_year()
         assert self.current_year == year
 
-    def calc_all(self, zero_out_calc_vars=False):
+    def calc_all(self):
         """
         Call all tax-calculation functions for the current_year.
         """
         # pylint: disable=too-many-function-args,no-value-for-parameter
         # conducts static analysis of Calculator object for current_year
         assert self.__records.current_year == self.__policy.current_year
-        if zero_out_calc_vars:
-            self.__records.zero_out_changing_calculated_vars()
+        self.__records.zero_out_changing_calculated_vars()
         # pdb.set_trace()
         net_salary_income(self.__policy, self.__records)
         net_rental_income(self.__policy, self.__records)
