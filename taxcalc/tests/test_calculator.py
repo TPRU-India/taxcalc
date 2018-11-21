@@ -72,7 +72,7 @@ def test_Calculator_results_consistency(pit_fullsample):
                        vdf['TTI'] - vdf['TI_special_rates'])
     assert np.all(vdf['Tax_ST_CG_RATE1'] >= 0.)
     assert np.all(vdf['Tax_ST_CG_RATE2'] >= 0.)
-    assert np.all(vdf['Tax_ST_CG_APPRATE'] >= 0.)
+    assert np.all(vdf['Tax_ST_CG_APPRATE'] == 0.)
     assert np.allclose(vdf['Total_Tax_STCG'],
                        (vdf['Tax_ST_CG_RATE1'] +
                         vdf['Tax_ST_CG_RATE2'] +
@@ -83,3 +83,16 @@ def test_Calculator_results_consistency(pit_fullsample):
                        vdf['Tax_LT_CG_RATE1'] + vdf['Tax_LT_CG_RATE2'])
     assert np.allclose(vdf['Total_Tax_Cap_Gains'],
                        vdf['Total_Tax_STCG'] + vdf['Total_Tax_LTCG'])
+
+    assert np.all(vdf['tax_Aggregate_Income'] >= 0.)
+    assert np.all(vdf['tax_TI_special_rates'] >= 0.)
+    assert np.all(vdf['rebate_agri'] == 0.)
+    exp = vdf['tax_Aggregate_Income'] + vdf['tax_TI_special_rates']
+    exp -= vdf['rebate_agri']
+    assert np.allclose(vdf['tax_TTI'], exp)
+    assert np.all(vdf['rebate'] >= 0.)
+    assert np.all(vdf['surcharge'] >= 0.)
+    assert np.all(vdf['cess'] >= 0.)
+    assert np.all(vdf['pitax'] >= 0.)
+    exp = vdf['tax_TTI'] - vdf['rebate'] + vdf['surcharge'] + vdf['cess']
+    assert np.allclose(vdf['pitax'], exp)
