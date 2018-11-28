@@ -53,7 +53,8 @@ for year in range(2017, 2020):
 
 # dump out records for 2019
 dump_vars = ['FILING_SEQ_NO', 'AGEGRP', 'SALARIES', 'INCOME_HP',
-             'TOTAL_PROFTS_GAINS_BP', 'TOTAL_INCOME_OS', 'GTI', 'TTI']
+             'TOTAL_PROFTS_GAINS_BP', 'TOTAL_INCOME_OS', 'GTI', 'CY_LOSSES',
+             'BF_LOSSES', 'deductions', 'TTI']
 dumpdf = calc1.dataframe(dump_vars)
 dumpdf['pitax1'] = calc1.array('pitax')
 dumpdf['pitax2'] = calc2.array('pitax')

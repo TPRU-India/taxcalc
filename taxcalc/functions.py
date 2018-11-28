@@ -44,10 +44,32 @@ def total_other_income(TOTAL_INCOME_OS):
 
 
 @iterate_jit(nopython=True)
+def curr_year_losses(CY_LOSSES, CYL_SET_OFF):
+    """
+    Compute current year losses from the relevant schedule.
+    """
+    # TODO: when shedule is available, do the calculation
+    # TODO: when using losses as function argument, no calculations neeed
+    CY_LOSSES = CYL_SET_OFF
+    return CY_LOSSES
+
+
+@iterate_jit(nopython=True)
+def brought_fwd_losses(BF_LOSSES, BFL_SET_OFF_BALANCE):
+    """
+    Compute current year losses from the relevant schedule.
+    """
+    # TODO: when shedule is available, do the calculation
+    # TODO: when using losses as function argument, no calculations neeed
+    BF_LOSSES = BFL_SET_OFF_BALANCE
+    return BF_LOSSES
+
+
+@iterate_jit(nopython=True)
 def gross_total_income(SALARIES, INCOME_HP, TOTAL_PROFTS_GAINS_BP,
                        ST_CG_AMT_1, ST_CG_AMT_2, ST_CG_AMT_APPRATE,
-                       LT_CG_AMT_1, LT_CG_AMT_2, TOTAL_INCOME_OS,
-                       GTI):
+                       LT_CG_AMT_1, LT_CG_AMT_2, TOTAL_INCOME_OS, CY_LOSSES,
+                       BF_LOSSES, GTI):
     """
     Compute GTI including capital gains amounts taxed at special rates.
     """
@@ -55,15 +77,16 @@ def gross_total_income(SALARIES, INCOME_HP, TOTAL_PROFTS_GAINS_BP,
            ST_CG_AMT_1 + ST_CG_AMT_2 + ST_CG_AMT_APPRATE +
            LT_CG_AMT_1 + LT_CG_AMT_2 +
            TOTAL_INCOME_OS)
+    GTI = GTI - (CY_LOSSES + BF_LOSSES)
     return GTI
 
 
 @iterate_jit(nopython=True)
 def itemized_deductions(deductions, TOTAL_DEDUC_VIA):
     """
-    Compute deductions from itemizeable expenses and caps.
+    Compute deductions from the relevant schedule.
     """
-    # TODO: when expenses and caps policy are available, do the calculation
+    # TODO: when schedule is available, do the calculation
     # TODO: when using deductions as function argument, no calculations neeed
     deductions = TOTAL_DEDUC_VIA
     return deductions
