@@ -41,7 +41,8 @@ class GrowFactors(object):
     FILE_PATH = os.path.join(CUR_PATH, FILENAME)
 
     VALID_NAMES = set(['CPI', 'SALARY', 'RENT', 'BOPINCOME', 'STCG_APPRATE',
-                       'OINCOME', 'DEDUCTIONS', 'ST_CG_AMT_1', 'ST_CG_AMT_2',
+                       'OINCOME', 'TOTAL_DED_VIA',
+                       'ST_CG_AMT_1', 'ST_CG_AMT_2',
                        'LT_CG_AMT_1', 'LT_CG_AMT_2'])
 
     def __init__(self, growfactors_filename=FILE_PATH):
