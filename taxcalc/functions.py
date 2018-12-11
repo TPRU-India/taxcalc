@@ -44,6 +44,18 @@ def total_other_income(TOTAL_INCOME_OS):
 
 
 @iterate_jit(nopython=True)
+def agri_income(Income_Rate_Purpose, NET_AGRC_INCOME):
+    """
+    Compute the total Income that is used for rate purpose only.
+    It currently has only the net agricultural income.
+    """
+    # TODO: when shedule is available, do the calculation
+    # TODO: when using losses as function argument, no calculations neeed
+    Income_Rate_Purpose = NET_AGRC_INCOME
+    return Income_Rate_Purpose
+
+
+@iterate_jit(nopython=True)
 def curr_year_losses(CY_LOSSES, CYL_SET_OFF):
     """
     Compute current year losses from the relevant schedule.
@@ -93,7 +105,7 @@ def itemized_deductions(deductions, TOTAL_DEDUC_VIA):
 
 
 @iterate_jit(nopython=True)
-def taxable_total_income(GTI, deductions, TTI):
+def taxable_total_income(GTI, deductions, Income_Rate_Purpose, TTI):
     """
     Compute TTI.
     """
@@ -160,9 +172,11 @@ def pit_liability(calc):
     by the (marginal tax) rate* and (upper tax bracket) brk* parameters and
     given taxable income (taxinc)
     """
-    # subtract TI_special_rates from TTI to get Aggregate_Income, which is
+    # Add agricultural income (income used for rate purpose only) to TTI.
+    # Then subtract TI_special_rates from TTI to get Aggregate_Income, which is
     # the portion of TTI that is taxed at normal rates
-    agginc = calc.array('TTI') - calc.array('TI_special_rates')
+    agginc = calc.array('TTI') + calc.array('Income_Rate_Purpose')
+    agginc = agginc - calc.array('TI_special_rates')
     taxinc = np.maximum(0., agginc)
     if DEBUG:
         print('D:debug_output_for_idx=', DEBUG_IDX)
@@ -191,6 +205,7 @@ def pit_liability(calc):
     surcharge_thd1 = calc.policy_param('surcharge_thd')[0]
     surcharge_thd2 = calc.policy_param('surcharge_thd')[1]
     cess_rate = calc.policy_param('cess_rate')
+
     # compute tax on income taxed at normal rates
     tax_normal_rates = (rate1 * np.minimum(taxinc, tbrk1) +
                         rate2 * np.minimum(tbrk2 - tbrk1,
@@ -201,16 +216,29 @@ def pit_liability(calc):
     if DEBUG:
         print('D:tax_Aggregate_Income=', tax_normal_rates[DEBUG_IDX])
     calc.array('tax_Aggregate_Income', tax_normal_rates)
+
     # compute tax_TTI
     tax_TTI = tax_normal_rates + calc.array('tax_TI_special_rates')
     if DEBUG:
         print('D:tax_normal_rates+tax_TI_special_rates=', tax_TTI[DEBUG_IDX])
-    # NOTE: rebate_agri is defined in records_variables.json, but is never
-    #       calculated in functions.py, so its value is zero.
-    rebate_agri = np.minimum(tax_TTI,
-                             calc.array('rebate_agri'))  # is non-refundable
+
+    # Compute the rebate on agricultural income. Agricultural income is exempt
+    # but it is used for rate purpose.
+    agri_inc = calc.array('Income_Rate_Purpose')
+    inc_nr = calc.array('TTI') - calc.array('TI_special_rates')
+    rebate_agri = (rate1 * np.minimum(agri_inc, tbrk1) +
+                   rate2 * np.minimum(tbrk2 - tbrk1,
+                                      np.maximum(0., agri_inc - tbrk1)) +
+                   rate3 * np.minimum(tbrk3 - tbrk2,
+                                      np.maximum(0., agri_inc - tbrk2)) +
+                   rate4 * np.maximum(0., agri_inc - tbrk3))
+    rebate_agri = np.where(inc_nr > tbrk1, rebate_agri, 0.)
+    calc.array('rebate_agri', rebate_agri)
+    # It cannot be more than the tax liability
+    rebate_agri = np.minimum(tax_TTI, calc.array('rebate_agri'))
     calc.array('rebate_agri', rebate_agri)  # capped rebate_agri amount
     tax_TTI -= rebate_agri
+
     if DEBUG:
         print('D:tax_TTI=', tax_TTI[DEBUG_IDX])
     calc.array('tax_TTI', tax_TTI)

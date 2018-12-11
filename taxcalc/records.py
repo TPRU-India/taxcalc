@@ -213,6 +213,8 @@ class Records(object):
     def _blowup(self, year):
         """
         Apply to variables the grow factors for specified year.
+        Growfactor must be appied on the 'read' variables from
+        records_variables.json file and not on the 'calc' variables
         """
         # pylint: disable=too-many-locals,too-many-statements
         GF_SALARY = self.gfactors.factor_value('SALARY', year)
@@ -221,6 +223,7 @@ class Records(object):
         GF_STCG_APPRATE = self.gfactors.factor_value('STCG_APPRATE', year)
         GF_OINCOME = self.gfactors.factor_value('OINCOME', year)
         GF_DEDUCTIONS = self.gfactors.factor_value('DEDUCTIONS', year)
+        GF_AGRC_INCOME = self.gfactors.factor_value('AGRC_INCOME', year)
         GF_ST_CG_AMT_1 = self.gfactors.factor_value('ST_CG_AMT_1', year)
         GF_ST_CG_AMT_2 = self.gfactors.factor_value('ST_CG_AMT_2', year)
         GF_LT_CG_AMT_1 = self.gfactors.factor_value('LT_CG_AMT_1', year)
@@ -232,13 +235,14 @@ class Records(object):
         self.TOTAL_PROFTS_GAINS_BP *= GF_BOPINCOME
         self.ST_CG_AMT_APPRATE *= GF_STCG_APPRATE
         self.TOTAL_INCOME_OS *= GF_OINCOME
-        self.deductions *= GF_DEDUCTIONS
+        self.TOTAL_DEDUC_VIA *= GF_DEDUCTIONS
+        self.NET_AGRC_INCOME *= GF_AGRC_INCOME
         self.ST_CG_AMT_1 *= GF_ST_CG_AMT_1
         self.ST_CG_AMT_2 *= GF_ST_CG_AMT_2
         self.LT_CG_AMT_1 *= GF_LT_CG_AMT_1
         self.LT_CG_AMT_2 *= GF_LT_CG_AMT_2
-        self.CY_LOSSES *= GF_CY_LOSSES
-        self.BF_LOSSES *= GF_BF_LOSSES
+        self.CYL_SET_OFF *= GF_CY_LOSSES
+        self.BFL_SET_OFF_BALANCE *= GF_BF_LOSSES
 
     def _read_data(self, data):
         """

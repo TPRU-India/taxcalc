@@ -15,11 +15,11 @@ import copy
 import numpy as np
 import pandas as pd
 from taxcalc.functions import (net_salary_income, net_rental_income,
-                               total_other_income, curr_year_losses,
-                               brought_fwd_losses, gross_total_income,
-                               itemized_deductions, taxable_total_income,
-                               tax_stcg_splrate, tax_ltcg_splrate,
-                               pit_liability)
+                               total_other_income, agri_income,
+                               curr_year_losses, brought_fwd_losses,
+                               gross_total_income, itemized_deductions,
+                               taxable_total_income, tax_stcg_splrate,
+                               tax_ltcg_splrate, pit_liability)
 from taxcalc.policy import Policy
 from taxcalc.records import Records
 from taxcalc.utils import DIST_VARIABLES, create_distribution_table
@@ -137,6 +137,7 @@ class Calculator(object):
         net_salary_income(self.__policy, self.__records)
         net_rental_income(self.__policy, self.__records)
         total_other_income(self.__policy, self.__records)
+        agri_income(self.__policy, self.__records)
         curr_year_losses(self.__policy, self.__records)
         brought_fwd_losses(self.__policy, self.__records)
         gross_total_income(self.__policy, self.__records)

@@ -77,6 +77,11 @@
       "desc": "Total itemized deductions",
       "form": {"2017": "ITR-1 Part C-C1 and ITR-3 Part B-TI-13c"}
     },
+    "NET_AGRC_INCOME": {
+      "type": "float",
+      "desc": "Net Agricultural Income",
+      "form": {"2017": "ITR-3 Part B-TI line 16"}
+    },
     "weight": {
       "type": "float",
       "desc": "Filing unit sampling weight",
@@ -153,6 +158,11 @@
       "type": "float",
       "desc": "Income taxed at normal rates TTI minus TI_special_rates",
       "form": {"2017": "ITR-3 Part B-TI line 17"}
+    },
+    "Income_Rate_Purpose": {
+      "type": "float",
+      "desc": "Net agricultural income/any income for rate purpose",
+      "form": {"2017": "ITR-3 Part B-TI line 16"}
     },
     "deductions": {
       "type": "float",
