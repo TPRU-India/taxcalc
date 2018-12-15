@@ -212,7 +212,7 @@ class Records(object):
 
     def _blowup(self, year):
         """
-        Apply to variables the grow factors for specified year.
+        Apply to READ (not CALC) variables the grow factors for specified year.
         """
         # pylint: disable=too-many-locals,too-many-statements
         GF_SALARY = self.gfactors.factor_value('SALARY', year)
@@ -230,7 +230,7 @@ class Records(object):
         self.TOTAL_PROFTS_GAINS_BP *= GF_BOPINCOME
         self.ST_CG_AMT_APPRATE *= GF_STCG_APPRATE
         self.TOTAL_INCOME_OS *= GF_OINCOME
-        self.deductions *= GF_DEDUCTIONS
+        self.TOTAL_DEDUC_VIA *= GF_DEDUCTIONS
         self.ST_CG_AMT_1 *= GF_ST_CG_AMT_1
         self.ST_CG_AMT_2 *= GF_ST_CG_AMT_2
         self.LT_CG_AMT_1 *= GF_LT_CG_AMT_1
