@@ -91,8 +91,7 @@ def test_create_distribution_tables(pit_fullsample):
                 331.218,
                 384.399,
                 302.903]
-    if not np.allclose(dist[tabcol].values, expected,
-                       atol=0.5, rtol=0.0):
+    if not np.allclose(dist[tabcol].values, expected):
         test_failure = True
         print('dist xdec', tabcol)
         for val in dist[tabcol].values:
@@ -115,8 +114,7 @@ def test_create_distribution_tables(pit_fullsample):
                 2490.655,
                 2119.235,
                 1461.678]
-    if not np.allclose(dist[tabcol].tolist(), expected,
-                       atol=0.5, rtol=0.0):
+    if not np.allclose(dist[tabcol].tolist(), expected):
         test_failure = True
         print('dist xdec', tabcol)
         for val in dist[tabcol].values:
@@ -137,8 +135,7 @@ def test_create_distribution_tables(pit_fullsample):
                 0.000,
                 0.000,
                 1647.270]
-    if not np.allclose(dist[tabcol], expected,
-                       atol=0.5, rtol=0.0):
+    if not np.allclose(dist[tabcol], expected):
         test_failure = True
         print('dist xbin', tabcol)
         for val in dist[tabcol].values:
@@ -157,8 +154,7 @@ def test_create_distribution_tables(pit_fullsample):
                 0.000,
                 0.000,
                 22518.121]
-    if not np.allclose(dist[tabcol].tolist(), expected,
-                       atol=0.5, rtol=0.0):
+    if not np.allclose(dist[tabcol].tolist(), expected):
         test_failure = True
         print('dist xdec', tabcol)
         for val in dist[tabcol].values:
