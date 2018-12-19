@@ -164,7 +164,8 @@ def get_sums(pdf):
     return pd.Series(sums, name='ALL')
 
 
-def create_distribution_table(vdf, groupby, income_measure):
+def create_distribution_table(vdf, groupby, income_measure,
+                              averages=False):
     """
     Get results from vdf, sort them by expanded_income based on groupby,
     and return them as a table.
@@ -183,6 +184,10 @@ def create_distribution_table(vdf, groupby, income_measure):
     income_measure: String object
         options for input: 'expanded_income' or 'expanded_income_baseline'
         determines which variable is used to sort rows
+
+    averages : boolean
+        specifies whether or not monetary table entries are aggregates or
+        averages (default value of False implies entries are aggregates)
 
     Returns
     -------
@@ -206,10 +211,9 @@ def create_distribution_table(vdf, groupby, income_measure):
         Returns calculated distribution table column statistics derived from
         the specified grouped Dataframe object, gpdf.
         """
-        unweighted_columns = ['weight']
         sdf = pd.DataFrame()
         for col in DIST_TABLE_COLUMNS:
-            if col in unweighted_columns:
+            if col == 'weight':
                 sdf[col] = gpdf.apply(unweighted_sum, col)
             else:
                 sdf[col] = gpdf.apply(weighted_sum, col)
@@ -253,8 +257,6 @@ def create_distribution_table(vdf, groupby, income_measure):
     else:
         dist_table = dist_table.append(sum_row)
     del sum_row
-    # set print display format for float table elements
-    pd.options.display.float_format = '{:8,.0f}'.format
     # ensure dist_table columns are in correct order
     assert dist_table.columns.values.tolist() == DIST_TABLE_COLUMNS
     # add row names to table if using weighted_deciles or standard_income_bins
@@ -271,6 +273,11 @@ def create_distribution_table(vdf, groupby, income_measure):
     # delete intermediate Pandas DataFrame objects
     del gpdf
     del pdf
+    # optionally convert table entries into averages (rather than aggregates)
+    if averages:
+        for col in DIST_TABLE_COLUMNS:
+            if col != 'weight':
+                dist_table[col] /= dist_table['weight']
     # return table as Pandas DataFrame
     vdf.sort_index(inplace=True)
     return dist_table
