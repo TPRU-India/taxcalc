@@ -332,7 +332,8 @@ class Calculator(object):
         del diag
         return pd.concat(tlist, axis=1)
 
-    def distribution_tables(self, calc, groupby, averages=False):
+    def distribution_tables(self, calc, groupby,
+                            averages=False, scaling=True):
         """
         Get results from self and calc, sort them by GTI into table
         rows defined by groupby, compute grouped statistics, and
@@ -355,6 +356,14 @@ class Calculator(object):
         averages : boolean
             specifies whether or not monetary table entries are aggregates or
             averages (default value of False implies entries are aggregates)
+
+        scaling : boolean
+            specifies whether or not monetary table entries are scaled to
+            billions and rounded to three decimal places when averages=False,
+            or when averages=True, to thousands and rounded to three decimal
+            places.  Regardless of the value of averages, non-monetary table
+            entries are scaled to millions and rounded to three decimal places
+            (default value of False implies entries are scaled and rounded)
 
         Return and typical usage
         ------------------------
@@ -396,7 +405,7 @@ class Calculator(object):
         var_dataframe = self.distribution_table_dataframe()
         imeasure = 'GTI'
         dt1 = create_distribution_table(var_dataframe, groupby, imeasure,
-                                        averages)
+                                        averages, scaling)
         del var_dataframe
         if calc is None:
             dt2 = None
@@ -410,7 +419,7 @@ class Calculator(object):
                 imeasure = 'GTI_baseline'
                 var_dataframe[imeasure] = self.array('GTI')
             dt2 = create_distribution_table(var_dataframe, groupby, imeasure,
-                                            averages)
+                                            averages, scaling)
             del var_dataframe
         return (dt1, dt2)
 
