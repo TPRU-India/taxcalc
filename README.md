@@ -13,8 +13,8 @@ Getting Started
 ---------------
 
 If you want to **propose code changes**, follow the directions in the
-[Tax-Calculator Contributor
-Guide](http://taxcalc.readthedocs.io/en/latest/contributor_guide.html)
+[USA Tax-Calculator Contributor
+Guide](https://github.com/PSLmodels/Tax-Calculator/blob/master/CONTRIBUTING.md#tax-calculator-contributor-guide)
 on how to clone the pitaxcalc-demo git repository.  Before developing
 any code changes be sure to read completely the Contributor Guide and
 then read about our [coding
