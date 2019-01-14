@@ -240,7 +240,6 @@ class Records(object):
         self.CYL_SET_OFF *= GF_CYL_SET_OFF
         self.BFL_SET_OFF_BALANCE *= GF_BFL_SET_OFF_BALANCE
 
-
     def _read_data(self, data):
         """
         Read Records data from file or use specified DataFrame as data.
