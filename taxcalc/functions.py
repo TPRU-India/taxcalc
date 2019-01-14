@@ -44,17 +44,40 @@ def total_other_income(TOTAL_INCOME_OS):
 
 
 @iterate_jit(nopython=True)
+def current_year_losses(CYL_SET_OFF, CY_Losses):
+    """
+    Compute Current Year Losses to be set off, from Schedule CYLA.
+    """
+    # TODO: when schedule is available, do the calculation
+    # TODO: when reading CYL_SET_OFF from the data, no calculations neeed
+    CY_Losses = CYL_SET_OFF
+    return CY_Losses
+
+
+@iterate_jit(nopython=True)
+def brought_fwd_losses(BFL_SET_OFF_BALANCE, BF_Losses):
+    """
+    Compute Brought forward Losses to be set off, from Schedule BFLA.
+    """
+    # TODO: when schedule is available, do the calculation
+    # TODO: when reading BFL_SET_OFF_BALANCE from the data, no calculations neeed
+    BF_Losses = BFL_SET_OFF_BALANCE
+    return BF_Losses
+
+
+@iterate_jit(nopython=True)
 def gross_total_income(SALARIES, INCOME_HP, TOTAL_PROFTS_GAINS_BP,
                        ST_CG_AMT_1, ST_CG_AMT_2, ST_CG_AMT_APPRATE,
                        LT_CG_AMT_1, LT_CG_AMT_2, TOTAL_INCOME_OS,
-                       GTI):
+                       CY_Losses, BF_Losses, GTI):
     """
     Compute GTI including capital gains amounts taxed at special rates.
     """
     GTI = (SALARIES + INCOME_HP + TOTAL_PROFTS_GAINS_BP +
            ST_CG_AMT_1 + ST_CG_AMT_2 + ST_CG_AMT_APPRATE +
            LT_CG_AMT_1 + LT_CG_AMT_2 +
-           TOTAL_INCOME_OS)
+           TOTAL_INCOME_OS) - (CY_Losses + BF_Losses)
+    GTI = np.maximum(0., GTI)
     return GTI
 
 
@@ -75,6 +98,7 @@ def taxable_total_income(GTI, deductions, TTI):
     Compute TTI.
     """
     TTI = GTI - deductions
+    TTI = np.maximum(0., TTI)
     return TTI
 
 
