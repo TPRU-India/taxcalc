@@ -239,7 +239,7 @@ class Records(object):
         self.LT_CG_AMT_2 *= GF_LT_CG_AMT_2
         self.CYL_SET_OFF *= GF_CYL_SET_OFF
         self.BFL_SET_OFF_BALANCE *= GF_BFL_SET_OFF_BALANCE
-        
+
 
     def _read_data(self, data):
         """

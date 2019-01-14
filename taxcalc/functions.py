@@ -60,7 +60,7 @@ def brought_fwd_losses(BFL_SET_OFF_BALANCE, BF_Losses):
     Compute Brought forward Losses to be set off, from Schedule BFLA.
     """
     # TODO: when schedule is available, do the calculation
-    # TODO: when reading BFL_SET_OFF_BALANCE from the data, no calculations neeed
+    # TODO: when reading BFL_SET_OFF_BALANCE from the data, no calculations
     BF_Losses = BFL_SET_OFF_BALANCE
     return BF_Losses
 
