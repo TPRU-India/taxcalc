@@ -31,7 +31,7 @@ def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample,
     assert pol.current_year == syr
     # specify expected number of filers and aggregate PIT liability
     expect_weight = 35.241e6
-    expect_pitax = 1822.119e9
+    expect_pitax = 1807.639e9
     # expect_corpweight = ???
     # expect_citax = ???
     # create full-sample Calculator object
@@ -76,7 +76,7 @@ def test_Calculator_results_consistency(pit_fullsample, cit_fullsample):
     assert np.allclose(vdf['TTI'],
                        vdf['GTI'] - vdf['deductions'])
     assert np.allclose(vdf['Aggregate_Income'],
-                       vdf['TTI'] - vdf['TI_special_rates'])
+                       np.maximum(0., vdf['TTI'] - vdf['TI_special_rates']))
     assert np.all(vdf['Tax_ST_CG_RATE1'] >= 0.)
     assert np.all(vdf['Tax_ST_CG_RATE2'] >= 0.)
     assert np.all(vdf['Tax_ST_CG_APPRATE'] == 0.)
