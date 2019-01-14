@@ -19,7 +19,7 @@ from taxcalc.functions import (net_salary_income, net_rental_income,
                                itemized_deductions, taxable_total_income,
                                tax_stcg_splrate, tax_ltcg_splrate,
                                current_year_losses, brought_fwd_losses,
-                               pit_liability)
+                               agri_income, pit_liability)
 from taxcalc.corpfunctions import (net_tax_liability_a, net_tax_liability_b)
 from taxcalc.policy import Policy
 from taxcalc.records import Records
@@ -161,6 +161,7 @@ class Calculator(object):
         brought_fwd_losses(self.__policy, self.__records)
         gross_total_income(self.__policy, self.__records)
         itemized_deductions(self.__policy, self.__records)
+        agri_income(self.__policy, self.__records)
         taxable_total_income(self.__policy, self.__records)
         tax_stcg_splrate(self)
         tax_ltcg_splrate(self)

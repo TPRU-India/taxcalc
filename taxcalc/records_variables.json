@@ -72,6 +72,11 @@
       "desc": "Brought Forward Losses to be set off",
       "form": {"2017": "ITR-3 Part B-TI 9"}
     },
+    "NET_AGRC_INCOME": {
+      "type": "float",
+      "desc": "Agricultural income used for rate purpose",
+      "form": {"2017": "ITR-3 Part B-TI 16"}
+    },
     "TOTAL_DEDUC_VIA": {
       "type": "float",
       "desc": "Total itemized deductions",
@@ -153,6 +158,11 @@
       "type": "float",
       "desc": "Income taxed at normal rates TTI minus TI_special_rates",
       "form": {"2017": "ITR-3 Part B-TI line 17"}
+    },
+    "Income_Rate_Purpose": {
+      "type": "float",
+      "desc": "Agricultural/any other Income used for rate purpose",
+      "form": {"2017": "ITR-3 Part B-TI 16"}
     },
     "deductions": {
       "type": "float",
