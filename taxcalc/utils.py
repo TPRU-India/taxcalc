@@ -22,95 +22,25 @@ from taxcalc.utilsprvt import (weighted_count_lt_zero,
 # DIST_TABLE_LABELS list below; this correspondence allows us to use this
 # labels list to map a label to the correct column in a distribution table.
 
-DIST_VARIABLES = ['expanded_income', 'c00100', 'aftertax_income', 'standard',
-                  'c04470', 'c04600', 'c04800', 'taxbc', 'c62100', 'c09600',
-                  'c05800', 'othertaxes', 'refund', 'c07100',
-                  'iitax', 'payrolltax', 'combined', 'weight', 'ubi',
-                  'benefit_cost_total', 'benefit_value_total']
+DIST_VARIABLES = ['weight', 'GTI', 'TTI',
+                  'TI_special_rates', 'tax_TI_special_rates',
+                  'Aggregate_Income', 'tax_Aggregate_Income',
+                  'tax_TTI', 'rebate', 'surcharge', 'cess', 'pitax']
 
-DIST_TABLE_COLUMNS = ['weight',
-                      'c00100',
-                      'num_returns_StandardDed',
-                      'standard',
-                      'num_returns_ItemDed',
-                      'c04470',
-                      'c04600',
-                      'c04800',
-                      'taxbc',
-                      'c62100',
-                      'num_returns_AMT',
-                      'c09600',
-                      'c05800',
-                      'c07100',
-                      'othertaxes',
-                      'refund',
-                      'iitax',
-                      'payrolltax',
-                      'combined',
-                      'ubi',
-                      'benefit_cost_total',
-                      'benefit_value_total',
-                      'expanded_income',
-                      'aftertax_income']
+DIST_TABLE_COLUMNS = DIST_VARIABLES
 
 DIST_TABLE_LABELS = ['Returns',
-                     'AGI',
-                     'Standard Deduction Filers',
-                     'Standard Deduction',
-                     'Itemizers',
-                     'Itemized Deduction',
-                     'Personal Exemption',
-                     'Taxable Income',
-                     'Regular Tax',
-                     'AMTI',
-                     'AMT Filers',
-                     'AMT',
-                     'Tax before Credits',
-                     'Non-refundable Credits',
-                     'Other Taxes',
-                     'Refundable Credits',
-                     'Individual Income Tax Liabilities',
-                     'Payroll Tax Liablities',
-                     'Combined Payroll and Individual Income Tax Liabilities',
-                     'Universal Basic Income',
-                     'Total Cost of Benefits',
-                     'Consumption Value of Benefits',
-                     'Expanded Income',
-                     'After-Tax Expanded Income']
-
-# Items in the DIFF_TABLE_COLUMNS list below correspond to the items in the
-# DIFF_TABLE_LABELS list below; this correspondence allows us to use this
-# labels list to map a label to the correct column in a difference table.
-
-DIFF_VARIABLES = ['expanded_income', 'c00100', 'aftertax_income',
-                  'iitax', 'payrolltax', 'combined', 'weight', 'ubi',
-                  'benefit_cost_total', 'benefit_value_total']
-
-DIFF_TABLE_COLUMNS = ['count',
-                      'tax_cut',
-                      'perc_cut',
-                      'tax_inc',
-                      'perc_inc',
-                      'mean',
-                      'tot_change',
-                      'share_of_change',
-                      'ubi',
-                      'benefit_cost_total',
-                      'benefit_value_total',
-                      'pc_aftertaxinc']
-
-DIFF_TABLE_LABELS = ['All Tax Units',
-                     'Tax Units with Tax Cut',
-                     'Percent with Tax Cut',
-                     'Tax Units with Tax Increase',
-                     'Percent with Tax Increase',
-                     'Average Tax Change',
-                     'Total Tax Difference',
-                     'Share of Overall Change',
-                     'Universal Basic Income',
-                     'Total Cost of Benefits',
-                     'Consumption Value of Benefits',
-                     '% Change in After-Tax Income']
+                     'GTI',
+                     'TTI All',
+                     'TTI @ Special Rates',
+                     'Tax @ Special Rates',
+                     'TTI @ Normal Rates',
+                     'Tax @ Normal Rates',
+                     'Tax on TTI',
+                     'Rebate',
+                     'Surcharge',
+                     'CESS',
+                     'PITax']
 
 DECILE_ROW_NAMES = ['0-10n', '0-10z', '0-10p',
                     '10-20', '20-30', '30-40', '40-50',
@@ -118,15 +48,12 @@ DECILE_ROW_NAMES = ['0-10n', '0-10z', '0-10p',
                     'ALL',
                     '90-95', '95-99', 'Top 1%']
 
-STANDARD_ROW_NAMES = ['<$0K', '=$0K', '$0-10K', '$10-20K', '$20-30K',
-                      '$30-40K', '$40-50K', '$50-75K', '$75-100K',
-                      '$100-200K', '$200-500K', '$500-1000K', '>$1000K', 'ALL']
+STANDARD_ROW_NAMES = ['<0', '=0', '0-5L', '5-10L', '10-15L',
+                      '15-20L', '20-30L', '30-40L', '40-50L',
+                      '50-100L', '>100L', 'ALL']
 
-STANDARD_INCOME_BINS = [-9e99, -1e-9, 1e-9, 10e3, 20e3, 30e3, 40e3, 50e3,
-                        75e3, 100e3, 200e3, 500e3, 1e6, 9e99]
-
-SOI_AGI_BINS = [-9e99, 1.0, 5e3, 10e3, 15e3, 20e3, 25e3, 30e3, 40e3, 50e3,
-                75e3, 100e3, 200e3, 500e3, 1e6, 1.5e6, 2e6, 5e6, 10e6, 9e99]
+STANDARD_INCOME_BINS = [-9e99, -1e-9, 1e-9, 5e5, 10e5, 15e5, 20e5, 30e5,
+                        40e5, 50e5, 100e5, 9e99]
 
 
 def unweighted_sum(pdf, col_name):
@@ -250,7 +177,7 @@ def create_distribution_table(vdf, groupby, income_measure):
 
     groupby : String object
         options for input: 'weighted_deciles' or
-                           'standard_income_bins' or 'soi_agi_bins'
+                           'standard_income_bins'
         determines how the rows in the resulting Pandas DataFrame are sorted
 
     income_measure: String object
@@ -279,8 +206,7 @@ def create_distribution_table(vdf, groupby, income_measure):
         Returns calculated distribution table column statistics derived from
         the specified grouped Dataframe object, gpdf.
         """
-        unweighted_columns = ['weight', 'num_returns_StandardDed',
-                              'num_returns_ItemDed', 'num_returns_AMT']
+        unweighted_columns = ['weight']
         sdf = pd.DataFrame()
         for col in DIST_TABLE_COLUMNS:
             if col in unweighted_columns:
@@ -291,10 +217,9 @@ def create_distribution_table(vdf, groupby, income_measure):
     # main logic of create_distribution_table
     assert isinstance(vdf, pd.DataFrame)
     assert (groupby == 'weighted_deciles' or
-            groupby == 'standard_income_bins' or
-            groupby == 'soi_agi_bins')
-    assert (income_measure == 'expanded_income' or
-            income_measure == 'expanded_income_baseline')
+            groupby == 'standard_income_bins')
+    assert (income_measure == 'GTI' or
+            income_measure == 'GTI_baseline')
     assert income_measure in vdf
     assert 'table_row' not in list(vdf.columns.values)
     # sort the data given specified groupby and income_measure
@@ -304,9 +229,6 @@ def create_distribution_table(vdf, groupby, income_measure):
     elif groupby == 'standard_income_bins':
         pdf = add_income_table_row_variable(vdf, income_measure,
                                             STANDARD_INCOME_BINS)
-    elif groupby == 'soi_agi_bins':
-        pdf = add_income_table_row_variable(vdf, income_measure,
-                                            SOI_AGI_BINS)
     # construct grouped DataFrame
     gpdf = pdf.groupby('table_row', as_index=False)
     dist_table = stat_dataframe(gpdf)
@@ -511,118 +433,6 @@ def create_difference_table(vdf1, vdf2, groupby, tax_to_diff):
     vdf1.sort_index(inplace=True)
     vdf2.sort_index(inplace=True)
     return diff_table
-
-
-def create_diagnostic_table(vdf, year):
-    """
-    Extract single-year diagnostic table from Pandas DataFrame object
-    derived from a Calculator object using the dataframe(DIST_VARIABLES)
-    method.
-
-    Parameters
-    ----------
-    vdf : Pandas DataFrame object containing the variables
-
-    year : assessment year for which variables are drawn from Calculator object
-
-    Returns
-    -------
-    Pandas DataFrame object containing the diagnostic table
-    """
-    # pylint: disable=too-many-statements
-    def diagnostic_table_odict(recs):
-        """
-        Nested function that extracts diagnostic table dictionary from
-        the specified Pandas DataFrame object, vdf.
-
-        Parameters
-        ----------
-        vdf : Pandas DataFrame object containing the variables
-
-        Returns
-        -------
-        ordered dictionary of variable names and aggregate weighted values
-        """
-        # aggregate weighted values expressed in millions or billions
-        in_millions = 1.0e-6
-        in_billions = 1.0e-9
-        odict = collections.OrderedDict()
-        # total number of filing units
-        wghts = vdf['weight']
-        odict['Returns (#m)'] = wghts.sum() * in_millions
-        # adjusted gross income
-        agi = vdf['c00100']
-        odict['AGI ($b)'] = (agi * wghts).sum() * in_billions
-        # number of itemizers
-        num = (wghts[vdf['c04470'] > 0.].sum())
-        odict['Itemizers (#m)'] = num * in_millions
-        # itemized deduction
-        ided1 = vdf['c04470'] * wghts
-        val = ided1[vdf['c04470'] > 0.].sum()
-        odict['Itemized Deduction ($b)'] = val * in_billions
-        # number of standard deductions
-        num = wghts[vdf['standard'] > 0.].sum()
-        odict['Standard Deduction Filers (#m)'] = num * in_millions
-        # standard deduction
-        sded1 = recs.standard * wghts
-        val = sded1[vdf['standard'] > 0.].sum()
-        odict['Standard Deduction ($b)'] = val * in_billions
-        # personal exemption
-        val = (vdf['c04600'] * wghts).sum()
-        odict['Personal Exemption ($b)'] = val * in_billions
-        # taxable income
-        val = (vdf['c04800'] * wghts).sum()
-        odict['Taxable Income ($b)'] = val * in_billions
-        # regular tax liability
-        val = (vdf['taxbc'] * wghts).sum()
-        odict['Regular Tax ($b)'] = val * in_billions
-        # AMT taxable income
-        odict['AMT Income ($b)'] = ((vdf['c62100'] * wghts).sum() *
-                                    in_billions)
-        # total AMT liability
-        odict['AMT Liability ($b)'] = ((vdf['c09600'] * wghts).sum() *
-                                       in_billions)
-        # number of people paying AMT
-        odict['AMT Filers (#m)'] = (wghts[vdf['c09600'] > 0.].sum() *
-                                    in_millions)
-        # tax before credits
-        val = (vdf['c05800'] * wghts).sum()
-        odict['Tax before Credits ($b)'] = val * in_billions
-        # refundable credits
-        val = (vdf['refund'] * wghts).sum()
-        odict['Refundable Credits ($b)'] = val * in_billions
-        # nonrefundable credits
-        val = (vdf['c07100'] * wghts).sum()
-        odict['Nonrefundable Credits ($b)'] = val * in_billions
-        # reform surtaxes (part of federal individual income tax liability)
-        val = (vdf['surtax'] * wghts).sum()
-        odict['Reform Surtaxes ($b)'] = val * in_billions
-        # other taxes on Form 1040
-        val = (vdf['othertaxes'] * wghts).sum()
-        odict['Other Taxes ($b)'] = val * in_billions
-        # federal individual income tax liability
-        val = (vdf['iitax'] * wghts).sum()
-        odict['Ind Income Tax ($b)'] = val * in_billions
-        # OASDI+HI payroll tax liability (including employer share)
-        val = (vdf['payrolltax'] * wghts).sum()
-        odict['Payroll Taxes ($b)'] = val * in_billions
-        # combined income and payroll tax liability
-        val = (vdf['combined'] * wghts).sum()
-        odict['Combined Liability ($b)'] = val * in_billions
-        # number of tax units with non-positive income tax liability
-        num = (wghts[vdf['iitax'] <= 0]).sum()
-        odict['With Income Tax <= 0 (#m)'] = num * in_millions
-        # number of tax units with non-positive combined tax liability
-        num = (wghts[vdf['combined'] <= 0]).sum()
-        odict['With Combined Tax <= 0 (#m)'] = num * in_millions
-        return odict
-    # tabulate diagnostic table
-    odict = diagnostic_table_odict(vdf)
-    pdf = pd.DataFrame(data=odict, index=[year], columns=odict.keys())
-    pdf = pdf.transpose()
-    pd.options.display.float_format = '{:8,.1f}'.format
-    del odict
-    return pdf
 
 
 def read_egg_csv(fname, index_col=None):

@@ -3,8 +3,8 @@ Testing Procedures
 
 This description of pitaxcalc-demo testing procedure is written for a
 person who wants to contribute changes to pitaxcalc-demo source code.
-It assumes that you have read the [Tax-Calculator Contributor
-Guide](http://taxcalc.readthedocs.io/en/latest/contributor_guide.html)
+It assumes that you have read the [USA Tax-Calculator Contributor
+Guide](https://github.com/PSLmodels/Tax-Calculator/blob/master/CONTRIBUTING.md#tax-calculator-contributor-guide)
 and have cloned the [central GitHub pitaxcalc-demo
 repository](https://github.com/TPRU-demo/pitaxcalc-demo)
 to your GitHub account and to your local computer, and are familiar

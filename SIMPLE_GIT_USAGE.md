@@ -2,8 +2,8 @@ Simple Git Usage
 ================
 
 This list of elementary git commands assumes that you (1) have read
-the [Tax-Calculator Contributor
-Guide](http://taxcalc.readthedocs.io/en/latest/contributor_guide.html),
+the [USA Tax-Calculator Contributor
+Guide](https://github.com/PSLmodels/Tax-Calculator/blob/master/CONTRIBUTING.md#tax-calculator-contributor-guide),
 (2) have forked the [central GitHub pitaxcalc-demo
 repository](https://github.com/TPRU-demo/pitaxcalc-demo) to your
 GitHub account, and (3) have cloned your forked repository to your
