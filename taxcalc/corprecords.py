@@ -98,7 +98,6 @@ class CorpRecords(object):
             self.data_type = data_type
         elif data_type == 'panel':
             self.data_type = data_type
-            raise ValueError('Panel methods not yet built')
         else:
             raise ValueError('data_type is not cross-section or panel')
         self._read_data(data)
@@ -160,14 +159,39 @@ class CorpRecords(object):
         """
         # move to next year
         self.__current_year += 1
-        # apply variable extrapolation grow factors
-        if self.gfactors is not None:
-            self._blowup(self.__current_year)
+        if self.data_type == 'cross-section':
+            # apply variable extrapolation grow factors
+            if self.gfactors is not None:
+                self._blowup(self.__current_year)
+        else:
+            self.increment_panel_year()
         # specify current-year sample weights
         if self.WT.size > 0:
             wt_colname = 'WT{}'.format(self.__current_year)
             self.weight = self.WT[wt_colname]
 
+    def increment_panel_year(self):
+        """
+        Add one to current year and to panel year.
+        Saves measures to be carried forward.
+        Extracts next year of the panel data.
+        Updates carried forward measures.
+        """
+        # Specify the variables to be carried forward
+        carryforward_df = pd.DataFrame({'ID_NO': self.ID_NO})
+        # Update years
+        self.panelyear += 1
+        assyear = self.full_panel['ASSESSMENT_YEAR']
+        data1 = self.full_panel[assyear == self.panelyear]
+        data2 = data1.merge(right=carryforward_df, how='outer', on='ID_NO',
+                            indicator=True)
+        merge_info = np.array(data2['_merge'])
+        to_update = np.where(merge_info == 'both', True, False)
+        to_keep = np.where(merge_info != 'right_only', True, False)
+        #data2[input] = np.where(to_update, data2[calc], data2[input])
+        data3 = data2[to_keep]
+        self._read_data(data3)
+    
     def set_current_year(self, new_current_year):
         """
         Set current year to specified value and updates ASSESSMENT_YEAR
@@ -246,7 +270,13 @@ class CorpRecords(object):
         elif isinstance(data, str):
             data_path = os.path.join(CorpRecords.CUR_PATH, data)
             if os.path.exists(data_path):
-                taxdf = pd.read_csv(data_path)
+                if self.data_type == "cross-section":
+                    taxdf = pd.read_csv(data_path)
+                else:
+                    self.full_panel = pd.read_csv(data_path)
+                    assyear = np.array(self.full_panel['ASSESSMENT_YEAR'])
+                    self.panelyear = min(assyear)
+                    taxdf = self.full_panel[assyear == self.panelyear]
             else:
                 msg = 'file {} cannot be found'.format(data_path)
                 raise ValueError(msg)
