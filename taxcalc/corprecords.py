@@ -183,12 +183,13 @@ class CorpRecords(object):
         self.panelyear += 1
         assyear = self.full_panel['ASSESSMENT_YEAR']
         data1 = self.full_panel[assyear == self.panelyear]
+        # TODO: apply panel blowup factors
         data2 = data1.merge(right=carryforward_df, how='outer', on='ID_NO',
                             indicator=True)
         merge_info = np.array(data2['_merge'])
         to_update = np.where(merge_info == 'both', True, False)
         to_keep = np.where(merge_info != 'right_only', True, False)
-        #data2[input] = np.where(to_update, data2[calc], data2[input])
+        # data2[input] = np.where(to_update, data2[calc], data2[input])
         data3 = data2[to_keep]
         self._read_data(data3)
     
