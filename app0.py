@@ -13,6 +13,12 @@ assert isinstance(recs, Records)
 assert recs.data_year == 2017
 assert recs.current_year == 2017
 
+# create CorpRecords object containing cit.csv and cit_weights.csv input data
+crecs = CorpRecords()
+assert isinstance(crecs, CorpRecords)
+assert crecs.data_year == 2017
+assert crecs.current_year == 2017
+
 # create Policy object containing current-law policy
 pol = Policy()
 
@@ -20,7 +26,7 @@ assert isinstance(pol, Policy)
 assert pol.current_year == 2017
 
 # specify Calculator object for current-law policy
-calc1 = Calculator(policy=pol, records=recs)
+calc1 = Calculator(policy=pol, records=recs, corprecords=crecs)
 
 # NOTE: calc1 now contains a PRIVATE COPY of pol and a PRIVATE COPY of recs,
 #       so we can continue to use pol and recs in this script without any

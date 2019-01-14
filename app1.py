@@ -9,17 +9,20 @@ from taxcalc import *
 # create Records object containing pit.csv and pit_weights.csv input data
 recs = Records()
 
+# create CorpRecords object containing cit.csv and cit_weights.csv input data
+crecs = CorpRecords()
+
 # create Policy object containing current-law policy
 pol = Policy()
 
 # specify Calculator object for current-law policy
-calc1 = Calculator(policy=pol, records=recs)
+calc1 = Calculator(policy=pol, records=recs, corprecords=crecs)
 calc1.calc_all()
 
 # specify Calculator object for reform in JSON file
 reform = Calculator.read_json_param_objects('app1_reform.json', None)
 pol.implement_reform(reform['policy'])
-calc2 = Calculator(policy=pol, records=recs)
+calc2 = Calculator(policy=pol, records=recs, corprecords=crecs)
 calc2.calc_all()
 
 # compare aggregate results from two calculators
@@ -29,6 +32,10 @@ total_weights = calc1.total_weight()
 print(f'Tax 1 {weighted_tax1 * 1e-9:,.2f}')
 print(f'Tax 2 {weighted_tax2 * 1e-9:,.2f}')
 print(f'Total weight {total_weights * 1e-6:,.2f}')
+
+# Show results from corporate tax
+print(calc1.carray('NET_TAX_LIABILTY'))
+print(calc2.carray('NET_TAX_LIABILITY_A'))
 
 # dump out records
 dump_vars = ['FILING_SEQ_NO', 'AGEGRP', 'SALARIES', 'INCOME_HP',

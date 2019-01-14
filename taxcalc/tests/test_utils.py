@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 import pytest
 # pylint: disable=import-error
-from taxcalc import Policy, Records, Calculator
+from taxcalc import Policy, Records, CorpRecords, Calculator
 from taxcalc.utils import (DIST_VARIABLES,
                            DIST_TABLE_COLUMNS, DIST_TABLE_LABELS,
                            STANDARD_INCOME_BINS,
@@ -55,17 +55,18 @@ def test_validity_of_name_lists():
     assert (set(DIST_TABLE_COLUMNS) - set(DIST_VARIABLES)) == extra_vars_set
 
 
-def test_create_distribution_tables(pit_fullsample):
+def test_create_distribution_tables(pit_fullsample, cit_fullsample):
     # pylint: disable=too-many-statements,too-many-branches
     # create a current-law Policy object and Calculator object calc1
     rec = Records(data=pit_fullsample)
+    crec = CorpRecords(data=cit_fullsample)
     pol = Policy()
-    calc1 = Calculator(policy=pol, records=rec)
+    calc1 = Calculator(policy=pol, records=rec, corprecords=crec)
     calc1.calc_all()
     # create a policy-reform Policy object and Calculator object calc2
     reform = {2017: {'_rate2': [0.06]}}
     pol.implement_reform(reform)
-    calc2 = Calculator(policy=pol, records=rec)
+    calc2 = Calculator(policy=pol, records=rec, corprecords=crec)
     calc2.calc_all()
 
     test_failure = False
@@ -250,9 +251,10 @@ def test_add_quantile_trow_var():
                                               100, decile_details=True)
 
 
-def test_dist_table_sum_row(pit_subsample):
+def test_dist_table_sum_row(pit_subsample, cit_fullsample):
     rec = Records(data=pit_subsample)
-    calc = Calculator(policy=Policy(), records=rec)
+    crec = CorpRecords(data=cit_fullsample)
+    calc = Calculator(policy=Policy(), records=rec, corprecords=crec)
     calc.calc_all()
     tb1 = create_distribution_table(calc.distribution_table_dataframe(),
                                     'standard_income_bins', 'GTI')

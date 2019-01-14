@@ -28,16 +28,19 @@ locale.setlocale(locale.LC_ALL, '')
 # create Records object containing pit.csv and pit_weights.csv input data
 recs = Records(data='pitBigData.csv', weights='pit_weightsBD.csv')
 
+# create CorpRecords object containing cit.csv and cit_weights.csv input data
+crecs = CorpRecords()
+
 # create Policy object containing current-law policy
 pol = Policy()
 
 # specify Calculator object for current-law policy
-calc1 = Calculator(policy=pol, records=recs, verbose=False)
+calc1 = Calculator(policy=pol, records=recs, corprecords=crecs, verbose=False)
 
 # specify Calculator object for reform in JSON file
 reform = Calculator.read_json_param_objects('app14_reform.json', None)
 pol.implement_reform(reform['policy'])
-calc2 = Calculator(policy=pol, records=recs, verbose=False)
+calc2 = Calculator(policy=pol, records=recs, corprecords=crecs, verbose=False)
 # loop through years 2017, 2018, and 2019 and print out pitax
 for year in range(2017, 2020):
     calc1.advance_to_year(year)
