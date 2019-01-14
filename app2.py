@@ -13,16 +13,19 @@ from taxcalc import *
 # create Records object containing pit.csv and pit_weights.csv input data
 recs = Records()
 
+# create CorpRecords object containing cit.csv and cit_weights.csv input data
+crecs = CorpRecords()
+
 # create Policy object containing current-law policy
 pol = Policy()
 
 # specify Calculator object for current-law policy
-calc1 = Calculator(policy=pol, records=recs)
+calc1 = Calculator(policy=pol, records=recs, corprecords=crecs)
 
 # specify Calculator object for reform in JSON file
 reform = Calculator.read_json_param_objects('app1_reform.json', None)
 pol.implement_reform(reform['policy'])
-calc2 = Calculator(policy=pol, records=recs)
+calc2 = Calculator(policy=pol, records=recs, corprecords=crecs)
 
 <<<<<<< HEAD
 # compare aggregate results from two calculators

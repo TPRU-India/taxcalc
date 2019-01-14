@@ -19,8 +19,10 @@ from taxcalc.functions import (net_salary_income, net_rental_income,
                                itemized_deductions, taxable_total_income,
                                tax_stcg_splrate, tax_ltcg_splrate,
                                pit_liability)
+from taxcalc.corpfunctions import (net_tax_liability_a, net_tax_liability_b)
 from taxcalc.policy import Policy
 from taxcalc.records import Records
+from taxcalc.corprecords import CorpRecords
 from taxcalc.utils import DIST_VARIABLES, create_distribution_table
 # import pdb
 
@@ -35,6 +37,9 @@ class Calculator(object):
         this argument must be specified and object is copied for internal use
 
     records: Records class object
+        this argument must be specified and object is copied for internal use
+
+    corprecords: CorpRecords class object
         this argument must be specified and object is copied for internal use
 
     verbose: boolean
@@ -60,16 +65,19 @@ class Calculator(object):
     objects is as follows:
          pol = Policy()
          rec = Records()
-         calc1 = Calculator(policy=pol, records=rec)  # current-law
+         crec = CorpRecords()
+         # Current law
+         calc1 = Calculator(policy=pol, records=rec, corprecords=crec)
          pol.implement_reform(...)
-         calc2 = Calculator(policy=pol, records=rec)  # reform
+         # Reform
+         calc2 = Calculator(policy=pol, records=rec, corprecords=crec)
     All calculations are done on the internal copies of the Policy and
     Records objects passed to each of the two Calculator constructors.
     """
     # pylint: disable=too-many-public-methods
 
-    def __init__(self, policy=None, records=None, verbose=True,
-                 sync_years=True):
+    def __init__(self, policy=None, records=None, corprecords=None,
+                 verbose=True, sync_years=True):
         # pylint: disable=too-many-arguments,too-many-branches
         if isinstance(policy, Policy):
             self.__policy = copy.deepcopy(policy)
@@ -79,6 +87,10 @@ class Calculator(object):
             self.__records = copy.deepcopy(records)
         else:
             raise ValueError('must specify records as a Records object')
+        if isinstance(corprecords, CorpRecords):
+            self.__corprecords = copy.deepcopy(corprecords)
+        else:
+            raise ValueError('must specify records as a CorpRecords object')
         if self.__policy.current_year < self.__records.data_year:
             self.__policy.set_year(self.__records.data_year)
         current_year_is_data_year = (
@@ -100,6 +112,7 @@ class Calculator(object):
                       'extrapolated your data to ' +
                       str(self.__records.current_year) + '.')
         assert self.__policy.current_year == self.__records.current_year
+        assert self.__policy.current_year == self.__corprecords.current_year
         self.__stored_records = None
 
     def increment_year(self):
@@ -108,6 +121,7 @@ class Calculator(object):
         """
         next_year = self.__policy.current_year + 1
         self.__records.increment_year()
+        self.__corprecords.increment_year()
         self.__policy.set_year(next_year)
 
     def advance_to_year(self, year):
@@ -131,8 +145,14 @@ class Calculator(object):
         # pylint: disable=too-many-function-args,no-value-for-parameter
         # conducts static analysis of Calculator object for current_year
         assert self.__records.current_year == self.__policy.current_year
+        assert self.__corprecords.current_year == self.__policy.current_year
         self.__records.zero_out_changing_calculated_vars()
+        # For now, don't zero out for corporate
         # pdb.set_trace()
+        # Corporate calculations
+        net_tax_liability_a(self.__policy, self.__corprecords)
+        net_tax_liability_b(self)
+        # Individual calculations
         net_salary_income(self.__policy, self.__records)
         net_rental_income(self.__policy, self.__records)
         total_other_income(self.__policy, self.__records)
@@ -188,6 +208,21 @@ class Calculator(object):
             return getattr(self.__records, variable_name)
         assert isinstance(variable_value, np.ndarray)
         setattr(self.__records, variable_name, variable_value)
+        return None
+
+    def carray(self, variable_name, variable_value=None):
+        """
+        Corporate record version of array() function.
+        If variable_value is None, return numpy ndarray containing the
+         named variable in embedded Records object.
+        If variable_value is not None, set named variable in embedded Records
+         object to specified variable_value and return None (which can be
+         ignored).
+        """
+        if variable_value is None:
+            return getattr(self.__corprecords, variable_name)
+        assert isinstance(variable_value, np.ndarray)
+        setattr(self.__corprecords, variable_name, variable_value)
         return None
 
     def n65(self):
