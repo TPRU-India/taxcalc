@@ -9,30 +9,35 @@ import copy
 import pytest
 import numpy as np
 import pandas as pd
-from taxcalc import Policy, Records, Calculator
+from taxcalc import Policy, Records, CorpRecords, Calculator
 
 
-def test_incorrect_Calculator_instantiation(pit_subsample):
+def test_incorrect_Calculator_instantiation(pit_subsample, cit_fullsample):
     pol = Policy()
     rec = Records(data=pit_subsample)
+    crec = CorpRecords(data=cit_fullsample)
     with pytest.raises(ValueError):
-        Calculator(policy=None, records=rec)
+        Calculator(policy=None, records=rec, corprecords=crec)
     with pytest.raises(ValueError):
-        Calculator(policy=pol, records=None)
+        Calculator(policy=pol, records=None, corprecords=crec)
     with pytest.raises(ValueError):
         Policy(num_years=0)
 
 
-def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample):
+def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample,
+                                          cit_fullsample):
     syr = Policy.JSON_START_YEAR
     pol = Policy()
     assert pol.current_year == syr
     # specify expected number of filers and aggregate PIT liability
     expect_weight = 35.241e6
     expect_pitax = 1822.119e9
+    # expect_corpweight = ???
+    # expect_citax = ???
     # create full-sample Calculator object
     rec_full = Records(data=pit_fullsample)
-    calc_full = Calculator(policy=pol, records=rec_full)
+    crec = CorpRecords(data=cit_fullsample)
+    calc_full = Calculator(policy=pol, records=rec_full, corprecords=crec)
     assert isinstance(calc_full, Calculator)
     assert calc_full.current_year == syr
     assert calc_full.records_current_year() == syr
@@ -41,6 +46,7 @@ def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample):
     actual_full_pitax = calc_full.weighted_total('pitax')
     assert np.allclose([actual_full_weight], [expect_weight])
     assert np.allclose([actual_full_pitax], [expect_pitax])
+    # TODO: test for corporate results
     # create sub-sample Calculator object
     """
     rec_sub = Records(data=pit_subsample)
@@ -53,10 +59,11 @@ def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample):
     """
 
 
-def test_Calculator_results_consistency(pit_fullsample):
+def test_Calculator_results_consistency(pit_fullsample, cit_fullsample):
     # generate calculated-variable dataframe for full sample in second year
     recs = Records(data=pit_fullsample)
-    calc = Calculator(policy=Policy(), records=recs)
+    crecs = CorpRecords(data=cit_fullsample)
+    calc = Calculator(policy=Policy(), records=recs, corprecords=crecs)
     assert isinstance(calc, Calculator)
     assert calc.current_year == Policy.JSON_START_YEAR
     calc.advance_to_year(Policy.JSON_START_YEAR + 1)
@@ -95,3 +102,4 @@ def test_Calculator_results_consistency(pit_fullsample):
     assert np.all(vdf['pitax'] >= 0.)
     exp = vdf['tax_TTI'] - vdf['rebate'] + vdf['surcharge'] + vdf['cess']
     assert np.allclose(vdf['pitax'], exp)
+    # TODO: Add some tests for corporate results

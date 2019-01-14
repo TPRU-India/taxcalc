@@ -1,0 +1,32 @@
+{
+  "read": {
+    "FILING_SEQ_NO": {
+      "required": true,
+      "type": "int",
+      "desc": "Unique positive numeric identifier for filing unit",
+      "form": {"2017": "private info"}
+    },
+    "ASSESSMENT_YEAR": {
+      "type": "int",
+      "desc": "Assessment year of ITR form that include prior year information",
+      "form": {"2017": "ITR-1 Assessment Year (first year)"}
+    },
+    "NET_TAX_LIABILTY": {
+      "type": "float",
+      "desc": "CIT liability",
+      "form": {"2017": "ITR-1 line D11"}
+    }
+  },
+  "calc": {
+    "NET_TAX_LIABILITY_A": {
+      "type": "float",
+      "desc": "half CIT liability",
+      "form": {"2017": "Not real"}
+    },
+    "NET_TAX_LIABILITY_B": {
+      "type": "float",
+      "desc": "half CIT liability",
+      "form": {"2017": "Not real"}
+    }
+  }
+}
