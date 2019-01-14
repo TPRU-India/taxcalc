@@ -32,7 +32,7 @@ def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample,
     # specify expected number of filers and aggregate PIT liability
     expect_weight = 35.241e6
     expect_pitax = 1822.119e9
-    #expect_corpweight = ???
+    # expect_corpweight = ???
     # expect_citax = ???
     # create full-sample Calculator object
     rec_full = Records(data=pit_fullsample)

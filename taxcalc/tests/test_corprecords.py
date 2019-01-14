@@ -37,9 +37,9 @@ def test_correct_Records_instantiation(cit_fullsample):
                               CorpRecords.CIT_WEIGHTS_FILENAME)
     wghts_df = pd.read_csv(wghts_path)
     rec2 = CorpRecords(data=cit_fullsample,
-                   gfactors=GrowFactors(),
-                   weights=wghts_df,
-                   start_year=CorpRecords.CITCSV_YEAR)
+                       gfactors=GrowFactors(),
+                       weights=wghts_df,
+                       start_year=CorpRecords.CITCSV_YEAR)
     # TODO: Repeat checks for records
     assert True
     assert rec2.current_year == rec2.data_year

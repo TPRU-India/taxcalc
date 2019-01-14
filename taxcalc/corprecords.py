@@ -170,7 +170,7 @@ class CorpRecords(object):
 
     def set_current_year(self, new_current_year):
         """
-        Set current year to specified value and updates ASSESSMENT_YEAR 
+        Set current year to specified value and updates ASSESSMENT_YEAR
         variable.
         Unlike increment_year method, extrapolation, reweighting, adjusting
         are skipped.
@@ -192,13 +192,15 @@ class CorpRecords(object):
         else:
             msg = 'file {} cannot be found'.format(var_info_path)
             raise ValueError(msg)
-        CorpRecords.INTEGER_READ_VARS = set(k for k, v in vardict['read'].items()
-                                        if v['type'] == 'int')
+        CorpRecords.INTEGER_READ_VARS = set(k for k,
+                                            v in vardict['read'].items()
+                                            if v['type'] == 'int')
         FLOAT_READ_VARS = set(k for k, v in vardict['read'].items()
                               if v['type'] == 'float')
         CorpRecords.MUST_READ_VARS = set(k for k, v in vardict['read'].items()
-                                     if v.get('required'))
-        CorpRecords.USABLE_READ_VARS = CorpRecords.INTEGER_READ_VARS | FLOAT_READ_VARS
+                                         if v.get('required'))
+        CorpRecords.USABLE_READ_VARS = (CorpRecords.INTEGER_READ_VARS |
+                                        FLOAT_READ_VARS)
         INT_CALCULATED_VARS = set(k for k, v in vardict['calc'].items()
                                   if v['type'] == 'int')
         FLOAT_CALCULATED_VARS = set(k for k, v in vardict['calc'].items()
@@ -206,10 +208,11 @@ class CorpRecords(object):
         FIXED_CALCULATED_VARS = set(k for k, v in vardict['calc'].items()
                                     if v['type'] == 'unchanging_float')
         CorpRecords.CALCULATED_VARS = (INT_CALCULATED_VARS |
-                                   FLOAT_CALCULATED_VARS |
-                                   FIXED_CALCULATED_VARS)
+                                       FLOAT_CALCULATED_VARS |
+                                       FIXED_CALCULATED_VARS)
         CorpRecords.CHANGING_CALCULATED_VARS = FLOAT_CALCULATED_VARS
-        CorpRecords.INTEGER_VARS = CorpRecords.INTEGER_READ_VARS | INT_CALCULATED_VARS
+        CorpRecords.INTEGER_VARS = (CorpRecords.INTEGER_READ_VARS |
+                                    INT_CALCULATED_VARS)
         return vardict
 
     # specify various sets of variable names
