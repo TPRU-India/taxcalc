@@ -113,7 +113,8 @@ def taxable_total_income(GTI, deductions, TTI):
     return TTI
 
 
-def tax_stcg_splrate(ST_CG_RATE1, ST_CG_RATE2, ST_CG_AMT_1, ST_CG_AMT_2):
+@iterate_jit(nopython=True)
+def tax_stcg_splrate(ST_CG_RATE1, ST_CG_RATE2, ST_CG_AMT_1, ST_CG_AMT_2, Total_Tax_STCG):
     """
     Calculates the tax on short term capital gains which are taxed at spl rate
     Short term capital gain tax at applicable rate is included in tax on GTI.
@@ -121,29 +122,27 @@ def tax_stcg_splrate(ST_CG_RATE1, ST_CG_RATE2, ST_CG_AMT_1, ST_CG_AMT_2):
     Tax_ST_CG_RATE1 = ST_CG_AMT_1 * ST_CG_RATE1
     Tax_ST_CG_RATE2 = ST_CG_AMT_2 * ST_CG_RATE2
     Total_Tax_STCG = Tax_ST_CG_RATE1 + Tax_ST_CG_RATE2
-    return (Tax_ST_CG_RATE1,
-            Tax_ST_CG_RATE2,
-            Total_Tax_STCG)
+    return (Tax_ST_CG_RATE1, Tax_ST_CG_RATE2, Total_Tax_STCG)
 
 
-def tax_ltcg_splrate(LT_CG_RATE1, LT_CG_RATE2, LT_CG_AMT_1, LT_CG_AMT_2):
+@iterate_jit(nopython=True)
+def tax_ltcg_splrate(LT_CG_RATE1, LT_CG_RATE2, LT_CG_AMT_1, LT_CG_AMT_2, Total_Tax_LTCG):
     """
     Calculates the tax on long term capital gains which are taxed at spl rates
     """
     Tax_LT_CG_RATE1 = LT_CG_AMT_1 * LT_CG_RATE1
     Tax_LT_CG_RATE2 = LT_CG_AMT_2 * LT_CG_RATE2
     Total_Tax_LTCG = Tax_LT_CG_RATE1 + Tax_LT_CG_RATE2
-    return (Tax_LT_CG_RATE1,
-            Tax_LT_CG_RATE2,
-            Total_Tax_LTCG)
+    return (Tax_LT_CG_RATE1, Tax_LT_CG_RATE2, Total_Tax_LTCG)
 
 
-
-def total_capital_gain(LT_CG_RATE1, LT_CG_RATE2, LT_CG_AMT_1, LT_CG_AMT_2, ST_CG_RATE1, ST_CG_RATE2, ST_CG_AMT_1, ST_CG_AMT_2):
-    tax_ltcg = tax_ltcg_splrate(LT_CG_RATE1, LT_CG_RATE2, LT_CG_AMT_1, LT_CG_AMT_2)
-    tax_stcg = tax_stcg_splrate(ST_CG_RATE1, ST_CG_RATE2, ST_CG_AMT_1, ST_CG_AMT_2)
-    Total_Tax_Cap_Gains = tax_ltcg[2] + tax_stcg[2]
-    return Total_Tax_Cap_Gains
+@iterate_jit(nopython=True)
+def total_capital_gain(LT_CG_AMT_1, LT_CG_AMT_2, ST_CG_AMT_1, ST_CG_AMT_2, Total_Tax_LTCG, Total_Tax_STCG):
+    Total_LTCG = LT_CG_AMT_1 + LT_CG_AMT_2
+    Total_STCG = ST_CG_AMT_1 + ST_CG_AMT_2
+    TI_special_rates = Total_LTCG + Total_STCG
+    tax_TI_special_rates = Total_Tax_LTCG + Total_Tax_STCG
+    return (TI_special_rates, tax_TI_special_rates)
 
 
 DEBUG = False

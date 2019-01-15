@@ -53,6 +53,11 @@
       "desc": "Tax liability on TI taxed at special rates",
       "form": {"2017": "ITR-3 Part B TTI-2b"}
     },
+    "Tax_ST_CG_RATE1": {
+      "type": "float",
+      "desc": "Tax on Short Term Capital Gains at 30% under current law (Tax_SHORT_TERM_RATE2)",
+      "form": {"2017": "ITR-3 Schedule SI line 2"}
+    },
     "Tax_ST_CG_RATE2": {
       "type": "float",
       "desc": "Tax on Short Term Capital Gains at 30% under current law (Tax_SHORT_TERM_RATE2)",
@@ -81,11 +86,6 @@
     "Total_Tax_LTCG": {
       "type": "float",
       "desc": "Tax on all Long Term Capital Gains Tax_LONG_TERM_RATE1 + Tax_LONG_TERM_RATE2 under current law(Total_Tax_LTCG)",
-      "form": {"2017": "Not in Form"}
-    },
-    "Total_Tax_Cap_Gains": {
-      "type": "float",
-      "desc": "Total Capital Gains Total_Tax_STCG + Total_Tax_LTCG (Total_Tax_Cap_Gains)",
       "form": {"2017": "Not in Form"}
     },
     "NET_TAX_LIABILITY_A": {

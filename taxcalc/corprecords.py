@@ -259,9 +259,16 @@ class CorpRecords(object):
         """
         # pylint: disable=too-many-locals,too-many-statements
         GF_CORP1 = self.gfactors.factor_value('CORP', year)
+        GF_ST_CG_AMT_1 = self.gfactors.factor_value('ST_CG_AMT_1', year)
+        GF_ST_CG_AMT_2 = self.gfactors.factor_value('ST_CG_AMT_2', year)
+        GF_LT_CG_AMT_1 = self.gfactors.factor_value('LT_CG_AMT_1', year)
+        GF_LT_CG_AMT_2 = self.gfactors.factor_value('LT_CG_AMT_2', year)
         self.NET_TAX_LIABILTY *= GF_CORP1
         self.INCOME_HP *= GF_CORP1
-        self.total_capital_gain *=GF_CORP1
+        self.ST_CG_AMT_1 *= GF_ST_CG_AMT_1
+        self.ST_CG_AMT_2 *= GF_ST_CG_AMT_2
+        self.LT_CG_AMT_1 *= GF_LT_CG_AMT_1
+        self.LT_CG_AMT_2 *= GF_LT_CG_AMT_2
 
     def _extract_panel_year(self):
         """
@@ -282,6 +289,10 @@ class CorpRecords(object):
         # apply the blowup factors
         BF_CORP1 = blowup_data.loc[self.panelyear, 'CORP']
         data1['NET_TAX_LIABILTY'] = data1['NET_TAX_LIABILTY'] * BF_CORP1
+        data1['ST_CG_AMT_1'] = data1['ST_CG_AMT_1'] * BF_CORP1
+        data1['ST_CG_AMT_2'] = data1['ST_CG_AMT_2'] * BF_CORP1
+        data1['LT_CG_AMT_1'] = data1['LT_CG_AMT_1'] * BF_CORP1
+        data1['LT_CG_AMT_2'] = data1['LT_CG_AMT_2'] * BF_CORP1
         data1['INCOME_HP'] = data1['INCOME_HP'] * BF_CORP1
         # return the blown up data
         return data1
