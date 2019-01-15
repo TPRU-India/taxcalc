@@ -260,6 +260,7 @@ class CorpRecords(object):
         # pylint: disable=too-many-locals,too-many-statements
         GF_CORP1 = self.gfactors.factor_value('CORP', year)
         self.NET_TAX_LIABILTY *= GF_CORP1
+        self.INCOME_HP *= GF_CORP1
 
     def _extract_panel_year(self):
         """
@@ -279,8 +280,8 @@ class CorpRecords(object):
         data1 = self.full_panel[assessyear == self.panelyear].reset_index()
         # apply the blowup factors
         BF_CORP1 = blowup_data.loc[self.panelyear, 'CORP']
-        NET_TAX_LIABILTY = np.array(data1['NET_TAX_LIABILTY'])
-        data1['NET_TAX_LIABILTY'] = NET_TAX_LIABILTY * BF_CORP1
+        data1['NET_TAX_LIABILTY'] = data1['NET_TAX_LIABILTY'] * BF_CORP1
+        data1['INCOME_HP'] = data1['INCOME_HP'] * BF_CORP1
         # return the blown up data
         return data1
 
