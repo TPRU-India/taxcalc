@@ -15,6 +15,7 @@ import copy
 import numpy as np
 import pandas as pd
 from taxcalc.functions import (net_salary_income, net_rental_income,
+                               income_business_profession,
                                total_other_income, gross_total_income,
                                itemized_deductions, taxable_total_income,
                                tax_stcg_splrate, tax_ltcg_splrate,
@@ -154,9 +155,11 @@ class Calculator(object):
         net_tax_liability_a(self.__policy, self.__corprecords)
         net_tax_liability_b(self)
         net_rental_income(self.__policy, self.__corprecords)
+        income_business_profession(self.__policy, self.__corprecords)
         # Individual calculations
         net_salary_income(self.__policy, self.__records)
         net_rental_income(self.__policy, self.__records)
+        income_business_profession(self.__policy, self.__records)
         total_other_income(self.__policy, self.__records)
         current_year_losses(self.__policy, self.__records)
         brought_fwd_losses(self.__policy, self.__records)
