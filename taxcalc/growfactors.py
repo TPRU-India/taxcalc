@@ -43,7 +43,7 @@ class GrowFactors(object):
     VALID_NAMES = set(['CPI', 'SALARY', 'RENT', 'BOPINCOME', 'STCG_APPRATE',
                        'OINCOME', 'DEDUCTIONS', 'ST_CG_AMT_1', 'ST_CG_AMT_2',
                        'LT_CG_AMT_1', 'LT_CG_AMT_2', 'LOSSES_CY', 'LOSSES_BF',
-                       'CORP'])
+                       'AGRI_INCOME', 'CORP'])
 
     def __init__(self, growfactors_filename=FILE_PATH):
         # read grow factors from specified growfactors_filename
