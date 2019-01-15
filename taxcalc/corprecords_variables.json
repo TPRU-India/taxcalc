@@ -101,6 +101,7 @@
       "type": "float",
       "desc": "tax on Capital Gains at special rates",
       "form": {"2017": "Not real"}
+    },
     "Income_BP": {
       "type": "float",
       "desc": "Computed income from Business and Profession)",
