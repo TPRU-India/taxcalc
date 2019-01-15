@@ -261,6 +261,10 @@ class CorpRecords(object):
         GF_CORP1 = self.gfactors.factor_value('CORP', year)
         self.NET_TAX_LIABILTY *= GF_CORP1
         self.INCOME_HP *= GF_CORP1
+        self.ST_CG_AMT_1 *= GF_CORP1
+        self.ST_CG_AMT_2 *= GF_CORP1
+        self.LT_CG_AMT_1 *= GF_CORP1
+        self.LT_CG_AMT_2 *= GF_CORP1
 
     def _extract_panel_year(self):
         """
@@ -282,6 +286,10 @@ class CorpRecords(object):
         BF_CORP1 = blowup_data.loc[self.panelyear, 'CORP']
         data1['NET_TAX_LIABILTY'] = data1['NET_TAX_LIABILTY'] * BF_CORP1
         data1['INCOME_HP'] = data1['INCOME_HP'] * BF_CORP1
+        data1['ST_CG_AMT_1'] = data1['ST_CG_AMT_1'] * BF_CORP1
+        data1['ST_CG_AMT_2'] = data1['ST_CG_AMT_2'] * BF_CORP1
+        data1['LT_CG_AMT_1'] = data1['LT_CG_AMT_1'] * BF_CORP1
+        data1['LT_CG_AMT_2'] = data1['LT_CG_AMT_2'] * BF_CORP1
         # return the blown up data
         return data1
 
