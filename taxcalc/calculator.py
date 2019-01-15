@@ -156,6 +156,7 @@ class Calculator(object):
         net_tax_liability_b(self)
         net_rental_income(self.__policy, self.__corprecords)
         income_business_profession(self.__policy, self.__corprecords)
+        total_other_income(self.__policy, self.__corprecords)
         # Individual calculations
         net_salary_income(self.__policy, self.__records)
         net_rental_income(self.__policy, self.__records)
