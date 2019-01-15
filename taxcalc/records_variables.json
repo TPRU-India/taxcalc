@@ -27,10 +27,25 @@
       "desc": "Income from House Property",
       "form": {"2017": "ITR-3 Part B-TI-2"}
     },
-    "TOTAL_PROFTS_GAINS_BP": {
+    "PRFT_GAIN_BP_OTHR_SPECLTV_BUS": {
       "type": "float",
-      "desc": "Profits and Gains from Business or Profession",
-      "form": {"2017": "ITR-3 Part B-TI-3v"}
+      "desc": "Profits and Gains from BP other than speculative business",
+      "form": {"2017": "ITR-3 Part B-TI-3i"}
+    },
+    "PRFT_GAIN_BP_SPECLTV_BUS": {
+      "type": "float",
+      "desc": "Profits and Gains from speculative business",
+      "form": {"2017": "ITR-3 Part B-TI-3ii"}
+    },
+    "PRFT_GAIN_BP_SPCFD_BUS": {
+      "type": "float",
+      "desc": "Income from specified Business",
+      "form": {"2017": "ITR-3 Part B-TI-3iii"}
+    },
+    "PRFT_GAIN_BP_INC_115BBF": {
+      "type": "float",
+      "desc": "Income from patents u/s 115BBF",
+      "form": {"2017": "ITR-3 Part B-TI-3iv"}
     },
     "ST_CG_AMT_1": {
       "type": "float",
@@ -89,6 +104,11 @@
     }
   },
   "calc": {
+    "Income_BP": {
+      "type": "float",
+      "desc": "Computed income from Business and Profession)",
+      "form": {"2017": "ITR-3 Part B-TI-3vi"}
+    },
     "Tax_ST_CG_RATE1": {
       "type": "float",
       "desc": "Tax on Short Term Capital Gains at 15% under current law(Tax_SHORT_TERM_RATE1)",

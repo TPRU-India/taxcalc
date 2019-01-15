@@ -35,6 +35,25 @@
       "type": "float",
       "desc": "Income from Long Term Capital Gains at Special rate2",
       "form": {"2017": "ITR-6, Part B-TI, line 3(b)(ii)"}
+    "PRFT_GAIN_BP_OTHR_SPECLTV_BUS": {
+      "type": "float",
+      "desc": "Profits and Gains from BP other than speculative business",
+      "form": {"2017": "ITR-6 Part B-TI-2i"}
+    },
+    "PRFT_GAIN_BP_SPECLTV_BUS": {
+      "type": "float",
+      "desc": "Profits and Gains from speculative business",
+      "form": {"2017": "ITR-6 Part B-TI-2ii"}
+    },
+    "PRFT_GAIN_BP_SPCFD_BUS": {
+      "type": "float",
+      "desc": "Income from specified Business",
+      "form": {"2017": "ITR-6 Part B-TI-2iii"}
+    },
+    "PRFT_GAIN_BP_INC_115BBF": {
+      "type": "float",
+      "desc": "Income from patents u/s 115BBF",
+      "form": {"2017": "ITR-6 Part B-TI-2iv"}
     },
     "NET_TAX_LIABILTY": {
       "type": "float",
@@ -82,6 +101,10 @@
       "type": "float",
       "desc": "tax on Capital Gains at special rates",
       "form": {"2017": "Not real"}
+    "Income_BP": {
+      "type": "float",
+      "desc": "Computed income from Business and Profession)",
+      "form": {"2017": "ITR-6 Part B-TI-2vi"}
     },
     "NET_TAX_LIABILITY_A": {
       "type": "float",

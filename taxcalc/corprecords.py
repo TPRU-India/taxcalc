@@ -259,12 +259,24 @@ class CorpRecords(object):
         """
         # pylint: disable=too-many-locals,too-many-statements
         GF_CORP1 = self.gfactors.factor_value('CORP', year)
+        GF_RENT = self.gfactors.factor_value('RENT', year)
+        GF_BP_NONSPECULATIVE = self.gfactors.factor_value('BP_NONSPECULATIVE',
+                                                          year)
+        GF_BP_SPECULATIVE = self.gfactors.factor_value('BP_SPECULATIVE',
+                                                       year)
+        GF_BP_SPECIFIED = self.gfactors.factor_value('BP_SPECIFIED', year)
+        GF_BP_PATENT115BBF = self.gfactors.factor_value('BP_PATENT115BBF',
+                                                        year)
         self.NET_TAX_LIABILTY *= GF_CORP1
-        self.INCOME_HP *= GF_CORP1
         self.ST_CG_AMT_1 *= GF_CORP1
         self.ST_CG_AMT_2 *= GF_CORP1
         self.LT_CG_AMT_1 *= GF_CORP1
         self.LT_CG_AMT_2 *= GF_CORP1
+        self.INCOME_HP *= GF_RENT
+        self.PRFT_GAIN_BP_OTHR_SPECLTV_BUS *= GF_BP_NONSPECULATIVE
+        self.PRFT_GAIN_BP_SPECLTV_BUS *= GF_BP_SPECULATIVE
+        self.PRFT_GAIN_BP_SPCFD_BUS *= GF_BP_SPECIFIED
+        self.PRFT_GAIN_BP_INC_115BBF *= GF_BP_PATENT115BBF
 
     def _extract_panel_year(self):
         """
