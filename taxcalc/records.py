@@ -225,6 +225,9 @@ class Records(object):
         GF_ST_CG_AMT_2 = self.gfactors.factor_value('ST_CG_AMT_2', year)
         GF_LT_CG_AMT_1 = self.gfactors.factor_value('LT_CG_AMT_1', year)
         GF_LT_CG_AMT_2 = self.gfactors.factor_value('LT_CG_AMT_2', year)
+        GF_CYL_SET_OFF = self.gfactors.factor_value('LOSSES_CY', year)
+        GF_BFL_SET_OFF_BALANCE = self.gfactors.factor_value('LOSSES_BF', year)
+        GF_NET_AGRC_INCOME = self.gfactors.factor_value('AGRI_INCOME', year)
         self.SALARIES *= GF_SALARY
         self.INCOME_HP *= GF_RENT
         self.TOTAL_PROFTS_GAINS_BP *= GF_BOPINCOME
@@ -235,6 +238,9 @@ class Records(object):
         self.ST_CG_AMT_2 *= GF_ST_CG_AMT_2
         self.LT_CG_AMT_1 *= GF_LT_CG_AMT_1
         self.LT_CG_AMT_2 *= GF_LT_CG_AMT_2
+        self.CYL_SET_OFF *= GF_CYL_SET_OFF
+        self.BFL_SET_OFF_BALANCE *= GF_BFL_SET_OFF_BALANCE
+        self.NET_AGRC_INCOME *= GF_NET_AGRC_INCOME
 
     def _read_data(self, data):
         """

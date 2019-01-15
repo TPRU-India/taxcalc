@@ -44,17 +44,51 @@ def total_other_income(TOTAL_INCOME_OS):
 
 
 @iterate_jit(nopython=True)
+def current_year_losses(CYL_SET_OFF, CY_Losses):
+    """
+    Compute Current Year Losses to be set off, from Schedule CYLA.
+    """
+    # TODO: when schedule is available, do the calculation
+    # TODO: when reading CYL_SET_OFF from the data, no calculations neeed
+    CY_Losses = CYL_SET_OFF
+    return CY_Losses
+
+
+@iterate_jit(nopython=True)
+def brought_fwd_losses(BFL_SET_OFF_BALANCE, BF_Losses):
+    """
+    Compute Brought forward Losses to be set off, from Schedule BFLA.
+    """
+    # TODO: when schedule is available, do the calculation
+    # TODO: when reading BFL_SET_OFF_BALANCE from the data, no calculations
+    BF_Losses = BFL_SET_OFF_BALANCE
+    return BF_Losses
+
+
+@iterate_jit(nopython=True)
+def agri_income(Income_Rate_Purpose, NET_AGRC_INCOME):
+    """
+    Compute the total Income that is used for rate purpose.
+    It currently has only the net agricultural income.
+    """
+    # TODO: when shedule is available, do the calculation
+    Income_Rate_Purpose = NET_AGRC_INCOME
+    return Income_Rate_Purpose
+
+
+@iterate_jit(nopython=True)
 def gross_total_income(SALARIES, INCOME_HP, TOTAL_PROFTS_GAINS_BP,
                        ST_CG_AMT_1, ST_CG_AMT_2, ST_CG_AMT_APPRATE,
                        LT_CG_AMT_1, LT_CG_AMT_2, TOTAL_INCOME_OS,
-                       GTI):
+                       CY_Losses, BF_Losses, GTI):
     """
     Compute GTI including capital gains amounts taxed at special rates.
     """
     GTI = (SALARIES + INCOME_HP + TOTAL_PROFTS_GAINS_BP +
            ST_CG_AMT_1 + ST_CG_AMT_2 + ST_CG_AMT_APPRATE +
            LT_CG_AMT_1 + LT_CG_AMT_2 +
-           TOTAL_INCOME_OS)
+           TOTAL_INCOME_OS) - (CY_Losses + BF_Losses)
+    GTI = np.maximum(0., GTI)
     return GTI
 
 
@@ -75,6 +109,7 @@ def taxable_total_income(GTI, deductions, TTI):
     Compute TTI.
     """
     TTI = GTI - deductions
+    TTI = np.maximum(0., TTI)
     return TTI
 
 
@@ -136,15 +171,19 @@ def pit_liability(calc):
     Compute tax liability given the progressive tax rate schedule specified
     by the (marginal tax) rate* and (upper tax bracket) brk* parameters and
     given taxable income (taxinc)
+
+    Subtract 'TI_special_rates' from 'TTI' to get the portion of total income
+    that is taxed at normal rates. Now add agricultural income (income used for
+    rate purpose only) to get Aggregate_Income.
     """
     # subtract TI_special_rates from TTI to get Aggregate_Income, which is
     # the portion of TTI that is taxed at normal rates
-    agginc = calc.array('TTI') - calc.array('TI_special_rates')
-    taxinc = np.maximum(0., agginc)
-    if DEBUG:
-        print('D:debug_output_for_idx=', DEBUG_IDX)
-        print('D:raw_Aggregate_Income=', agginc[DEBUG_IDX])
-        print('D:Aggregate_Income=', taxinc[DEBUG_IDX])
+    TTI = calc.array('TTI')
+    taxinc = TTI - calc.array('TI_special_rates')
+    taxinc = np.maximum(0., taxinc)
+    agginc = taxinc + calc.array('Income_Rate_Purpose')
+    agginc = np.maximum(0., agginc)
+
     calc.array('Aggregate_Income', taxinc)
     # calculate tax on taxable income subject to taxation at normal rates
     # NOTE: Tax_ST_CG_APPRATE is not calculated here because its stacking
@@ -169,35 +208,41 @@ def pit_liability(calc):
     surcharge_thd2 = calc.policy_param('surcharge_thd')[1]
     cess_rate = calc.policy_param('cess_rate')
     # compute tax on income taxed at normal rates
-    tax_normal_rates = (rate1 * np.minimum(taxinc, tbrk1) +
+    tax_normal_rates = (rate1 * np.minimum(agginc, tbrk1) +
                         rate2 * np.minimum(tbrk2 - tbrk1,
-                                           np.maximum(0., taxinc - tbrk1)) +
+                                           np.maximum(0., agginc - tbrk1)) +
                         rate3 * np.minimum(tbrk3 - tbrk2,
-                                           np.maximum(0., taxinc - tbrk2)) +
-                        rate4 * np.maximum(0., taxinc - tbrk3))
-    if DEBUG:
-        print('D:tax_Aggregate_Income=', tax_normal_rates[DEBUG_IDX])
+                                           np.maximum(0., agginc - tbrk2)) +
+                        rate4 * np.maximum(0., agginc - tbrk3))
     calc.array('tax_Aggregate_Income', tax_normal_rates)
     # compute tax_TTI
     tax_TTI = tax_normal_rates + calc.array('tax_TI_special_rates')
-    if DEBUG:
-        print('D:tax_normal_rates+tax_TI_special_rates=', tax_TTI[DEBUG_IDX])
-    # NOTE: rebate_agri is defined in records_variables.json, but is never
-    #       calculated in functions.py, so its value is zero.
-    rebate_agri = np.minimum(tax_TTI,
-                             calc.array('rebate_agri'))  # is non-refundable
-    calc.array('rebate_agri', rebate_agri)  # capped rebate_agri amount
+    """
+    Compute the rebate on agricultural income. Agricultural income is exempt
+    but it is used for rate purpose.
+    """
+    agri_inc = calc.array('Income_Rate_Purpose') + tbrk1
+    rebate_agri = (rate1 * np.minimum(agri_inc, tbrk1) +
+                   rate2 * np.minimum(tbrk2 - tbrk1,
+                                      np.maximum(0., agri_inc - tbrk1)) +
+                   rate3 * np.minimum(tbrk3 - tbrk2,
+                                      np.maximum(0., agri_inc - tbrk2)) +
+                   rate4 * np.maximum(0., agri_inc - tbrk3))
+    # Acricultural rebate only applicable if taxinc is greater than tbrk1
+    rebate_agri = np.where(taxinc > tbrk1, rebate_agri, 0.)
+    calc.array('rebate_agri', rebate_agri)
+    # Acricultural rebate cannot be more than the tax liability
+    rebate_agri = np.minimum(tax_TTI, calc.array('rebate_agri'))
+    calc.array('rebate_agri', rebate_agri)
+    # Update tax_TTI after allowing agricultural rebate
     tax_TTI -= rebate_agri
-    if DEBUG:
-        print('D:tax_TTI=', tax_TTI[DEBUG_IDX])
     calc.array('tax_TTI', tax_TTI)
-    # compute capped rebate amount
-    rebate = np.where(taxinc > rebate_thd, 0.,
-                      np.minimum(rebate_rate * taxinc, rebate_ceiling))
-    rebate = np.minimum(tax_TTI, rebate)  # rebate is a non-refundable credit
-    if DEBUG:
-        print('D:capped_rebate=', rebate[DEBUG_IDX])
-    calc.array('rebate', rebate)  # capped rebate amount
+    # Compute rebate amount u/s 87A. Only applicablle if TTI > rebate_thd
+    rebate = np.where(TTI > rebate_thd, 0.,
+                      np.minimum(rebate_rate * TTI, rebate_ceiling))
+    # As rebate is a non-refundable credit it should capped to tax_TTI
+    rebate = np.minimum(tax_TTI, rebate)
+    calc.array('rebate', rebate)
     tax = tax_TTI - rebate
     # compute surcharge amount
     surcharge = np.where(taxinc < surcharge_thd1, taxinc * surcharge_rate1,
@@ -205,19 +250,13 @@ def pit_liability(calc):
                                   (taxinc < surcharge_thd2),
                                   taxinc * surcharge_rate2,
                                   taxinc * surcharge_rate3))
-    if DEBUG:
-        print('D:surcharge=', surcharge[DEBUG_IDX])
     calc.array('surcharge', surcharge)
     tax += surcharge
     # compute cess amount
     cess = tax * cess_rate
-    if DEBUG:
-        print('D:cess=', cess[DEBUG_IDX])
     calc.array('cess', cess)
     # compute pitax amount
     tax += cess
-    if DEBUG:
-        print('D:pitax=', tax[DEBUG_IDX])
     calc.array('pitax', tax)
     # calculate Total_Tax_Cap_Gains
     calc.array('Total_Tax_Cap_Gains',
