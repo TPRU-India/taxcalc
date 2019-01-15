@@ -32,6 +32,7 @@ def net_rental_income(INCOME_HP):
     # TODO: when using net_rent as function argument, no calculations neeed
     return INCOME_HP
 
+
 @iterate_jit(nopython=True)
 def income_business_profession(PRFT_GAIN_BP_OTHR_SPECLTV_BUS,
                                PRFT_GAIN_BP_SPECLTV_BUS,

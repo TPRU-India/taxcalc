@@ -221,7 +221,8 @@ class Records(object):
                                                           year)
         GF_BP_SPECULATIVE = self.gfactors.factor_value('BP_SPECULATIVE', year)
         GF_BP_SPECIFIED = self.gfactors.factor_value('BP_SPECIFIED', year)
-        GF_BP_PATENT115BBF = self.gfactors.factor_value('BP_PATENT115BBF', year)
+        GF_BP_PATENT115BBF = self.gfactors.factor_value('BP_PATENT115BBF',
+                                                        year)
         GF_STCG_APPRATE = self.gfactors.factor_value('STCG_APPRATE', year)
         GF_OINCOME = self.gfactors.factor_value('OINCOME', year)
         GF_DEDUCTIONS = self.gfactors.factor_value('DEDUCTIONS', year)
