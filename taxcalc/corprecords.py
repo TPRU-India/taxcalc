@@ -83,6 +83,7 @@ class CorpRecords(object):
     CUR_PATH = os.path.abspath(os.path.dirname(__file__))
     CIT_DATA_FILENAME = 'cit.csv'
     CIT_WEIGHTS_FILENAME = 'cit_weights.csv'
+    CIT_BLOWFACTORS_FILENAME = 'cit_panel_blowfactors.csv'
     VAR_INFO_FILENAME = 'corprecords_variables.json'
 
     def __init__(self,
@@ -90,6 +91,7 @@ class CorpRecords(object):
                  data_type='cross-section',
                  gfactors=GrowFactors(),
                  weights=CIT_WEIGHTS_FILENAME,
+                 panel_blowup=CIT_BLOWFACTORS_FILENAME,
                  start_year=CITCSV_YEAR):
         # pylint: disable=too-many-arguments,too-many-locals
         self.__data_year = start_year
@@ -98,7 +100,7 @@ class CorpRecords(object):
             self.data_type = data_type
         elif data_type == 'panel':
             self.data_type = data_type
-            raise ValueError('Panel methods not yet built')
+            self.blowfactors_path = panel_blowup
         else:
             raise ValueError('data_type is not cross-section or panel')
         self._read_data(data)
@@ -160,13 +162,39 @@ class CorpRecords(object):
         """
         # move to next year
         self.__current_year += 1
-        # apply variable extrapolation grow factors
-        if self.gfactors is not None:
-            self._blowup(self.__current_year)
+        if self.data_type == 'cross-section':
+            # apply variable extrapolation grow factors
+            if self.gfactors is not None:
+                self._blowup(self.__current_year)
+        else:
+            self.increment_panel_year()
         # specify current-year sample weights
         if self.WT.size > 0:
             wt_colname = 'WT{}'.format(self.__current_year)
             self.weight = self.WT[wt_colname]
+
+    def increment_panel_year(self):
+        """
+        Add one to current year and to panel year.
+        Saves measures to be carried forward.
+        Extracts next year of the panel data.
+        Updates carried forward measures.
+        WARNING: MUST FIX UNIQUE CORPORATE ID FOR MERGING ACROSS YEARS
+        """
+        # Specify the variables to be carried forward
+        carryforward_df = pd.DataFrame({'FILING_SEQ_NO': self.FILING_SEQ_NO})
+        # Update years
+        self.panelyear += 1
+        # Get new panel data
+        data1 = self._extract_panel_year()
+        data2 = data1.merge(right=carryforward_df, how='outer',
+                            on='FILING_SEQ_NO', indicator=True)
+        merge_info = np.array(data2['_merge'])
+        to_update = np.where(merge_info == 'both', True, False)
+        to_keep = np.where(merge_info != 'right_only', True, False)
+        # data2[input] = np.where(to_update, data2[calc], data2[input])
+        data3 = data2[to_keep]
+        self._read_data(data3)
 
     def set_current_year(self, new_current_year):
         """
@@ -233,6 +261,29 @@ class CorpRecords(object):
         GF_CORP1 = self.gfactors.factor_value('CORP', year)
         self.NET_TAX_LIABILTY *= GF_CORP1
 
+    def _extract_panel_year(self):
+        """
+        Reads the panel data and extracts observations for the given panelyear.
+        Then applies the specified blowup factors to advance the panel data
+        to the appropriate year.
+        This assumes that the full panel data has already been read and stored
+        in self.full_panel.
+        The blowup factors are applies to READ (not CALC) variables.
+        """
+        # read in the blow-up factors
+        blowup_path = os.path.join(CorpRecords.CUR_PATH, self.blowfactors_path)
+        blowup_data = pd.read_csv(blowup_path)
+        blowup_data.set_index('year', inplace=True)
+        # extract the observations for the intended year
+        assessyear = np.array(self.full_panel['ASSESSMENT_YEAR'])
+        data1 = self.full_panel[assessyear == self.panelyear].reset_index()
+        # apply the blowup factors
+        BF_CORP1 = blowup_data.loc[self.panelyear, 'CORP']
+        NET_TAX_LIABILTY = np.array(data1['NET_TAX_LIABILTY'])
+        data1['NET_TAX_LIABILTY'] = NET_TAX_LIABILTY * BF_CORP1
+        # return the blown up data
+        return data1
+
     def _read_data(self, data):
         """
         Read CorpRecords data from file or use specified DataFrame as data.
@@ -246,7 +297,14 @@ class CorpRecords(object):
         elif isinstance(data, str):
             data_path = os.path.join(CorpRecords.CUR_PATH, data)
             if os.path.exists(data_path):
-                taxdf = pd.read_csv(data_path)
+                if self.data_type == "cross-section":
+                    taxdf = pd.read_csv(data_path)
+                else:
+                    # Read in the full panel data (all years)
+                    self.full_panel = pd.read_csv(data_path)
+                    assessyear = np.array(self.full_panel['ASSESSMENT_YEAR'])
+                    self.panelyear = min(assessyear)
+                    taxdf = self._extract_panel_year()
             else:
                 msg = 'file {} cannot be found'.format(data_path)
                 raise ValueError(msg)
