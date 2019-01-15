@@ -34,6 +34,22 @@ def net_rental_income(INCOME_HP):
 
 
 @iterate_jit(nopython=True)
+def income_business_profession(PRFT_GAIN_BP_OTHR_SPECLTV_BUS,
+                               PRFT_GAIN_BP_SPECLTV_BUS,
+                               PRFT_GAIN_BP_SPCFD_BUS,
+                               PRFT_GAIN_BP_INC_115BBF, Income_BP):
+    """
+    Compute Income from Business and Profession by adding the different
+    sub-heads (i.e speculative, non-speculative, specified, patents, etc)
+    """
+    # TODO: when reading from schedule BP, calculate Income_BP from the read
+    # TODO: variables of the schedule
+    Income_BP = (PRFT_GAIN_BP_OTHR_SPECLTV_BUS + PRFT_GAIN_BP_SPECLTV_BUS +
+                 PRFT_GAIN_BP_SPCFD_BUS + PRFT_GAIN_BP_INC_115BBF)
+    return Income_BP
+
+
+@iterate_jit(nopython=True)
 def total_other_income(TOTAL_INCOME_OS):
     """
     Compute other_income from its components.
@@ -77,16 +93,15 @@ def agri_income(Income_Rate_Purpose, NET_AGRC_INCOME):
 
 
 @iterate_jit(nopython=True)
-def gross_total_income(SALARIES, INCOME_HP, TOTAL_PROFTS_GAINS_BP,
-                       ST_CG_AMT_1, ST_CG_AMT_2, ST_CG_AMT_APPRATE,
-                       LT_CG_AMT_1, LT_CG_AMT_2, TOTAL_INCOME_OS,
-                       CY_Losses, BF_Losses, GTI):
+def gross_total_income(SALARIES, INCOME_HP, Income_BP, ST_CG_AMT_1,
+                       ST_CG_AMT_2, ST_CG_AMT_APPRATE, LT_CG_AMT_1,
+                       LT_CG_AMT_2, TOTAL_INCOME_OS, CY_Losses, BF_Losses,
+                       GTI):
     """
     Compute GTI including capital gains amounts taxed at special rates.
     """
-    GTI = (SALARIES + INCOME_HP + TOTAL_PROFTS_GAINS_BP +
-           ST_CG_AMT_1 + ST_CG_AMT_2 + ST_CG_AMT_APPRATE +
-           LT_CG_AMT_1 + LT_CG_AMT_2 +
+    GTI = (SALARIES + INCOME_HP + Income_BP + ST_CG_AMT_1 + ST_CG_AMT_2 +
+           ST_CG_AMT_APPRATE + LT_CG_AMT_1 + LT_CG_AMT_2 +
            TOTAL_INCOME_OS) - (CY_Losses + BF_Losses)
     GTI = np.maximum(0., GTI)
     return GTI

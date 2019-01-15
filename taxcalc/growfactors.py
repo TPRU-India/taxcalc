@@ -40,10 +40,14 @@ class GrowFactors(object):
     FILENAME = 'growfactors.csv'
     FILE_PATH = os.path.join(CUR_PATH, FILENAME)
 
-    VALID_NAMES = set(['CPI', 'SALARY', 'RENT', 'BOPINCOME', 'STCG_APPRATE',
-                       'OINCOME', 'DEDUCTIONS', 'ST_CG_AMT_1', 'ST_CG_AMT_2',
-                       'LT_CG_AMT_1', 'LT_CG_AMT_2', 'LOSSES_CY', 'LOSSES_BF',
-                       'AGRI_INCOME', 'CORP'])
+    # TODO: Growfactors for Corporate and non-corporate Income heads are
+    # TODO: currently set as same. New field names should be read in case we
+    # TODO: want separate growfactors for Corporate and Non-corporate data.
+    VALID_NAMES = set(['CPI', 'SALARY', 'RENT', 'BP_NONSPECULATIVE',
+                       'BP_SPECULATIVE', 'BP_SPECIFIED', 'BP_PATENT115BBF',
+                       'STCG_APPRATE', 'OINCOME', 'DEDUCTIONS', 'ST_CG_AMT_1',
+                       'ST_CG_AMT_2', 'LT_CG_AMT_1', 'LT_CG_AMT_2',
+                       'LOSSES_CY', 'LOSSES_BF', 'AGRI_INCOME', 'CORP'])
 
     def __init__(self, growfactors_filename=FILE_PATH):
         # read grow factors from specified growfactors_filename
