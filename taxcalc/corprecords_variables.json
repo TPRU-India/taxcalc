@@ -20,9 +20,74 @@
       "type": "float",
       "desc": "CIT liability",
       "form": {"2017": "ITR-1 line D11"}
+    },
+    "ST_CG_AMT_1": {
+      "type": "float",
+      "desc": "111A (STCG on shares units on which where STT paid) @ 15% under current law",
+      "form": {"2017": "ITR-3 Part B-TI-4a-i"}
+    },
+    "ST_CG_AMT_2": {
+      "type": "float",
+      "desc": "115AD (STCG for FIIs on securities where STT not paid) @ 30% under current law",
+      "form": {"2017": "ITR-3 Part B-TI-4a-ii"}
+    },
+    "LT_CG_AMT_1": {
+      "type": "float",
+      "desc": "LTCG at special rate 10% under current law",
+      "form": {"2017": "ITR-3 Part B-TI-4b-i"}
+    },
+    "LT_CG_AMT_2": {
+      "type": "float",
+      "desc": "LTCG at special rate 20% under current law",
+      "form": {"2017": "ITR-3 Part B-TI-4b-ii"}
     }
   },
   "calc": {
+    "TI_special_rates": {
+      "type": "float",
+      "desc": "Taxable Total Income (TTI) taxed at special rates",
+      "form": {"2017": "ITR-3 Part B-TI line 15"}
+    },
+    "tax_TI_special_rates": {
+      "type": "float",
+      "desc": "Tax liability on TI taxed at special rates",
+      "form": {"2017": "ITR-3 Part B TTI-2b"}
+    },
+    "Tax_ST_CG_RATE2": {
+      "type": "float",
+      "desc": "Tax on Short Term Capital Gains at 30% under current law (Tax_SHORT_TERM_RATE2)",
+      "form": {"2017": "ITR-3 Schedule SI line 2"}
+    },
+    "Tax_ST_CG_APPRATE": {
+      "type": "float",
+      "desc": "Tax on Short Term Capital Gains at the Regular Rate (Tax_SHORT_TERM_APPRATE)",
+      "form": {"2017": "ITR-3 Included in Part-B-TTI (2)(a)"}
+    },
+    "Total_Tax_STCG": {
+      "type": "float",
+      "desc": "Tax on all Short Term Capital Gains Tax_SHORT_TERM_RATE1 + Tax_SHORT_TERM_RATE2 + Tax_SHORT_TERM_APPRATE (Total_Tax_STCG)",
+      "form": {"2017": "Not in Form"}
+    },
+    "Tax_LT_CG_RATE1": {
+      "type": "float",
+      "desc": "Tax on Long Term Capital Gains at 10% under current law(Tax_LONG_TERM_RATE1)",
+      "form": {"2017": "ITR-3 Schedule SI sum of lines 3-9"}
+    },
+    "Tax_LT_CG_RATE2": {
+      "type": "float",
+      "desc": "Tax on Long Term Capital Gains at 20% under current law (Tax_LONG_TERM_RATE2)",
+      "form": {"2017": "ITR-3 Schedule SI line 10"}
+    },
+    "Total_Tax_LTCG": {
+      "type": "float",
+      "desc": "Tax on all Long Term Capital Gains Tax_LONG_TERM_RATE1 + Tax_LONG_TERM_RATE2 under current law(Total_Tax_LTCG)",
+      "form": {"2017": "Not in Form"}
+    },
+    "Total_Tax_Cap_Gains": {
+      "type": "float",
+      "desc": "Total Capital Gains Total_Tax_STCG + Total_Tax_LTCG (Total_Tax_Cap_Gains)",
+      "form": {"2017": "Not in Form"}
+    },
     "NET_TAX_LIABILITY_A": {
       "type": "float",
       "desc": "half CIT liability",

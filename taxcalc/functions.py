@@ -113,53 +113,37 @@ def taxable_total_income(GTI, deductions, TTI):
     return TTI
 
 
-def tax_stcg_splrate(calc):
+def tax_stcg_splrate(ST_CG_RATE1, ST_CG_RATE2, ST_CG_AMT_1, ST_CG_AMT_2):
     """
     Calculates the tax on short term capital gains which are taxed at spl rate
     Short term capital gain tax at applicable rate is included in tax on GTI.
     """
-    ST_CG_RATE1 = calc.policy_param('ST_CG_RATE1')
-    ST_CG_RATE2 = calc.policy_param('ST_CG_RATE2')
-    ST_CG_AMT_1 = calc.array('ST_CG_AMT_1')
-    ST_CG_AMT_2 = calc.array('ST_CG_AMT_2')
     Tax_ST_CG_RATE1 = ST_CG_AMT_1 * ST_CG_RATE1
     Tax_ST_CG_RATE2 = ST_CG_AMT_2 * ST_CG_RATE2
     Total_Tax_STCG = Tax_ST_CG_RATE1 + Tax_ST_CG_RATE2
-    calc.array('Tax_ST_CG_RATE1', Tax_ST_CG_RATE1)
-    calc.array('Tax_ST_CG_RATE2', Tax_ST_CG_RATE2)
-    calc.array('Total_Tax_STCG', Total_Tax_STCG)
-    # update TI_special_rates
-    old = calc.array('TI_special_rates')
-    new = old + ST_CG_AMT_1 + ST_CG_AMT_2
-    calc.array('TI_special_rates', new)
-    # update tax_TI_special_rates
-    old = calc.array('tax_TI_special_rates')
-    new = old + Total_Tax_STCG
-    calc.array('tax_TI_special_rates', new)
+    return (Tax_ST_CG_RATE1,
+            Tax_ST_CG_RATE2,
+            Total_Tax_STCG)
 
 
-def tax_ltcg_splrate(calc):
+def tax_ltcg_splrate(LT_CG_RATE1, LT_CG_RATE2, LT_CG_AMT_1, LT_CG_AMT_2):
     """
     Calculates the tax on long term capital gains which are taxed at spl rates
     """
-    LT_CG_RATE1 = calc.policy_param('LT_CG_RATE1')
-    LT_CG_RATE2 = calc.policy_param('LT_CG_RATE2')
-    LT_CG_AMT_1 = calc.array('LT_CG_AMT_1')
-    LT_CG_AMT_2 = calc.array('LT_CG_AMT_2')
     Tax_LT_CG_RATE1 = LT_CG_AMT_1 * LT_CG_RATE1
     Tax_LT_CG_RATE2 = LT_CG_AMT_2 * LT_CG_RATE2
     Total_Tax_LTCG = Tax_LT_CG_RATE1 + Tax_LT_CG_RATE2
-    calc.array('Tax_LT_CG_RATE1', Tax_LT_CG_RATE1)
-    calc.array('Tax_LT_CG_RATE2', Tax_LT_CG_RATE2)
-    calc.array('Total_Tax_LTCG', Total_Tax_LTCG)
-    # update TI_special_rates
-    old = calc.array('TI_special_rates')
-    new = old + LT_CG_AMT_1 + LT_CG_AMT_2
-    calc.array('TI_special_rates', new)
-    # update tax_TI_special_rates
-    old = calc.array('tax_TI_special_rates')
-    new = old + Total_Tax_LTCG
-    calc.array('tax_TI_special_rates', new)
+    return (Tax_LT_CG_RATE1,
+            Tax_LT_CG_RATE2,
+            Total_Tax_LTCG)
+
+
+
+def total_capital_gain(LT_CG_RATE1, LT_CG_RATE2, LT_CG_AMT_1, LT_CG_AMT_2, ST_CG_RATE1, ST_CG_RATE2, ST_CG_AMT_1, ST_CG_AMT_2):
+    tax_ltcg = tax_ltcg_splrate(LT_CG_RATE1, LT_CG_RATE2, LT_CG_AMT_1, LT_CG_AMT_2)
+    tax_stcg = tax_stcg_splrate(ST_CG_RATE1, ST_CG_RATE2, ST_CG_AMT_1, ST_CG_AMT_2)
+    Total_Tax_Cap_Gains = tax_ltcg[2] + tax_stcg[2]
+    return Total_Tax_Cap_Gains
 
 
 DEBUG = False

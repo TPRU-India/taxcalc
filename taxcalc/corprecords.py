@@ -261,6 +261,7 @@ class CorpRecords(object):
         GF_CORP1 = self.gfactors.factor_value('CORP', year)
         self.NET_TAX_LIABILTY *= GF_CORP1
         self.INCOME_HP *= GF_CORP1
+        self.total_capital_gain *=GF_CORP1
 
     def _extract_panel_year(self):
         """
