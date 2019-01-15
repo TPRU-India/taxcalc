@@ -35,6 +35,7 @@
       "type": "float",
       "desc": "Income from Long Term Capital Gains at Special rate2",
       "form": {"2017": "ITR-6, Part B-TI, line 3(b)(ii)"}
+    },
     "PRFT_GAIN_BP_OTHR_SPECLTV_BUS": {
       "type": "float",
       "desc": "Profits and Gains from BP other than speculative business",
