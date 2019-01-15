@@ -19,8 +19,8 @@ from taxcalc.functions import (net_salary_income, net_rental_income,
                                total_other_income, gross_total_income,
                                itemized_deductions, taxable_total_income,
                                tax_stcg_splrate, tax_ltcg_splrate,
-                               current_year_losses, brought_fwd_losses,
-                               agri_income, pit_liability)
+                               tax_specialrates, current_year_losses,
+                               brought_fwd_losses, agri_income, pit_liability)
 from taxcalc.corpfunctions import (net_tax_liability_a, net_tax_liability_b)
 from taxcalc.policy import Policy
 from taxcalc.records import Records
@@ -155,6 +155,9 @@ class Calculator(object):
         net_tax_liability_a(self.__policy, self.__corprecords)
         net_tax_liability_b(self)
         net_rental_income(self.__policy, self.__corprecords)
+        tax_stcg_splrate(self.__policy, self.__corprecords)
+        tax_ltcg_splrate(self.__policy, self.__corprecords)
+        tax_specialrates(self.__policy, self.__corprecords)
         income_business_profession(self.__policy, self.__corprecords)
         total_other_income(self.__policy, self.__corprecords)
         # Individual calculations
@@ -168,8 +171,9 @@ class Calculator(object):
         itemized_deductions(self.__policy, self.__records)
         agri_income(self.__policy, self.__records)
         taxable_total_income(self.__policy, self.__records)
-        tax_stcg_splrate(self)
-        tax_ltcg_splrate(self)
+        tax_stcg_splrate(self.__policy, self.__records)
+        tax_ltcg_splrate(self.__policy, self.__records)
+        tax_specialrates(self.__policy, self.__records)
         pit_liability(self)
         # TODO: ADD: expanded_income(self.__policy, self.__records)
         # TODO: ADD: aftertax_income(self.__policy, self.__records)

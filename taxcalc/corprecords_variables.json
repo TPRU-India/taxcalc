@@ -16,6 +16,26 @@
       "desc": "Income from house property",
       "form": {"2017": "ITR-6, Part B-TI, line 1"}
     },
+    "ST_CG_AMT_1": {
+      "type": "float",
+      "desc": "Income from Short Term Capital Gains at Special rate1",
+      "form": {"2017": "ITR-6, Part B-TI, line 3(a)(i)"}
+    },
+    "ST_CG_AMT_2": {
+      "type": "float",
+      "desc": "Income from Short Term Capital Gains at Special rate2",
+      "form": {"2017": "ITR-6, Part B-TI, line 3(a)(ii)"}
+    },
+    "LT_CG_AMT_1": {
+      "type": "float",
+      "desc": "Income from Long Term Capital Gains at Special rate1",
+      "form": {"2017": "ITR-6, Part B-TI, line 3(b)(i)"}
+    },
+    "LT_CG_AMT_2": {
+      "type": "float",
+      "desc": "Income from Long Term Capital Gains at Special rate2",
+      "form": {"2017": "ITR-6, Part B-TI, line 3(b)(ii)"}
+    },
     "PRFT_GAIN_BP_OTHR_SPECLTV_BUS": {
       "type": "float",
       "desc": "Profits and Gains from BP other than speculative business",
@@ -48,6 +68,46 @@
     }
   },
   "calc": {
+    "Tax_ST_CG_RATE1": {
+      "type": "float",
+      "desc": "tax on Short Term Capital Gains at special rate1",
+      "form": {"2017": "Not real"}
+    },
+    "Tax_ST_CG_RATE2": {
+      "type": "float",
+      "desc": "tax on Short Term Capital Gains at special rate2",
+      "form": {"2017": "Not real"}
+    },
+    "Total_Tax_STCG": {
+      "type": "float",
+      "desc": "tax on Short Term Capital Gains at special rates",
+      "form": {"2017": "Not real"}
+    },
+    "Tax_LT_CG_RATE1": {
+      "type": "float",
+      "desc": "tax on Long Term Capital Gains at special rate1",
+      "form": {"2017": "Not real"}
+    },
+    "Tax_LT_CG_RATE2": {
+      "type": "float",
+      "desc": "tax on Long Term Capital Gains at special rate2",
+      "form": {"2017": "Not real"}
+    },
+    "Total_Tax_LTCG": {
+      "type": "float",
+      "desc": "tax on Long Term Capital Gains at special rates",
+      "form": {"2017": "Not real"}
+    },
+    "TI_special_rates": {
+      "type": "float",
+      "desc": "Capital Gains to be taxed at special rates",
+      "form": {"2017": "Not real"}
+    },
+    "tax_TI_special_rates": {
+      "type": "float",
+      "desc": "tax on Capital Gains at special rates",
+      "form": {"2017": "Not real"}
+    },
     "Income_BP": {
       "type": "float",
       "desc": "Computed income from Business and Profession)",

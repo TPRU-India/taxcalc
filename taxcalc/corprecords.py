@@ -269,6 +269,10 @@ class CorpRecords(object):
                                                         year)
         GF_OINCOME = self.gfactors.factor_value('OINCOME', year)
         self.NET_TAX_LIABILTY *= GF_CORP1
+        self.ST_CG_AMT_1 *= GF_CORP1
+        self.ST_CG_AMT_2 *= GF_CORP1
+        self.LT_CG_AMT_1 *= GF_CORP1
+        self.LT_CG_AMT_2 *= GF_CORP1
         self.INCOME_HP *= GF_RENT
         self.PRFT_GAIN_BP_OTHR_SPECLTV_BUS *= GF_BP_NONSPECULATIVE
         self.PRFT_GAIN_BP_SPECLTV_BUS *= GF_BP_SPECULATIVE
@@ -297,7 +301,10 @@ class CorpRecords(object):
         data1['NET_TAX_LIABILTY'] = data1['NET_TAX_LIABILTY'] * BF_CORP1
         data1['INCOME_HP'] = data1['INCOME_HP'] * BF_CORP1
         data1['TOTAL_INCOME_OS'] = data1['TOTAL_INCOME_OS'] * BF_CORP1
-
+        data1['ST_CG_AMT_1'] = data1['ST_CG_AMT_1'] * BF_CORP1
+        data1['ST_CG_AMT_2'] = data1['ST_CG_AMT_2'] * BF_CORP1
+        data1['LT_CG_AMT_1'] = data1['LT_CG_AMT_1'] * BF_CORP1
+        data1['LT_CG_AMT_2'] = data1['LT_CG_AMT_2'] * BF_CORP1
         # return the blown up data
         return data1
 
