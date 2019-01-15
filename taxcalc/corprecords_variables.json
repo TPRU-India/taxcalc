@@ -56,6 +56,11 @@
       "desc": "Income from patents u/s 115BBF",
       "form": {"2017": "ITR-6 Part B-TI-2iv"}
     },
+    "TOTAL_INCOME_OS": {
+      "type": "float",
+      "desc": "Income from Other Sources",
+      "form": {"2017": "ITR-6 Part B-TI-4d"}
+    },
     "NET_TAX_LIABILTY": {
       "type": "float",
       "desc": "CIT liability",
