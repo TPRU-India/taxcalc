@@ -153,6 +153,7 @@ class Calculator(object):
         # Corporate calculations
         net_tax_liability_a(self.__policy, self.__corprecords)
         net_tax_liability_b(self)
+        net_rental_income(self.__policy, self.__corprecords)
         # Individual calculations
         net_salary_income(self.__policy, self.__records)
         net_rental_income(self.__policy, self.__records)

@@ -11,6 +11,11 @@
       "desc": "Assessment year of ITR form that include prior year information",
       "form": {"2017": "ITR-1 Assessment Year (first year)"}
     },
+    "INCOME_HP": {
+      "type": "float",
+      "desc": "Income from house property",
+      "form": {"2017": "ITR-6, Part B-TI, line 1"}
+    },
     "NET_TAX_LIABILTY": {
       "type": "float",
       "desc": "CIT liability",
