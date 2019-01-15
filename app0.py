@@ -39,7 +39,7 @@ calc1.calc_all()
 
 dump_vars = ['FILING_SEQ_NO', 'AGEGRP', 'SALARIES', 'INCOME_HP',
              'TOTAL_PROFTS_GAINS_BP', 'TOTAL_INCOME_OS', 'Aggregate_Income',
-             'TI_special_rates', 'GTI', 'TTI', 'pitax']
+             'TI_special_rates', 'tax_TI_special_rates', 'GTI', 'TTI', 'pitax']
 dumpdf = calc1.dataframe(dump_vars)
 column_order = dumpdf.columns
 
