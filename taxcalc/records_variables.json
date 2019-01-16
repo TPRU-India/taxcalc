@@ -97,6 +97,11 @@
       "desc": "Total itemized deductions",
       "form": {"2017": "ITR-1 Part C-C1 and ITR-3 Part B-TI-13c"}
     },
+    "TOTAL_DEDUC_10AA": {
+      "type": "float",
+      "desc": "Total deduction u/s 10AA",
+      "form": {"2017": "Column 11 of Part B-TI of ITR-6"}
+    },
     "weight": {
       "type": "float",
       "desc": "Filing unit sampling weight",
@@ -188,6 +193,11 @@
       "type": "float",
       "desc": "Total itemized deductions",
       "form": {"2017": "ITR-1 Part C-C1 and ITR-3 Part B-TI-13c"}
+    },
+    "deduction_10AA": {
+      "type": "float",
+      "desc": "Total deduction u/s 10AA",
+      "form": {"2017": "Part 11 of Part-B-TI of ITR 6"}
     },
     "tax_Aggregate_Income": {
       "type": "float",
