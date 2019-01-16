@@ -226,7 +226,8 @@ class Records(object):
         GF_STCG_APPRATE = self.gfactors.factor_value('STCG_APPRATE', year)
         GF_OINCOME = self.gfactors.factor_value('OINCOME', year)
         GF_DEDUCTIONS = self.gfactors.factor_value('DEDUCTIONS', year)
-        GF_DEDUCTION_10AA = self.gfactors.factor_value('DEDU_SEC_10A_OR_10AA', year)
+        GF_DEDUCTION_10AA = self.gfactors.factor_value('DEDU_SEC_10A_OR_10AA',
+                                                       year)
         GF_ST_CG_AMT_1 = self.gfactors.factor_value('ST_CG_AMT_1', year)
         GF_ST_CG_AMT_2 = self.gfactors.factor_value('ST_CG_AMT_2', year)
         GF_LT_CG_AMT_1 = self.gfactors.factor_value('LT_CG_AMT_1', year)
