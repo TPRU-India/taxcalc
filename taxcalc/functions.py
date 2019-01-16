@@ -128,6 +128,7 @@ def deduction_10AA(deduction_10AA, TOTAL_DEDUC_10AA):
     deduction_10AA = TOTAL_DEDUC_10AA
     return deduction_10AA
 
+
 @iterate_jit(nopython=True)
 def taxable_total_income(GTI, deductions, TTI):
     """
