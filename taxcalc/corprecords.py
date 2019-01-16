@@ -269,7 +269,8 @@ class CorpRecords(object):
                                                         year)
         GF_OINCOME = self.gfactors.factor_value('OINCOME', year)
         GF_DEDUCTIONS = self.gfactors.factor_value('DEDUCTIONS', year)
-        GF_DEDUCTION_10AA = self.gfactors.factor_value('DEDUCT_SEC_10A_OR_10AA', year)
+        GF_DEDUCTION_10AA = self.gfactors.factor_value('DEDUCT_SEC_10A_OR_10AA',
+                                                        year)
         self.NET_TAX_LIABILTY *= GF_CORP1
         self.ST_CG_AMT_1 *= GF_CORP1
         self.ST_CG_AMT_2 *= GF_CORP1
