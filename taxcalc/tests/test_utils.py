@@ -76,94 +76,90 @@ def test_create_distribution_tables(pit_fullsample, cit_fullsample):
     dist, _ = calc2.distribution_tables(None, 'weighted_deciles')
     assert isinstance(dist, pd.DataFrame)
     tabcol = 'pitax'
-    expected = [0,
-                0,
-                0,
-                0,
-                0,
-                1962018656,
-                5711348379,
-                14602115060,
-                45502588366,
-                163176554272,
-                397795460459,
-                1018520167211,
-                1647270252404,
-                331217754985,
-                384398972927,
-                302903439300]
-    if not np.allclose(dist[tabcol].values, expected,
-                       atol=0.5, rtol=0.0):
+    expected = [0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                1.962,
+                5.711,
+                14.602,
+                45.503,
+                163.177,
+                397.795,
+                1018.520,
+                1647.270,
+                331.218,
+                384.399,
+                302.903]
+    if not np.allclose(dist[tabcol].values, expected):
         test_failure = True
         print('dist xdec', tabcol)
         for val in dist[tabcol].values:
-            print('{:.0f},'.format(val))
+            print('{:.3f},'.format(val))
 
     tabcol = 'GTI'
-    expected = [0,
-                0,
-                688359196193,
-                893686612927,
-                1107005043554,
-                1332669875117,
-                1605579740694,
-                1824545488656,
-                2327660087552,
-                2818092073862,
-                3848954050211,
-                6071568969563,
-                22518121138330,
-                2490655359064,
-                2119235261822,
-                1461678348677]
-    if not np.allclose(dist[tabcol].tolist(), expected,
-                       atol=0.5, rtol=0.0):
+    expected = [0.000,
+                0.000,
+                688.359,
+                893.687,
+                1107.005,
+                1332.670,
+                1605.580,
+                1824.545,
+                2327.660,
+                2818.092,
+                3848.954,
+                6071.569,
+                22518.121,
+                2490.655,
+                2119.235,
+                1461.678]
+    if not np.allclose(dist[tabcol].tolist(), expected):
         test_failure = True
         print('dist xdec', tabcol)
         for val in dist[tabcol].values:
-            print('{:.0f},'.format(val))
+            print('{:.3f},'.format(val))
 
     dist, _ = calc2.distribution_tables(None, 'standard_income_bins')
     assert isinstance(dist, pd.DataFrame)
     tabcol = 'pitax'
-    expected = [0,
-                0,
-                8333758171,
-                279112936295,
-                542762267799,
-                401309804350,
-                415751485789,
-                0,
-                0,
-                0,
-                0,
-                1647270252404]
-    if not np.allclose(dist[tabcol], expected,
-                       atol=0.5, rtol=0.0):
+    expected = [0.000,
+                0.000,
+                8.334,
+                279.113,
+                542.762,
+                401.310,
+                415.751,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                1647.270]
+    if not np.allclose(dist[tabcol], expected):
         test_failure = True
         print('dist xbin', tabcol)
         for val in dist[tabcol].values:
-            print('{:.0f},'.format(val))
+            print('{:.3f},'.format(val))
 
     tabcol = 'GTI'
-    expected = [0,
-                0,
-                5884790064186,
-                7399791669944,
-                4810525909565,
-                2392643281013,
-                2030370213621,
-                0,
-                0,
-                0,
-                0,
-                22518121138330]
-    if not np.allclose(dist[tabcol].tolist(), expected,
-                       atol=0.5, rtol=0.0):
+    expected = [0.000,
+                0.000,
+                5884.790,
+                7399.792,
+                4810.526,
+                2392.643,
+                2030.370,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                22518.121]
+    if not np.allclose(dist[tabcol].tolist(), expected):
         test_failure = True
         print('dist xdec', tabcol)
         for val in dist[tabcol].values:
-            print('{:.0f},'.format(val))
+            print('{:.3f},'.format(val))
 
     """
     Disabled till the model stablises

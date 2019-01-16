@@ -217,7 +217,12 @@ class Records(object):
         # pylint: disable=too-many-locals,too-many-statements
         GF_SALARY = self.gfactors.factor_value('SALARY', year)
         GF_RENT = self.gfactors.factor_value('RENT', year)
-        GF_BOPINCOME = self.gfactors.factor_value('BOPINCOME', year)
+        GF_BP_NONSPECULATIVE = self.gfactors.factor_value('BP_NONSPECULATIVE',
+                                                          year)
+        GF_BP_SPECULATIVE = self.gfactors.factor_value('BP_SPECULATIVE', year)
+        GF_BP_SPECIFIED = self.gfactors.factor_value('BP_SPECIFIED', year)
+        GF_BP_PATENT115BBF = self.gfactors.factor_value('BP_PATENT115BBF',
+                                                        year)
         GF_STCG_APPRATE = self.gfactors.factor_value('STCG_APPRATE', year)
         GF_OINCOME = self.gfactors.factor_value('OINCOME', year)
         GF_DEDUCTIONS = self.gfactors.factor_value('DEDUCTIONS', year)
@@ -230,7 +235,10 @@ class Records(object):
         GF_NET_AGRC_INCOME = self.gfactors.factor_value('AGRI_INCOME', year)
         self.SALARIES *= GF_SALARY
         self.INCOME_HP *= GF_RENT
-        self.TOTAL_PROFTS_GAINS_BP *= GF_BOPINCOME
+        self.PRFT_GAIN_BP_OTHR_SPECLTV_BUS *= GF_BP_NONSPECULATIVE
+        self.PRFT_GAIN_BP_SPECLTV_BUS *= GF_BP_SPECULATIVE
+        self.PRFT_GAIN_BP_SPCFD_BUS *= GF_BP_SPECIFIED
+        self.PRFT_GAIN_BP_INC_115BBF *= GF_BP_PATENT115BBF
         self.ST_CG_AMT_APPRATE *= GF_STCG_APPRATE
         self.TOTAL_INCOME_OS *= GF_OINCOME
         self.TOTAL_DEDUC_VIA *= GF_DEDUCTIONS

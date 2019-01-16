@@ -259,7 +259,26 @@ class CorpRecords(object):
         """
         # pylint: disable=too-many-locals,too-many-statements
         GF_CORP1 = self.gfactors.factor_value('CORP', year)
+        GF_RENT = self.gfactors.factor_value('RENT', year)
+        GF_BP_NONSPECULATIVE = self.gfactors.factor_value('BP_NONSPECULATIVE',
+                                                          year)
+        GF_BP_SPECULATIVE = self.gfactors.factor_value('BP_SPECULATIVE',
+                                                       year)
+        GF_BP_SPECIFIED = self.gfactors.factor_value('BP_SPECIFIED', year)
+        GF_BP_PATENT115BBF = self.gfactors.factor_value('BP_PATENT115BBF',
+                                                        year)
+        GF_OINCOME = self.gfactors.factor_value('OINCOME', year)
         self.NET_TAX_LIABILTY *= GF_CORP1
+        self.ST_CG_AMT_1 *= GF_CORP1
+        self.ST_CG_AMT_2 *= GF_CORP1
+        self.LT_CG_AMT_1 *= GF_CORP1
+        self.LT_CG_AMT_2 *= GF_CORP1
+        self.INCOME_HP *= GF_RENT
+        self.PRFT_GAIN_BP_OTHR_SPECLTV_BUS *= GF_BP_NONSPECULATIVE
+        self.PRFT_GAIN_BP_SPECLTV_BUS *= GF_BP_SPECULATIVE
+        self.PRFT_GAIN_BP_SPCFD_BUS *= GF_BP_SPECIFIED
+        self.PRFT_GAIN_BP_INC_115BBF *= GF_BP_PATENT115BBF
+        self.TOTAL_INCOME_OS *= GF_OINCOME
 
     def _extract_panel_year(self):
         """
@@ -279,8 +298,13 @@ class CorpRecords(object):
         data1 = self.full_panel[assessyear == self.panelyear].reset_index()
         # apply the blowup factors
         BF_CORP1 = blowup_data.loc[self.panelyear, 'CORP']
-        NET_TAX_LIABILTY = np.array(data1['NET_TAX_LIABILTY'])
-        data1['NET_TAX_LIABILTY'] = NET_TAX_LIABILTY * BF_CORP1
+        data1['NET_TAX_LIABILTY'] = data1['NET_TAX_LIABILTY'] * BF_CORP1
+        data1['INCOME_HP'] = data1['INCOME_HP'] * BF_CORP1
+        data1['TOTAL_INCOME_OS'] = data1['TOTAL_INCOME_OS'] * BF_CORP1
+        data1['ST_CG_AMT_1'] = data1['ST_CG_AMT_1'] * BF_CORP1
+        data1['ST_CG_AMT_2'] = data1['ST_CG_AMT_2'] * BF_CORP1
+        data1['LT_CG_AMT_1'] = data1['LT_CG_AMT_1'] * BF_CORP1
+        data1['LT_CG_AMT_2'] = data1['LT_CG_AMT_2'] * BF_CORP1
         # return the blown up data
         return data1
 

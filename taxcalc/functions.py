@@ -34,6 +34,22 @@ def net_rental_income(INCOME_HP):
 
 
 @iterate_jit(nopython=True)
+def income_business_profession(PRFT_GAIN_BP_OTHR_SPECLTV_BUS,
+                               PRFT_GAIN_BP_SPECLTV_BUS,
+                               PRFT_GAIN_BP_SPCFD_BUS,
+                               PRFT_GAIN_BP_INC_115BBF, Income_BP):
+    """
+    Compute Income from Business and Profession by adding the different
+    sub-heads (i.e speculative, non-speculative, specified, patents, etc)
+    """
+    # TODO: when reading from schedule BP, calculate Income_BP from the read
+    # TODO: variables of the schedule
+    Income_BP = (PRFT_GAIN_BP_OTHR_SPECLTV_BUS + PRFT_GAIN_BP_SPECLTV_BUS +
+                 PRFT_GAIN_BP_SPCFD_BUS + PRFT_GAIN_BP_INC_115BBF)
+    return Income_BP
+
+
+@iterate_jit(nopython=True)
 def total_other_income(TOTAL_INCOME_OS):
     """
     Compute other_income from its components.
@@ -77,16 +93,15 @@ def agri_income(Income_Rate_Purpose, NET_AGRC_INCOME):
 
 
 @iterate_jit(nopython=True)
-def gross_total_income(SALARIES, INCOME_HP, TOTAL_PROFTS_GAINS_BP,
-                       ST_CG_AMT_1, ST_CG_AMT_2, ST_CG_AMT_APPRATE,
-                       LT_CG_AMT_1, LT_CG_AMT_2, TOTAL_INCOME_OS,
-                       CY_Losses, BF_Losses, GTI):
+def gross_total_income(SALARIES, INCOME_HP, Income_BP, ST_CG_AMT_1,
+                       ST_CG_AMT_2, ST_CG_AMT_APPRATE, LT_CG_AMT_1,
+                       LT_CG_AMT_2, TOTAL_INCOME_OS, CY_Losses, BF_Losses,
+                       GTI):
     """
     Compute GTI including capital gains amounts taxed at special rates.
     """
-    GTI = (SALARIES + INCOME_HP + TOTAL_PROFTS_GAINS_BP +
-           ST_CG_AMT_1 + ST_CG_AMT_2 + ST_CG_AMT_APPRATE +
-           LT_CG_AMT_1 + LT_CG_AMT_2 +
+    GTI = (SALARIES + INCOME_HP + Income_BP + ST_CG_AMT_1 + ST_CG_AMT_2 +
+           ST_CG_AMT_APPRATE + LT_CG_AMT_1 + LT_CG_AMT_2 +
            TOTAL_INCOME_OS) - (CY_Losses + BF_Losses)
     GTI = np.maximum(0., GTI)
     return GTI
@@ -113,53 +128,39 @@ def taxable_total_income(GTI, deductions, TTI):
     return TTI
 
 
-def tax_stcg_splrate(calc):
+@iterate_jit(nopython=True)
+def tax_stcg_splrate(ST_CG_RATE1, ST_CG_RATE2, ST_CG_AMT_1, ST_CG_AMT_2):
     """
     Calculates the tax on short term capital gains which are taxed at spl rate
     Short term capital gain tax at applicable rate is included in tax on GTI.
     """
-    ST_CG_RATE1 = calc.policy_param('ST_CG_RATE1')
-    ST_CG_RATE2 = calc.policy_param('ST_CG_RATE2')
-    ST_CG_AMT_1 = calc.array('ST_CG_AMT_1')
-    ST_CG_AMT_2 = calc.array('ST_CG_AMT_2')
     Tax_ST_CG_RATE1 = ST_CG_AMT_1 * ST_CG_RATE1
     Tax_ST_CG_RATE2 = ST_CG_AMT_2 * ST_CG_RATE2
     Total_Tax_STCG = Tax_ST_CG_RATE1 + Tax_ST_CG_RATE2
-    calc.array('Tax_ST_CG_RATE1', Tax_ST_CG_RATE1)
-    calc.array('Tax_ST_CG_RATE2', Tax_ST_CG_RATE2)
-    calc.array('Total_Tax_STCG', Total_Tax_STCG)
-    # update TI_special_rates
-    old = calc.array('TI_special_rates')
-    new = old + ST_CG_AMT_1 + ST_CG_AMT_2
-    calc.array('TI_special_rates', new)
-    # update tax_TI_special_rates
-    old = calc.array('tax_TI_special_rates')
-    new = old + Total_Tax_STCG
-    calc.array('tax_TI_special_rates', new)
+    return (Tax_ST_CG_RATE1, Tax_ST_CG_RATE2, Total_Tax_STCG)
 
 
-def tax_ltcg_splrate(calc):
+@iterate_jit(nopython=True)
+def tax_ltcg_splrate(LT_CG_RATE1, LT_CG_RATE2, LT_CG_AMT_1, LT_CG_AMT_2):
     """
     Calculates the tax on long term capital gains which are taxed at spl rates
     """
-    LT_CG_RATE1 = calc.policy_param('LT_CG_RATE1')
-    LT_CG_RATE2 = calc.policy_param('LT_CG_RATE2')
-    LT_CG_AMT_1 = calc.array('LT_CG_AMT_1')
-    LT_CG_AMT_2 = calc.array('LT_CG_AMT_2')
     Tax_LT_CG_RATE1 = LT_CG_AMT_1 * LT_CG_RATE1
     Tax_LT_CG_RATE2 = LT_CG_AMT_2 * LT_CG_RATE2
     Total_Tax_LTCG = Tax_LT_CG_RATE1 + Tax_LT_CG_RATE2
-    calc.array('Tax_LT_CG_RATE1', Tax_LT_CG_RATE1)
-    calc.array('Tax_LT_CG_RATE2', Tax_LT_CG_RATE2)
-    calc.array('Total_Tax_LTCG', Total_Tax_LTCG)
-    # update TI_special_rates
-    old = calc.array('TI_special_rates')
-    new = old + LT_CG_AMT_1 + LT_CG_AMT_2
-    calc.array('TI_special_rates', new)
-    # update tax_TI_special_rates
-    old = calc.array('tax_TI_special_rates')
-    new = old + Total_Tax_LTCG
-    calc.array('tax_TI_special_rates', new)
+    return (Tax_LT_CG_RATE1, Tax_LT_CG_RATE2, Total_Tax_LTCG)
+
+
+@iterate_jit(nopython=True)
+def tax_specialrates(ST_CG_AMT_1, ST_CG_AMT_2, LT_CG_AMT_1, LT_CG_AMT_2,
+                     Total_Tax_STCG, Total_Tax_LTCG):
+    """
+    Calculates the total capital gains and tax on it
+    which are taxed at spl rates
+    """
+    TI_special_rates = ST_CG_AMT_1 + ST_CG_AMT_2 + LT_CG_AMT_1 + LT_CG_AMT_2
+    tax_TI_special_rates = Total_Tax_STCG + Total_Tax_LTCG
+    return (TI_special_rates, tax_TI_special_rates)
 
 
 DEBUG = False
