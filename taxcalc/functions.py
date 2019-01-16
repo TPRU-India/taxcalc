@@ -119,6 +119,16 @@ def itemized_deductions(deductions, TOTAL_DEDUC_VIA):
 
 
 @iterate_jit(nopython=True)
+def deduction_10AA(deduction_10AA, TOTAL_DEDUC_10AA):
+    """
+    Compute deductions from itemizeable expenses and caps.
+    """
+    # TODO: when expenses and caps policy are available, do the calculation
+    # TODO: when using deductions as function argument, no calculations neeed
+    deduction_10AA = TOTAL_DEDUC_10AA
+    return deduction_10AA
+
+@iterate_jit(nopython=True)
 def taxable_total_income(GTI, deductions, TTI):
     """
     Compute TTI.

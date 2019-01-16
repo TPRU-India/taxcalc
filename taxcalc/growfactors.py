@@ -47,7 +47,8 @@ class GrowFactors(object):
                        'BP_SPECULATIVE', 'BP_SPECIFIED', 'BP_PATENT115BBF',
                        'STCG_APPRATE', 'OINCOME', 'DEDUCTIONS', 'ST_CG_AMT_1',
                        'ST_CG_AMT_2', 'LT_CG_AMT_1', 'LT_CG_AMT_2',
-                       'LOSSES_CY', 'LOSSES_BF', 'AGRI_INCOME', 'CORP'])
+                       'LOSSES_CY', 'LOSSES_BF', 'AGRI_INCOME', 'CORP',
+                       'DEDUCT_SEC_10A_OR_10AA'])
 
     def __init__(self, growfactors_filename=FILE_PATH):
         # read grow factors from specified growfactors_filename
