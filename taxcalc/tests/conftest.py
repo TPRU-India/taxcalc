@@ -20,7 +20,7 @@ def pit_path(tests_path):
 
 @pytest.fixture(scope='session')
 def cit_path(tests_path):
-    return os.path.join(tests_path, '..', 'cit.csv')
+    return os.path.join(tests_path, '..', 'cit_cross.csv')
 
 
 @pytest.fixture(scope='session')
