@@ -292,19 +292,33 @@ class CorpRecords(object):
         # read in the blow-up factors
         blowup_path = os.path.join(CorpRecords.CUR_PATH, self.blowfactors_path)
         blowup_data = pd.read_csv(blowup_path)
-        blowup_data.set_index('year', inplace=True)
         # extract the observations for the intended year
         assessyear = np.array(self.full_panel['ASSESSMENT_YEAR'])
         data1 = self.full_panel[assessyear == self.panelyear].reset_index()
-        # apply the blowup factors
-        BF_CORP1 = blowup_data.loc[self.panelyear, 'CORP']
+        # extract and apply the blowup factors
+        BF_CORP1 = blowup_data.loc[0, 'CORP']
+        BF_RENT = blowup_data.loc[0, 'RENT']
+        BF_BP_NONSPECULATIVE = blowup_data.loc[0, 'BP_NONSPECULATIVE']
+        BF_BP_SPECULATIVE = blowup_data.loc[0, 'BP_SPECULATIVE']
+        BF_BP_SPECIFIED = blowup_data.loc[0, 'BP_SPECIFIED']
+        BF_BP_PATENT115BBF = blowup_data.loc[0, 'BP_PATENT115BBF']
+        BF_OINCOME = blowup_data.loc[0, 'OINCOME']
         data1['NET_TAX_LIABILTY'] = data1['NET_TAX_LIABILTY'] * BF_CORP1
-        data1['INCOME_HP'] = data1['INCOME_HP'] * BF_CORP1
-        data1['TOTAL_INCOME_OS'] = data1['TOTAL_INCOME_OS'] * BF_CORP1
         data1['ST_CG_AMT_1'] = data1['ST_CG_AMT_1'] * BF_CORP1
         data1['ST_CG_AMT_2'] = data1['ST_CG_AMT_2'] * BF_CORP1
         data1['LT_CG_AMT_1'] = data1['LT_CG_AMT_1'] * BF_CORP1
         data1['LT_CG_AMT_2'] = data1['LT_CG_AMT_2'] * BF_CORP1
+        data1['INCOME_HP'] = data1['INCOME_HP'] * BF_RENT
+        data1['PRFT_GAIN_BP_SPECLTV_BUS'] = (data1['PRFT_GAIN_BP_SPECLTV_BUS']
+                                             * BF_BP_SPECULATIVE)
+        data1['PRFT_GAIN_BP_SPCFD_BUS'] = (data1['PRFT_GAIN_BP_SPCFD_BUS'] *
+                                           BF_BP_SPECIFIED)
+        data1['PRFT_GAIN_BP_INC_115BBF'] = (data1['PRFT_GAIN_BP_INC_115BBF'] *
+                                            BF_BP_PATENT115BBF)
+        data1['TOTAL_INCOME_OS'] = data1['TOTAL_INCOME_OS'] * BF_OINCOME
+        # Special version for excessively long name
+        PRFT1 = np.array(data1['PRFT_GAIN_BP_OTHR_SPECLTV_BUS'])
+        data1['PRFT_GAIN_BP_OTHR_SPECLTV_BUS'] = PRFT1 * BF_BP_NONSPECULATIVE
         # return the blown up data
         return data1
 
