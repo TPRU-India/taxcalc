@@ -45,10 +45,10 @@ class GrowFactors(object):
     # TODO: want separate growfactors for Corporate and Non-corporate data.
     VALID_NAMES = set(['CPI', 'SALARY', 'RENT', 'BP_NONSPECULATIVE',
                        'BP_SPECULATIVE', 'BP_SPECIFIED', 'BP_PATENT115BBF',
-                       'STCG_APPRATE', 'OINCOME', 'DEDUCTIONS', 'ST_CG_AMT_1',
+                       'STCG_APPRATE', 'OINCOME', 'DEDUCTIONS',
+                       'DEDU_SEC_10A_OR_10AA', 'ST_CG_AMT_1',
                        'ST_CG_AMT_2', 'LT_CG_AMT_1', 'LT_CG_AMT_2',
-                       'LOSSES_CY', 'LOSSES_BF', 'AGRI_INCOME', 'CORP',
-                       'DEDUCT_SEC_10A_OR_10AA'])
+                       'LOSSES_CY', 'LOSSES_BF', 'AGRI_INCOME', 'CORP'])
 
     def __init__(self, growfactors_filename=FILE_PATH):
         # read grow factors from specified growfactors_filename

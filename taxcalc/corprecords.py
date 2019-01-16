@@ -276,7 +276,7 @@ class CorpRecords(object):
         GF_CYL_SET_OFF = self.gfactors.factor_value('LOSSES_CY', year)
         GF_BFL_SET_OFF_BALANCE = self.gfactors.factor_value('LOSSES_BF', year)
         GF_DEDUCTIONS = self.gfactors.factor_value('DEDUCTIONS', year)
-        GF_DEDUCTION_10AA = self.gfactors.factor_value('DEDUCT_SEC_10A_OR_10AA',
+        GF_DEDUCTION_10AA = self.gfactors.factor_value('DEDU_SEC_10A_OR_10AA',
                                                        year)
         GF_NET_AGRC_INCOME = self.gfactors.factor_value('AGRI_INCOME', year)
         self.NET_TAX_LIABILTY *= GF_CORP1
