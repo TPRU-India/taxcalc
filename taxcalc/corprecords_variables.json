@@ -36,6 +36,11 @@
       "desc": "Income from Long Term Capital Gains at Special rate2",
       "form": {"2017": "ITR-6, Part B-TI, line 3(b)(ii)"}
     },
+    "TOTAL_DEDUC_VIA": {
+      "type": "float",
+      "desc": "Total itemized deductions",
+      "form": {"2017": "Column 12 of Part B-TI of ITR-6"}
+    },
     "PRFT_GAIN_BP_OTHR_SPECLTV_BUS": {
       "type": "float",
       "desc": "Profits and Gains from BP other than speculative business",
@@ -107,6 +112,11 @@
       "type": "float",
       "desc": "tax on Capital Gains at special rates",
       "form": {"2017": "Not real"}
+    },
+    "deductions": {
+      "type": "float",
+      "desc": "Total itemized deductions",
+      "form": {"2017": "Part 12 of Part-B-TI of ITR 6"}
     },
     "Income_BP": {
       "type": "float",

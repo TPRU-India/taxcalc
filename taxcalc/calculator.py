@@ -158,6 +158,7 @@ class Calculator(object):
         tax_stcg_splrate(self.__policy, self.__corprecords)
         tax_ltcg_splrate(self.__policy, self.__corprecords)
         tax_specialrates(self.__policy, self.__corprecords)
+        itemized_deductions(self.__policy, self.__corprecords)
         income_business_profession(self.__policy, self.__corprecords)
         total_other_income(self.__policy, self.__corprecords)
         # Individual calculations
