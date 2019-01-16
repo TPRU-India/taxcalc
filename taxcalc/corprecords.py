@@ -267,18 +267,32 @@ class CorpRecords(object):
         GF_BP_SPECIFIED = self.gfactors.factor_value('BP_SPECIFIED', year)
         GF_BP_PATENT115BBF = self.gfactors.factor_value('BP_PATENT115BBF',
                                                         year)
+        GF_ST_CG_AMT_1 = self.gfactors.factor_value('ST_CG_AMT_1', year)
+        GF_ST_CG_AMT_2 = self.gfactors.factor_value('ST_CG_AMT_2', year)
+        GF_LT_CG_AMT_1 = self.gfactors.factor_value('LT_CG_AMT_1', year)
+        GF_LT_CG_AMT_2 = self.gfactors.factor_value('LT_CG_AMT_2', year)
+        GF_STCG_APPRATE = self.gfactors.factor_value('STCG_APPRATE', year)
         GF_OINCOME = self.gfactors.factor_value('OINCOME', year)
+        GF_CYL_SET_OFF = self.gfactors.factor_value('LOSSES_CY', year)
+        GF_BFL_SET_OFF_BALANCE = self.gfactors.factor_value('LOSSES_BF', year)
+        GF_DEDUCTIONS = self.gfactors.factor_value('DEDUCTIONS', year)
+        GF_NET_AGRC_INCOME = self.gfactors.factor_value('AGRI_INCOME', year)
         self.NET_TAX_LIABILTY *= GF_CORP1
-        self.ST_CG_AMT_1 *= GF_CORP1
-        self.ST_CG_AMT_2 *= GF_CORP1
-        self.LT_CG_AMT_1 *= GF_CORP1
-        self.LT_CG_AMT_2 *= GF_CORP1
+        self.ST_CG_AMT_1 *= GF_ST_CG_AMT_1
+        self.ST_CG_AMT_2 *= GF_ST_CG_AMT_2
+        self.ST_CG_AMT_APPRATE *= GF_STCG_APPRATE
+        self.LT_CG_AMT_1 *= GF_LT_CG_AMT_1
+        self.LT_CG_AMT_2 *= GF_LT_CG_AMT_2
         self.INCOME_HP *= GF_RENT
         self.PRFT_GAIN_BP_OTHR_SPECLTV_BUS *= GF_BP_NONSPECULATIVE
         self.PRFT_GAIN_BP_SPECLTV_BUS *= GF_BP_SPECULATIVE
         self.PRFT_GAIN_BP_SPCFD_BUS *= GF_BP_SPECIFIED
         self.PRFT_GAIN_BP_INC_115BBF *= GF_BP_PATENT115BBF
         self.TOTAL_INCOME_OS *= GF_OINCOME
+        self.CYL_SET_OFF *= GF_CYL_SET_OFF
+        self.BFL_SET_OFF_BALANCE *= GF_BFL_SET_OFF_BALANCE
+        self.TOTAL_DEDUC_VIA *= GF_DEDUCTIONS
+        self.NET_AGRC_INCOME *= GF_NET_AGRC_INCOME
 
     def _extract_panel_year(self):
         """
@@ -300,11 +314,23 @@ class CorpRecords(object):
         BF_CORP1 = blowup_data.loc[self.panelyear, 'CORP']
         data1['NET_TAX_LIABILTY'] = data1['NET_TAX_LIABILTY'] * BF_CORP1
         data1['INCOME_HP'] = data1['INCOME_HP'] * BF_CORP1
+        temp = data1['PRFT_GAIN_BP_OTHR_SPECLTV_BUS'] * BF_CORP1
+        data1['PRFT_GAIN_BP_OTHR_SPECLTV_BUS'] = temp
+        temp = data1['PRFT_GAIN_BP_SPECLTV_BUS'] * BF_CORP1
+        data1['PRFT_GAIN_BP_SPECLTV_BUS'] = temp
+        data1['PRFT_GAIN_BP_SPCFD_BUS'] = (data1['PRFT_GAIN_BP_SPCFD_BUS'] *
+                                           BF_CORP1)
+        data1['PRFT_GAIN_BP_INC_115BBF'] = (data1['PRFT_GAIN_BP_INC_115BBF'] *
+                                            BF_CORP1)
         data1['TOTAL_INCOME_OS'] = data1['TOTAL_INCOME_OS'] * BF_CORP1
         data1['ST_CG_AMT_1'] = data1['ST_CG_AMT_1'] * BF_CORP1
         data1['ST_CG_AMT_2'] = data1['ST_CG_AMT_2'] * BF_CORP1
         data1['LT_CG_AMT_1'] = data1['LT_CG_AMT_1'] * BF_CORP1
         data1['LT_CG_AMT_2'] = data1['LT_CG_AMT_2'] * BF_CORP1
+        data1['CYL_SET_OFF'] = data1['CYL_SET_OFF'] * BF_CORP1
+        data1['BFL_SET_OFF_BALANCE'] = data1['BFL_SET_OFF_BALANCE'] * BF_CORP1
+        data1['TOTAL_DEDUC_VIA'] = data1['TOTAL_DEDUC_VIA'] * BF_CORP1
+        data1['NET_AGRC_INCOME'] = data1['NET_AGRC_INCOME'] * BF_CORP1
         # return the blown up data
         return data1
 

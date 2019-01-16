@@ -21,7 +21,8 @@ from taxcalc.functions import (net_salary_income, net_rental_income,
                                tax_stcg_splrate, tax_ltcg_splrate,
                                tax_specialrates, current_year_losses,
                                brought_fwd_losses, agri_income, pit_liability)
-from taxcalc.corpfunctions import (net_tax_liability_a, net_tax_liability_b)
+from taxcalc.corpfunctions import (corp_GTI, net_tax_liability_a,
+                                   net_tax_liability_b)
 from taxcalc.policy import Policy
 from taxcalc.records import Records
 from taxcalc.corprecords import CorpRecords
@@ -155,11 +156,16 @@ class Calculator(object):
         net_tax_liability_a(self.__policy, self.__corprecords)
         net_tax_liability_b(self)
         net_rental_income(self.__policy, self.__corprecords)
+        income_business_profession(self.__policy, self.__corprecords)
+        total_other_income(self.__policy, self.__corprecords)
+        current_year_losses(self.__policy, self.__corprecords)
+        brought_fwd_losses(self.__policy, self.__corprecords)
+        corp_GTI(self.__policy, self.__corprecords)
+        itemized_deductions(self.__policy, self.__corprecords)
+        taxable_total_income(self.__policy, self.__corprecords)
         tax_stcg_splrate(self.__policy, self.__corprecords)
         tax_ltcg_splrate(self.__policy, self.__corprecords)
         tax_specialrates(self.__policy, self.__corprecords)
-        income_business_profession(self.__policy, self.__corprecords)
-        total_other_income(self.__policy, self.__corprecords)
         # Individual calculations
         net_salary_income(self.__policy, self.__records)
         net_rental_income(self.__policy, self.__records)
