@@ -316,12 +316,12 @@ class CorpRecords(object):
         data1['INCOME_HP'] = data1['INCOME_HP'] * BF_CORP1
         temp = data1['PRFT_GAIN_BP_OTHR_SPECLTV_BUS'] * BF_CORP1
         data1['PRFT_GAIN_BP_OTHR_SPECLTV_BUS'] = temp
-        data1['PRFT_GAIN_BP_SPECLTV_BUS'] = (data1['PRFT_GAIN_BP_SPECLTV_BUS'] *
-                                             BF_CORP1)
+        temp = data1['PRFT_GAIN_BP_SPECLTV_BUS'] * BF_CORP1
+        data1['PRFT_GAIN_BP_SPECLTV_BUS'] = temp
         data1['PRFT_GAIN_BP_SPCFD_BUS'] = (data1['PRFT_GAIN_BP_SPCFD_BUS'] *
-                                             BF_CORP1)
+                                           BF_CORP1)
         data1['PRFT_GAIN_BP_INC_115BBF'] = (data1['PRFT_GAIN_BP_INC_115BBF'] *
-                                             BF_CORP1)
+                                            BF_CORP1)
         data1['TOTAL_INCOME_OS'] = data1['TOTAL_INCOME_OS'] * BF_CORP1
         data1['ST_CG_AMT_1'] = data1['ST_CG_AMT_1'] * BF_CORP1
         data1['ST_CG_AMT_2'] = data1['ST_CG_AMT_2'] * BF_CORP1
