@@ -182,17 +182,40 @@ class CorpRecords(object):
         WARNING: MUST FIX UNIQUE CORPORATE ID FOR MERGING ACROSS YEARS
         """
         # Specify the variables to be carried forward
-        carryforward_df = pd.DataFrame({'FILING_SEQ_NO': self.FILING_SEQ_NO})
+        carryforward_df = pd.DataFrame({'ID_NO': self.ID_NO,
+                                        'newloss1': self.newloss1,
+                                        'newloss2': self.newloss2,
+                                        'newloss3': self.newloss3,
+                                        'newloss4': self.newloss4,
+                                        'newloss5': self.newloss5,
+                                        'newloss6': self.newloss6,
+                                        'newloss7': self.newloss7,
+                                        'newloss8': self.newloss8})
         # Update years
         self.panelyear += 1
         # Get new panel data
         data1 = self._extract_panel_year()
         data2 = data1.merge(right=carryforward_df, how='outer',
-                            on='FILING_SEQ_NO', indicator=True)
+                            on='ID_NO', indicator=True)
         merge_info = np.array(data2['_merge'])
         to_update = np.where(merge_info == 'both', True, False)
         to_keep = np.where(merge_info != 'right_only', True, False)
-        # data2[input] = np.where(to_update, data2[calc], data2[input])
+        data2['LOSS_LAG1'] = np.where(to_update, data2['newloss1'],
+                                      data2['LOSS_LAG1'])
+        data2['LOSS_LAG2'] = np.where(to_update, data2['newloss2'],
+                                      data2['LOSS_LAG2'])
+        data2['LOSS_LAG3'] = np.where(to_update, data2['newloss3'],
+                                      data2['LOSS_LAG3'])
+        data2['LOSS_LAG4'] = np.where(to_update, data2['newloss4'],
+                                      data2['LOSS_LAG4'])
+        data2['LOSS_LAG5'] = np.where(to_update, data2['newloss5'],
+                                      data2['LOSS_LAG5'])
+        data2['LOSS_LAG6'] = np.where(to_update, data2['newloss6'],
+                                      data2['LOSS_LAG6'])
+        data2['LOSS_LAG7'] = np.where(to_update, data2['newloss7'],
+                                      data2['LOSS_LAG7'])
+        data2['LOSS_LAG8'] = np.where(to_update, data2['newloss8'],
+                                      data2['LOSS_LAG8'])
         data3 = data2[to_keep]
         self._read_data(data3)
 
