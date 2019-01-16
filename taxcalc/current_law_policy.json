@@ -398,5 +398,26 @@
         "out_of_range_minmsg": "",
         "out_of_range_maxmsg": "",
         "out_of_range_action": "stop"
+    },
+
+    "_Loss_CFLimit": {
+        "long_name": "Loss carryforward limit (years)",
+        "description": "Number of years for loss carryforward",
+        "itr_ref": "IT Act",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017", "2018"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": true,
+        "value": [8, 8],
+        "range": {"min": 0, "max": 9e99},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
     }
 }
