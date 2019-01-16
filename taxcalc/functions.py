@@ -162,8 +162,10 @@ def tax_specialrates(ST_CG_AMT_1, ST_CG_AMT_2, LT_CG_AMT_1, LT_CG_AMT_2,
     tax_TI_special_rates = Total_Tax_STCG + Total_Tax_LTCG
     return (TI_special_rates, tax_TI_special_rates)
 
+
 DEBUG = False
 DEBUG_IDX = 0
+
 
 def pit_liability(calc):
     """
