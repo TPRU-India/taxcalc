@@ -26,6 +26,11 @@
       "desc": "Income from Short Term Capital Gains at Special rate2",
       "form": {"2017": "ITR-6, Part B-TI, line 3(a)(ii)"}
     },
+    "ST_CG_AMT_APPRATE": {
+      "type": "float",
+      "desc": "STCG at regular rates as per current law",
+      "form": {"2017": "ITR-6 Part B-TI-3a-iii"}
+    },
     "LT_CG_AMT_1": {
       "type": "float",
       "desc": "Income from Long Term Capital Gains at Special rate1",
@@ -60,6 +65,26 @@
       "type": "float",
       "desc": "Income from Other Sources",
       "form": {"2017": "ITR-6 Part B-TI-4d"}
+    },
+    "CYL_SET_OFF": {
+      "type": "float",
+      "desc": "Current Year Losses to be set off",
+      "form": {"2017": "ITR-6 Part B-TI 6"}
+    },
+    "BFL_SET_OFF_BALANCE": {
+      "type": "float",
+      "desc": "Brought Forward Losses to be set off",
+      "form": {"2017": "ITR-6 Part B-TI 8"}
+    },
+    "NET_AGRC_INCOME": {
+      "type": "float",
+      "desc": "Agricultural income used for rate purpose",
+      "form": {"2017": "ITR-6 Part B-TI 16"}
+    },
+    "TOTAL_DEDUC_VIA": {
+      "type": "float",
+      "desc": "Total itemized deductions",
+      "form": {"2017": "ITR-6 Part Part B-TI 12c"}
     },
     "NET_TAX_LIABILTY": {
       "type": "float",
@@ -112,6 +137,36 @@
       "type": "float",
       "desc": "Computed income from Business and Profession)",
       "form": {"2017": "ITR-6 Part B-TI-2vi"}
+    },
+    "CY_Losses": {
+      "type": "float",
+      "desc": "Computed Current Year Losses to be set off",
+      "form": {"2017": "ITR-6 Part B-TI line 6"}
+    },
+    "BF_Losses": {
+      "type": "float",
+      "desc": "Computed Brought Forward Losses to be set off",
+      "form": {"2017": "ITR-6 Part B-TI line 8"}
+    },
+    "GTI": {
+      "type": "float",
+      "desc": "Gross Total Income (GTI)",
+      "form": {"2017": "ITR-6 Part B-TI line 9"}
+    },
+    "deductions": {
+      "type": "float",
+      "desc": "Total itemized deductions",
+      "form": {"2017": "ITR-6 Part B-TI-12c"}
+    },
+    "TTI": {
+      "type": "float",
+      "desc": "Taxable Total Income (TTI)",
+      "form": {"2017": "ITR-6 Part B-TI line 13"}
+    },
+    "TI_special_rates": {
+      "type": "float",
+      "desc": "Taxable Total Income (TTI) taxed at special rates",
+      "form": {"2017": "ITR-6 Part B-TI line 14"}
     },
     "NET_TAX_LIABILITY_A": {
       "type": "float",
