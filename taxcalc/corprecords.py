@@ -299,6 +299,8 @@ class CorpRecords(object):
         GF_CYL_SET_OFF = self.gfactors.factor_value('LOSSES_CY', year)
         GF_BFL_SET_OFF_BALANCE = self.gfactors.factor_value('LOSSES_BF', year)
         GF_DEDUCTIONS = self.gfactors.factor_value('DEDUCTIONS', year)
+        GF_DEDUCTION_10AA = self.gfactors.factor_value('DEDU_SEC_10A_OR_10AA',
+                                                       year)
         GF_NET_AGRC_INCOME = self.gfactors.factor_value('AGRI_INCOME', year)
         self.NET_TAX_LIABILTY *= GF_CORP1
         self.ST_CG_AMT_1 *= GF_ST_CG_AMT_1
@@ -315,6 +317,7 @@ class CorpRecords(object):
         self.CYL_SET_OFF *= GF_CYL_SET_OFF
         self.BFL_SET_OFF_BALANCE *= GF_BFL_SET_OFF_BALANCE
         self.TOTAL_DEDUC_VIA *= GF_DEDUCTIONS
+        self.TOTAL_DEDUC_10AA *= GF_DEDUCTION_10AA
         self.NET_AGRC_INCOME *= GF_NET_AGRC_INCOME
 
     def _extract_panel_year(self):

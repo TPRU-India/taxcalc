@@ -86,6 +86,11 @@
       "desc": "Total itemized deductions",
       "form": {"2017": "ITR-6 Part Part B-TI 12c"}
     },
+    "TOTAL_DEDUC_10AA": {
+      "type": "float",
+      "desc": "Total deduction u/s 10AA",
+      "form": {"2017": "Column 11 of Part B-TI of ITR-6"}
+    },
     "LOSS_LAG1": {
       "type": "float",
       "desc": "Loss lagged 1 year",
@@ -242,6 +247,11 @@
       "type": "float",
       "desc": "Total itemized deductions",
       "form": {"2017": "ITR-6 Part B-TI-12c"}
+    },
+    "deduction_10AA": {
+      "type": "float",
+      "desc": "Total deduction u/s 10AA",
+      "form": {"2017": "Part 11 of Part-B-TI of ITR 6"}
     },
     "TTI": {
       "type": "float",
