@@ -183,7 +183,8 @@ def pit_liability(rate1, rate2, rate3, rate4, tbrk1, tbrk2, tbrk3, tbrk4,
                   rebate_rate, rebate_thd, rebate_ceiling,
                   surcharge_rate, surcharge_thd, cess_rate,
                   TTI, TI_special_rates, tax_TI_special_rates,
-                  Income_Rate_Purpose, AGEGRP, Total_Tax_STCG, Total_Tax_LTCG,
+                  Income_Rate_Purpose, AGEGRP, Total_Tax_Cap_Gains,
+                  Total_Tax_STCG, Total_Tax_LTCG,
                   Aggregate_Income, tax_Aggregate_Income, rebate_agri,
                   tax_TTI, rebate, surcharge, cess, pitax):
     """
@@ -246,19 +247,18 @@ def pit_liability(rate1, rate2, rate3, rate4, tbrk1, tbrk2, tbrk3, tbrk4,
     rebate = min(tax_TTI, rebate)
     tax = tax_TTI - rebate
     # compute surcharge amount
-    if taxinc < surcharge_thd1:
-        surcharge = taxinc * surcharge_rate1
+    if TTI < surcharge_thd1:
+        surcharge = tax * surcharge_rate1
     else:
-        if taxinc >= surcharge_thd1 and taxinc < surcharge_thd2:
-            taxinc * surcharge_rate2
+        if TTI >= surcharge_thd1 and TTI < surcharge_thd2:
+            surcharge = tax * surcharge_rate2
         else:
-            taxinc * surcharge_rate3
+            surcharge = tax * surcharge_rate3
     tax += surcharge
     # compute cess amount
     cess = tax * cess_rate
     # compute pitax amount
     pitax = tax + cess
-    # calculate Total_Tax_Cap_Gains
     Total_Tax_Cap_Gains = Total_Tax_STCG + Total_Tax_LTCG
     return (Aggregate_Income, tax_Aggregate_Income, rebate_agri, tax_TTI,
-            rebate, surcharge, cess, pitax, Total_Tax_Cap_Gains)
+            Total_Tax_Cap_Gains, rebate, surcharge, cess, pitax)
