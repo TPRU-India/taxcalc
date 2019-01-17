@@ -19,8 +19,13 @@ def pit_path(tests_path):
 
 
 @pytest.fixture(scope='session')
-def cit_path(tests_path):
+def cit_crosspath(tests_path):
     return os.path.join(tests_path, '..', 'cit_cross.csv')
+
+
+@pytest.fixture(scope='session')
+def cit_panelpath(tests_path):
+    return os.path.join(tests_path, '..', 'cit_panel.csv')
 
 
 @pytest.fixture(scope='session')
@@ -35,5 +40,10 @@ def pit_subsample(pit_fullsample):
 
 
 @pytest.fixture(scope='session')
-def cit_fullsample(cit_path):
-    return pandas.read_csv(cit_path)
+def cit_crosssample(cit_crosspath):
+    return pandas.read_csv(cit_crosspath)
+
+
+@pytest.fixture(scope='session')
+def cit_panelsample(cit_panelpath):
+    return pandas.read_csv(cit_panelpath)

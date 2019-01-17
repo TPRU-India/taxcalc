@@ -11,32 +11,32 @@ from io import StringIO
 from taxcalc import GrowFactors, Policy, CorpRecords, Calculator
 
 
-def test_incorrect_Records_instantiation(cit_fullsample):
+def test_incorrect_Records_instantiation(cit_crosssample):
     with pytest.raises(ValueError):
         recs = CorpRecords(data=list())
     with pytest.raises(ValueError):
-        recs = CorpRecords(data=cit_fullsample, data_type='cross-section',
+        recs = CorpRecords(data=cit_crosssample, data_type='cross-section',
                            gfactors=list())
     with pytest.raises(ValueError):
-        recs = CorpRecords(data=cit_fullsample, data_type='cross-section',
+        recs = CorpRecords(data=cit_crosssample, data_type='cross-section',
                            gfactors=None, weights=list())
     with pytest.raises(ValueError):
-        recs = CorpRecords(data=cit_fullsample, data_type='cross-section',
+        recs = CorpRecords(data=cit_crosssample, data_type='cross-section',
                            gfactors=None, weights=None, start_year=list())
     with pytest.raises(ValueError):
-        recs = CorpRecords(data=cit_fullsample, data_type='something wrong',
+        recs = CorpRecords(data=cit_crosssample, data_type='something wrong',
                            gfactors=list())
 
 
-def test_correct_Records_instantiation(cit_fullsample):
-    rec1 = CorpRecords(data=cit_fullsample)
+def test_correct_Records_instantiation(cit_crosssample, cit_panelsample):
+    rec1 = CorpRecords(data=cit_crosssample)
     # TODO: Add some checks for records
     assert True
     rec1.set_current_year(rec1.data_year + 1)
     wghts_path = os.path.join(CorpRecords.CUR_PATH,
                               CorpRecords.CIT_WEIGHTS_FILENAME)
     wghts_df = pd.read_csv(wghts_path)
-    rec2 = CorpRecords(data=cit_fullsample,
+    rec2 = CorpRecords(data=cit_crosssample,
                        gfactors=GrowFactors(),
                        weights=wghts_df,
                        start_year=CorpRecords.CITCSV_YEAR)
@@ -45,11 +45,15 @@ def test_correct_Records_instantiation(cit_fullsample):
     assert rec2.current_year == rec2.data_year
 
 
-def test_increment_year(cit_fullsample):
-    recs = CorpRecords(data=cit_fullsample)
+def test_increment_year(cit_crosssample, cit_panelsample):
+    recs = CorpRecords(data=cit_crosssample)
     assert recs.current_year == recs.data_year
     recs.increment_year()
     assert recs.current_year == recs.data_year + 1
+    recs2 = CorpRecords(data=cit_panelsample, data_type='panel')
+    assert recs2.current_year == recs2.data_year
+    recs2.increment_year()
+    assert recs2.current_year == recs2.data_year + 1
 
 
 def test_for_duplicate_names():

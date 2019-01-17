@@ -387,11 +387,17 @@ class CorpRecords(object):
             CorpRecords.read_var_info()
         # read specified data
         if isinstance(data, pd.DataFrame):
-            taxdf = data
+            if self.data_type == 'cross-section':
+                taxdf = data
+            else:
+                self.full_panel = data
+                assessyear = np.array(self.full_panel['ASSESSMENT_YEAR'])
+                self.panelyear = min(assessyear)
+                taxdf = self._extract_panel_year()
         elif isinstance(data, str):
             data_path = os.path.join(CorpRecords.CUR_PATH, data)
             if os.path.exists(data_path):
-                if self.data_type == "cross-section":
+                if self.data_type == 'cross-section':
                     taxdf = pd.read_csv(data_path)
                 else:
                     # Read in the full panel data (all years)
