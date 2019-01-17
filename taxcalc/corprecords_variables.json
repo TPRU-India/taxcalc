@@ -130,11 +130,6 @@
       "type": "float",
       "desc": "Loss lagged 8 year",
       "form": {"2017": "ITR-6 Sch. CFL"}
-    },
-    "NET_TAX_LIABILTY": {
-      "type": "float",
-      "desc": "CIT liability",
-      "form": {"2017": "ITR-1 line D11"}
     }
   },
   "calc": {
@@ -167,6 +162,11 @@
       "type": "float",
       "desc": "tax on Long Term Capital Gains at special rates",
       "form": {"2017": "Not real"}
+    },
+    "Total_Tax_Cap_Gains": {
+      "type": "float",
+      "desc": "Total Capital Gains Total_Tax_STCG + Total_Tax_LTCG (Total_Tax_Cap_Gains)",
+      "form": {"2017": "Not in Form"}
     },
     "TI_special_rates": {
       "type": "float",
@@ -238,6 +238,11 @@
       "desc": "Computed carried forward loss",
       "form": {"2017": "ITR-6 Sch. CFL"}
     },
+    "Aggregate_Income": {
+      "type": "float",
+      "desc": "Income taxed at normal rates TTI minus TI_special_rates",
+      "form": {"2017": "ITR-6 Part B-TI line 17"}
+    },
     "GTI": {
       "type": "float",
       "desc": "Gross Total Income (GTI)",
@@ -258,20 +263,35 @@
       "desc": "Taxable Total Income (TTI)",
       "form": {"2017": "ITR-6 Part B-TI line 13"}
     },
+    "tax_Aggregate_Income": {
+      "type": "float",
+      "desc": "Tax liability on Income taxed at normal rates",
+      "form": {"2017": "ITR-6 Part B TTI-2a"}
+    },
     "TI_special_rates": {
       "type": "float",
       "desc": "Taxable Total Income (TTI) taxed at special rates",
       "form": {"2017": "ITR-6 Part B-TI line 14"}
     },
-    "NET_TAX_LIABILITY_A": {
+    "tax_TTI": {
       "type": "float",
-      "desc": "half CIT liability",
-      "form": {"2017": "Not real"}
+      "desc": "Tax liability on TI which is tax_Aggregate_Income plus tax_TI_special_rates less agricultural rebate",
+      "form": {"2017": "ITR-6 Part B TTI-2a"}
     },
-    "NET_TAX_LIABILITY_B": {
+    "surcharge": {
       "type": "float",
-      "desc": "half CIT liability",
-      "form": {"2017": "Not real"}
+      "desc": "Surcharge on income above surcharge_thd",
+      "form": {"2017": "ITR-6 Part B TTI-2diii"}
+    },
+    "cess": {
+      "type": "float",
+      "desc": "cess on tax and surcharge",
+      "form": {"2017": "ITR-6 Part B TTI-2e"}
+    },
+    "citax": {
+      "type": "float",
+      "desc": "PIT liability",
+      "form": {"2017": "ITR-6 Part B TTI-2f"}
     }
   }
 }

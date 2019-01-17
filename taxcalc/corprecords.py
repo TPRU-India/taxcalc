@@ -301,7 +301,6 @@ class CorpRecords(object):
         GF_DEDUCTION_10AA = self.gfactors.factor_value('DEDU_SEC_10A_OR_10AA',
                                                        year)
         GF_NET_AGRC_INCOME = self.gfactors.factor_value('AGRI_INCOME', year)
-        self.NET_TAX_LIABILTY *= GF_CORP1
         self.ST_CG_AMT_1 *= GF_ST_CG_AMT_1
         self.ST_CG_AMT_2 *= GF_ST_CG_AMT_2
         self.ST_CG_AMT_APPRATE *= GF_STCG_APPRATE
@@ -351,7 +350,6 @@ class CorpRecords(object):
         BF_DEDUCTION_10AA = blowup_data.loc[0, 'DEDUCT_SEC_10A_OR_10AA']
         BF_NET_AGRC_INC = blowup_data.loc[0, 'NET_AGRC_INCOME']
         # Apply blow-up factors
-        data1['NET_TAX_LIABILTY'] = data1['NET_TAX_LIABILTY'] * BF_CORP1
         data1['INCOME_HP'] = data1['INCOME_HP'] * BF_RENT
         temp = data1['PRFT_GAIN_BP_OTHR_SPECLTV_BUS']
         data1['PRFT_GAIN_BP_OTHR_SPECLTV_BUS'] = temp * BF_BP_NONSPECULAT
