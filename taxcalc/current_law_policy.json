@@ -358,6 +358,48 @@
         "out_of_range_action": "stop"
     },
 
+    "_cit_surcharge_rate": {
+        "long_name": "rate at which surcharge is levied for companies",
+        "description": "surcharge rates for companies",
+        "itr_ref": "Tax Computation Table, Finance Act",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "TTI1",
+        "col_label": ["bracket1", "bracket2", "bracket3"],
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [[0.0, 0.07, 0.12]],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_cit_surcharge_thd": {
+        "long_name": "income threshold for levy of surcharge for companies",
+        "description": "income threshold for surcharge for companies",
+        "itr_ref": "Tax Computation Table, Finance Act",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": true,
+        "cpi_inflated": false,
+        "col_var": "TTI2",
+        "col_label": ["bracket1", "bracket2"],
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [[10000000, 100000000]],
+        "range": {"min": 0, "max": 9e99},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
     "_cess_rate": {
         "long_name": "rate at which cess is levied",
         "description": "cess applied to sum of tax and surcharge",
@@ -379,13 +421,13 @@
         "out_of_range_action": "stop"
     },
 
-    "_citax_rescale_rate": {
-        "long_name": "rate at which corporate tax is recaled",
-        "description": "placeholder for corporate policy parameters",
-        "itr_ref": "ITR-6, Some Section",
+    "_cit_rate": {
+        "long_name": "rate at which corporates are taxed",
+        "description": "Corporate Tax rate",
+        "itr_ref": "Schedule 1 Finance Act",
         "notes": "",
         "row_var": "AYEAR",
-        "row_label": ["2017", "2018"],
+        "row_label": ["2017"],
         "start_year": 2017,
         "cpi_inflatable": false,
         "cpi_inflated": false,
@@ -393,8 +435,8 @@
         "col_label": "",
         "boolean_value": false,
         "integer_value": false,
-        "value": [1.0, 1.0],
-        "range": {"min": 0, "max": 9e99},
+        "value": [0.3],
+        "range": {"min": 0, "max": 1},
         "out_of_range_minmsg": "",
         "out_of_range_maxmsg": "",
         "out_of_range_action": "stop"
