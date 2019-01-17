@@ -178,7 +178,14 @@ DEBUG = False
 DEBUG_IDX = 0
 
 
-def pit_liability(calc):
+@iterate_jit(nopython=True)
+def pit_liability(rate1, rate2, rate3, rate4, tbrk1, tbrk2, tbrk3, tbrk4,
+                  rebate_rate, rebate_thd, rebate_ceiling,
+                  surcharge_rate, surcharge_thd, cess_rate,
+                  TTI, TI_special_rates, tax_TI_special_rates,
+                  Income_Rate_Purpose, AGEGRP, Total_Tax_STCG, Total_Tax_LTCG,
+                  Aggregate_Income, tax_Aggregate_Income, rebate_agri,
+                  tax_TTI, rebate, surcharge, cess, pitax):
     """
     Compute tax liability given the progressive tax rate schedule specified
     by the (marginal tax) rate* and (upper tax bracket) brk* parameters and
@@ -190,86 +197,68 @@ def pit_liability(calc):
     """
     # subtract TI_special_rates from TTI to get Aggregate_Income, which is
     # the portion of TTI that is taxed at normal rates
-    TTI = calc.array('TTI')
-    taxinc = TTI - calc.array('TI_special_rates')
-    taxinc = np.maximum(0., taxinc)
-    agginc = taxinc + calc.array('Income_Rate_Purpose')
-    agginc = np.maximum(0., agginc)
-
-    calc.array('Aggregate_Income', taxinc)
+    taxinc = TTI - TI_special_rates
+    taxinc = max(0., taxinc)
+    agginc = taxinc + Income_Rate_Purpose
+    agginc = max(0., agginc)
+    # Check this later
+    Aggregate_Income = taxinc
     # calculate tax on taxable income subject to taxation at normal rates
     # NOTE: Tax_ST_CG_APPRATE is not calculated here because its stacking
     #       and scope assumptions have not been specified.  If it is ever
     #       calculated here, be sure to add it to Total_Tax_STCG variable.
-    AGEGRP = calc.array('AGEGRP')
-    rate1 = calc.policy_param('rate1')
-    rate2 = calc.policy_param('rate2')
-    rate3 = calc.policy_param('rate3')
-    rate4 = calc.policy_param('rate4')
-    tbrk1 = calc.policy_param('tbrk1')[AGEGRP]
-    tbrk2 = calc.policy_param('tbrk2')[AGEGRP]
-    tbrk3 = calc.policy_param('tbrk3')[AGEGRP]
-    tbrk4 = calc.policy_param('tbrk4')[AGEGRP]
-    rebate_rate = calc.policy_param('rebate_rate')
-    rebate_thd = calc.policy_param('rebate_thd')
-    rebate_ceiling = calc.policy_param('rebate_ceiling')
-    surcharge_rate1 = calc.policy_param('surcharge_rate')[0]
-    surcharge_rate2 = calc.policy_param('surcharge_rate')[1]
-    surcharge_rate3 = calc.policy_param('surcharge_rate')[2]
-    surcharge_thd1 = calc.policy_param('surcharge_thd')[0]
-    surcharge_thd2 = calc.policy_param('surcharge_thd')[1]
-    cess_rate = calc.policy_param('cess_rate')
+    surcharge_rate1 = surcharge_rate[0]
+    surcharge_rate2 = surcharge_rate[1]
+    surcharge_rate3 = surcharge_rate[2]
+    surcharge_thd1 = surcharge_thd[0]
+    surcharge_thd2 = surcharge_thd[1]
     # compute tax on income taxed at normal rates
-    tax_normal_rates = (rate1 * np.minimum(agginc, tbrk1) +
-                        rate2 * np.minimum(tbrk2 - tbrk1,
-                                           np.maximum(0., agginc - tbrk1)) +
-                        rate3 * np.minimum(tbrk3 - tbrk2,
-                                           np.maximum(0., agginc - tbrk2)) +
-                        rate4 * np.maximum(0., agginc - tbrk3))
-    calc.array('tax_Aggregate_Income', tax_normal_rates)
+    tbrk1 = tbrk1[AGEGRP]
+    tbrk2 = tbrk2[AGEGRP]
+    tbrk3 = tbrk3[AGEGRP]
+    tax_normal_rates = (rate1 * min(agginc, tbrk1) +
+                        rate2 * min(tbrk2 - tbrk1, max(0., agginc - tbrk1)) +
+                        rate3 * min(tbrk3 - tbrk2, max(0., agginc - tbrk2)) +
+                        rate4 * max(0., agginc - tbrk3))
+    tax_Aggregate_Income = tax_normal_rates
     # compute tax_TTI
-    tax_TTI = tax_normal_rates + calc.array('tax_TI_special_rates')
-    """
-    Compute the rebate on agricultural income. Agricultural income is exempt
-    but it is used for rate purpose.
-    """
-    agri_inc = calc.array('Income_Rate_Purpose') + tbrk1
-    rebate_agri = (rate1 * np.minimum(agri_inc, tbrk1) +
-                   rate2 * np.minimum(tbrk2 - tbrk1,
-                                      np.maximum(0., agri_inc - tbrk1)) +
-                   rate3 * np.minimum(tbrk3 - tbrk2,
-                                      np.maximum(0., agri_inc - tbrk2)) +
-                   rate4 * np.maximum(0., agri_inc - tbrk3))
+    tax_TTI = tax_normal_rates + tax_TI_special_rates
+    # rebate on agricultural income
+    # agri income is exempt but used for rate purpose
+    agri_inc = Income_Rate_Purpose + tbrk1
+    rebate_agri = (rate1 * min(agri_inc, tbrk1) +
+                   rate2 * min(tbrk2 - tbrk1, max(0., agri_inc - tbrk1)) +
+                   rate3 * min(tbrk3 - tbrk2, max(0., agri_inc - tbrk2)) +
+                   rate4 * max(0., agri_inc - tbrk3))
     # Acricultural rebate only applicable if taxinc is greater than tbrk1
-    rebate_agri = np.where(taxinc > tbrk1, rebate_agri, 0.)
-    calc.array('rebate_agri', rebate_agri)
+    if taxinc <= tbrk1:
+        rebate_agri = 0.
     # Acricultural rebate cannot be more than the tax liability
-    rebate_agri = np.minimum(tax_TTI, calc.array('rebate_agri'))
-    calc.array('rebate_agri', rebate_agri)
+    rebate_agri = min(tax_TTI, rebate_agri)
     # Update tax_TTI after allowing agricultural rebate
     tax_TTI -= rebate_agri
-    calc.array('tax_TTI', tax_TTI)
     # Compute rebate amount u/s 87A. Only applicablle if TTI > rebate_thd
-    rebate = np.where(TTI > rebate_thd, 0.,
-                      np.minimum(rebate_rate * TTI, rebate_ceiling))
+    if TTI > rebate_thd:
+        rebate = 0.
+    else:
+        rebate = min(rebate_rate * TTI, rebate_ceiling)
     # As rebate is a non-refundable credit it should capped to tax_TTI
-    rebate = np.minimum(tax_TTI, rebate)
-    calc.array('rebate', rebate)
+    rebate = min(tax_TTI, rebate)
     tax = tax_TTI - rebate
     # compute surcharge amount
-    surcharge = np.where(taxinc < surcharge_thd1, taxinc * surcharge_rate1,
-                         np.where((taxinc >= surcharge_thd1) &
-                                  (taxinc < surcharge_thd2),
-                                  taxinc * surcharge_rate2,
-                                  taxinc * surcharge_rate3))
-    calc.array('surcharge', surcharge)
+    if taxinc < surcharge_thd1:
+        surcharge = taxinc * surcharge_rate1
+    else:
+        if taxinc >= surcharge_thd1 and taxinc < surcharge_thd2:
+            taxinc * surcharge_rate2
+        else:
+            taxinc * surcharge_rate3
     tax += surcharge
     # compute cess amount
     cess = tax * cess_rate
-    calc.array('cess', cess)
     # compute pitax amount
-    tax += cess
-    calc.array('pitax', tax)
+    pitax = tax + cess
     # calculate Total_Tax_Cap_Gains
-    calc.array('Total_Tax_Cap_Gains',
-               calc.array('Total_Tax_STCG') + calc.array('Total_Tax_LTCG'))
+    Total_Tax_Cap_Gains = Total_Tax_STCG + Total_Tax_LTCG
+    return (Aggregate_Income, tax_Aggregate_Income, rebate_agri, tax_TTI,
+            rebate, surcharge, cess, pitax, Total_Tax_Cap_Gains)
