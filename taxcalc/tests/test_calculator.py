@@ -12,10 +12,10 @@ import pandas as pd
 from taxcalc import Policy, Records, CorpRecords, Calculator
 
 
-def test_incorrect_Calculator_instantiation(pit_subsample, cit_fullsample):
+def test_incorrect_Calculator_instantiation(pit_subsample, cit_crosssample):
     pol = Policy()
     rec = Records(data=pit_subsample)
-    crec = CorpRecords(data=cit_fullsample)
+    crec = CorpRecords(data=cit_crosssample)
     with pytest.raises(ValueError):
         Calculator(policy=None, records=rec, corprecords=crec)
     with pytest.raises(ValueError):
@@ -25,7 +25,7 @@ def test_incorrect_Calculator_instantiation(pit_subsample, cit_fullsample):
 
 
 def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample,
-                                          cit_fullsample):
+                                          cit_crosssample):
     syr = Policy.JSON_START_YEAR
     pol = Policy()
     assert pol.current_year == syr
@@ -36,7 +36,7 @@ def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample,
     # expect_citax = ???
     # create full-sample Calculator object
     rec_full = Records(data=pit_fullsample)
-    crec = CorpRecords(data=cit_fullsample)
+    crec = CorpRecords(data=cit_crosssample)
     calc_full = Calculator(policy=pol, records=rec_full, corprecords=crec)
     assert isinstance(calc_full, Calculator)
     assert calc_full.current_year == syr
@@ -59,10 +59,10 @@ def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample,
     """
 
 
-def test_Calculator_results_consistency(pit_fullsample, cit_fullsample):
+def test_Calculator_results_consistency(pit_fullsample, cit_crosssample):
     # generate calculated-variable dataframe for full sample in second year
     recs = Records(data=pit_fullsample)
-    crecs = CorpRecords(data=cit_fullsample)
+    crecs = CorpRecords(data=cit_crosssample)
     calc = Calculator(policy=Policy(), records=recs, corprecords=crecs)
     assert isinstance(calc, Calculator)
     assert calc.current_year == Policy.JSON_START_YEAR
