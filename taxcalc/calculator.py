@@ -17,12 +17,13 @@ import pandas as pd
 from taxcalc.functions import (net_salary_income, net_rental_income,
                                income_business_profession,
                                total_other_income, gross_total_income,
-                               itemized_deductions, taxable_total_income,
+                               itemized_deductions, deduction_10AA,
+                               taxable_total_income,
                                tax_stcg_splrate, tax_ltcg_splrate,
                                tax_specialrates, current_year_losses,
                                brought_fwd_losses, agri_income, pit_liability)
-from taxcalc.corpfunctions import (corp_GTI, net_tax_liability_a,
-                                   net_tax_liability_b)
+from taxcalc.corpfunctions import (corp_GTI_before_set_off, GTI_and_losses,
+                                   net_tax_liability_a, net_tax_liability_b)
 from taxcalc.policy import Policy
 from taxcalc.records import Records
 from taxcalc.corprecords import CorpRecords
@@ -160,8 +161,10 @@ class Calculator(object):
         total_other_income(self.__policy, self.__corprecords)
         current_year_losses(self.__policy, self.__corprecords)
         brought_fwd_losses(self.__policy, self.__corprecords)
-        corp_GTI(self.__policy, self.__corprecords)
+        corp_GTI_before_set_off(self.__policy, self.__corprecords)
+        GTI_and_losses(self.__policy, self.__corprecords)
         itemized_deductions(self.__policy, self.__corprecords)
+        deduction_10AA(self.__policy, self.__corprecords)
         taxable_total_income(self.__policy, self.__corprecords)
         tax_stcg_splrate(self.__policy, self.__corprecords)
         tax_ltcg_splrate(self.__policy, self.__corprecords)
@@ -180,7 +183,7 @@ class Calculator(object):
         tax_stcg_splrate(self.__policy, self.__records)
         tax_ltcg_splrate(self.__policy, self.__records)
         tax_specialrates(self.__policy, self.__records)
-        pit_liability(self)
+        pit_liability(self.__policy, self.__records)
         # TODO: ADD: expanded_income(self.__policy, self.__records)
         # TODO: ADD: aftertax_income(self.__policy, self.__records)
 
