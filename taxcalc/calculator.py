@@ -183,7 +183,7 @@ class Calculator(object):
         tax_stcg_splrate(self.__policy, self.__records)
         tax_ltcg_splrate(self.__policy, self.__records)
         tax_specialrates(self.__policy, self.__records)
-        pit_liability(self)
+        pit_liability(self.__policy, self.__records)
         # TODO: ADD: expanded_income(self.__policy, self.__records)
         # TODO: ADD: aftertax_income(self.__policy, self.__records)
 
