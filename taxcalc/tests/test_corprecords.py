@@ -43,6 +43,9 @@ def test_correct_Records_instantiation(cit_crosssample, cit_panelsample):
     # TODO: Repeat checks for records
     assert True
     assert rec2.current_year == rec2.data_year
+    # try for panel results
+    rec3 = CorpRecords(cit_panelsample, data_type='panel')
+    assert rec3.current_year == CorpRecords.CITCSV_YEAR
 
 
 def test_increment_year(cit_crosssample, cit_panelsample):

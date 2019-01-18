@@ -388,10 +388,16 @@ class CorpRecords(object):
             if self.data_type == 'cross-section':
                 taxdf = data
             else:
-                self.full_panel = data
-                assessyear = np.array(self.full_panel['ASSESSMENT_YEAR'])
-                self.panelyear = min(assessyear)
-                taxdf = self._extract_panel_year()
+                try:
+                    # If receiving the next year's data
+                    self.panelyear
+                    taxdf = data
+                except AttributeError:
+                    # New CorpRecords object, using full panel
+                    self.full_panel = data
+                    assessyear = np.array(self.full_panel['ASSESSMENT_YEAR'])
+                    self.panelyear = min(assessyear)
+                    taxdf = self._extract_panel_year()
         elif isinstance(data, str):
             data_path = os.path.join(CorpRecords.CUR_PATH, data)
             if os.path.exists(data_path):
