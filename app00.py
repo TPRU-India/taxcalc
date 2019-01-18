@@ -4,15 +4,15 @@ USAGE: python app0.py > app0.res
 CHECK: Use your favorite Windows diff utility to confirm that app0.res is
        the same as the app0.out file that is in the repository.
 """
+import pandas as pd
 from taxcalc import *
 
 # create Records object containing pit.csv and pit_weights.csv input data
 recs = Records()
 
-assert isinstance(recs, Records)
-
 # create CorpRecords object using cross-section data
 crecs1 = CorpRecords(data='cit_cross.csv', weights='cit_cross_wgts.csv')
+# Note: weights argument is optional
 assert isinstance(crecs1, CorpRecords)
 assert crecs1.current_year == 2017
 
@@ -23,9 +23,6 @@ assert crecs2.current_year == 2017
 
 # create Policy object containing current-law policy
 pol = Policy()
-
-assert isinstance(pol, Policy)
-assert pol.current_year == 2017
 
 # specify Calculator objects for current-law policy
 calc1 = Calculator(policy=pol, records=recs, corprecords=crecs1)
@@ -40,13 +37,41 @@ assert calc1.current_year == 2017
 assert isinstance(calc2, Calculator)
 assert calc2.current_year == 2017
 
+# Produce DataFrame of results using cross-section
 calc1.calc_all()
+AggInc17c = calc1.carray('Aggregate_Income')
+citax17c = calc1.carray('citax')
 calc1.increment_year()
 calc1.calc_all()
+AggInc18c = calc1.carray('Aggregate_Income')
+citax18c = calc1.carray('citax')
+results_cross = pd.DataFrame({'Aggregate_Income2017': AggInc17c,
+                              'citax2017': citax17c,
+                              'Aggregate_Income2018': AggInc18c,
+                              'citax2018': citax18c})
+results_cross.to_csv('app00-dump-crosssection.csv', index=False,
+                     float_format='%.0f')
 
+# Produce DataFFrame of results using panel
+# First do 2017
 calc2.calc_all()
+AggInc17p = calc2.carray('Aggregate_Income')
+citax17p = calc2.carray('citax')
+id17p = calc2.carray('ID_NO')
+results_panel17 = pd.DataFrame({'ID_NO': id17p,
+                                'Aggregate_Income2017': AggInc17p,
+                                'citax2017': citax17p})
+# Then do 2018
 calc2.increment_year()
 calc2.calc_all()
-
-
-
+AggInc18p = calc2.carray('Aggregate_Income')
+citax18p = calc2.carray('citax')
+id18p = calc2.carray('ID_NO')
+results_panel18 = pd.DataFrame({'ID_NO': id18p,
+                                'Aggregate_Income2017': AggInc18p,
+                                'citax2017': citax18p})
+# Merge them together
+results_panel = results_panel17.merge(right=results_panel18, how='outer',
+                                      on='ID_NO')
+results_panel.drop(['ID_NO'], axis=1, inplace=True)
+results_panel.to_csv('app00-dump-panel.csv', index=False, float_format='%.0f')
