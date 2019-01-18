@@ -48,7 +48,8 @@ class GrowFactors(object):
                        'STCG_APPRATE', 'OINCOME', 'DEDUCTIONS',
                        'DEDU_SEC_10A_OR_10AA', 'ST_CG_AMT_1',
                        'ST_CG_AMT_2', 'LT_CG_AMT_1', 'LT_CG_AMT_2',
-                       'LOSSES_CY', 'LOSSES_BF', 'AGRI_INCOME', 'CORP'])
+                       'LOSSES_CY', 'LOSSES_BF', 'AGRI_INCOME', 'CORP',
+                       'INVESTMENT'])
 
     def __init__(self, growfactors_filename=FILE_PATH):
         # read grow factors from specified growfactors_filename

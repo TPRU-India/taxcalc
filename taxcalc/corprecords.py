@@ -210,7 +210,8 @@ class CorpRecords(object):
                                         'newloss5': self.newloss5,
                                         'newloss6': self.newloss6,
                                         'newloss7': self.newloss7,
-                                        'newloss8': self.newloss8})
+                                        'newloss8': self.newloss8,
+                                        'close_wdv_pm1': self.close_wdv_pm1})
         # Update years
         self.panelyear += 1
         # Get new panel data
@@ -236,6 +237,9 @@ class CorpRecords(object):
                                       data2['LOSS_LAG7'])
         data2['LOSS_LAG8'] = np.where(to_update, data2['newloss8'],
                                       data2['LOSS_LAG8'])
+        temp = np.where(to_update, data2['close_wdv_pm1'],
+                        data2['PWR_DOWN_VAL_1ST_DAY_PY_15P'])
+        data2['PWR_DOWN_VAL_1ST_DAY_PY_15P'] = temp
         data3 = data2[to_keep]
         self._read_data(data3)
 
@@ -321,6 +325,7 @@ class CorpRecords(object):
         GF_DEDUCTION_10AA = self.gfactors.factor_value('DEDU_SEC_10A_OR_10AA',
                                                        year)
         GF_NET_AGRC_INCOME = self.gfactors.factor_value('AGRI_INCOME', year)
+        GF_INVESTMENT = self.gfactors.factor_value('INVESTMENT', year)
         self.ST_CG_AMT_1 *= GF_ST_CG_AMT_1
         self.ST_CG_AMT_2 *= GF_ST_CG_AMT_2
         self.ST_CG_AMT_APPRATE *= GF_STCG_APPRATE
@@ -336,6 +341,13 @@ class CorpRecords(object):
         self.TOTAL_DEDUC_VIA *= GF_DEDUCTIONS
         self.TOTAL_DEDUC_10AA *= GF_DEDUCTION_10AA
         self.NET_AGRC_INCOME *= GF_NET_AGRC_INCOME
+        self.PWR_DOWN_VAL_1ST_DAY_PY_15P *= GF_INVESTMENT
+        self.PADDTNS_180_DAYS__MOR_PY_15P *= GF_INVESTMENT
+        self.PCR34_PY_15P *= GF_INVESTMENT
+        self.PADDTNS_LESS_180_DAYS_15P *= GF_INVESTMENT
+        self.PCR7_PY_15P *= GF_INVESTMENT
+        self.PEXP_INCURRD_TRF_ASSTS_15P *= GF_INVESTMENT
+        self.PCAP_GAINS_LOSS_SEC50_15P *= GF_INVESTMENT
 
     def _extract_panel_year(self):
         """
@@ -369,6 +381,7 @@ class CorpRecords(object):
         BF_DEDUCTIONS = blowup_data.loc[0, 'TOTAL_DEDUC_VIA']
         BF_DEDUCTION_10AA = blowup_data.loc[0, 'DEDUCT_SEC_10A_OR_10AA']
         BF_NET_AGRC_INC = blowup_data.loc[0, 'NET_AGRC_INCOME']
+        BF_INVESTMENT = blowup_data.loc[0, 'INVESTMENT']
         # Apply blow-up factors
         data1['INCOME_HP'] = data1['INCOME_HP'] * BF_RENT
         temp = data1['PRFT_GAIN_BP_OTHR_SPECLTV_BUS']
@@ -387,6 +400,20 @@ class CorpRecords(object):
         data1['CYL_SET_OFF'] = data1['CYL_SET_OFF'] * BF_CYL_SET_OFF
         data1['TOTAL_DEDUC_VIA'] = data1['TOTAL_DEDUC_VIA'] * BF_DEDUCTIONS
         data1['NET_AGRC_INCOME'] = data1['NET_AGRC_INCOME'] * BF_NET_AGRC_INC
+        temp = data1['PWR_DOWN_VAL_1ST_DAY_PY_15P']
+        data1['PWR_DOWN_VAL_1ST_DAY_PY_15P'] = temp * BF_INVESTMENT
+        temp = data1['PADDTNS_180_DAYS__MOR_PY_15P']
+        data1['PADDTNS_180_DAYS__MOR_PY_15P'] = temp * BF_INVESTMENT
+        temp = data1['PCR34_PY_15P']
+        data1['PCR34_PY_15P'] = temp * BF_INVESTMENT
+        temp = data1['PADDTNS_LESS_180_DAYS_15P']
+        data1['PADDTNS_LESS_180_DAYS_15P'] = temp * BF_INVESTMENT
+        temp = data1['PCR7_PY_15P']
+        data1['PCR7_PY_15P'] = temp * BF_INVESTMENT
+        temp = data1['PEXP_INCURRD_TRF_ASSTS_15P']
+        data1['PEXP_INCURRD_TRF_ASSTS_15P'] = temp * BF_INVESTMENT
+        temp = data1['PCAP_GAINS_LOSS_SEC50_15P']
+        data1['PCAP_GAINS_LOSS_SEC50_15P'] = temp * BF_INVESTMENT
         # Handle potential missing variables
         if 'PRFT_GAIN_BP_INC_115BBF' in list(data1):
             temp = data1['PRFT_GAIN_BP_INC_115BBF']

@@ -12,6 +12,44 @@ from taxcalc.decorators import iterate_jit
 
 
 @iterate_jit(nopython=True)
+def depreciation_PM(dep_rate_pm1, PWR_DOWN_VAL_1ST_DAY_PY_15P,
+                    PADDTNS_180_DAYS__MOR_PY_15P, PCR34_PY_15P,
+                    PADDTNS_LESS_180_DAYS_15P, PCR7_PY_15P,
+                    PEXP_INCURRD_TRF_ASSTS_15P, PCAP_GAINS_LOSS_SEC50_15P):
+    dep_amt_pm1 = (PWR_DOWN_VAL_1ST_DAY_PY_15P + PADDTNS_180_DAYS__MOR_PY_15P -
+                   PCR34_PY_15P) * dep_rate_pm1
+    dep_amt_pm1 += ((PADDTNS_LESS_180_DAYS_15P - PCR7_PY_15P) *
+                    (dep_rate_pm1 / 2))
+    close_wdv_pm1 = (PWR_DOWN_VAL_1ST_DAY_PY_15P +
+                     PADDTNS_180_DAYS__MOR_PY_15P - PCR34_PY_15P +
+                     PADDTNS_LESS_180_DAYS_15P - PCR7_PY_15P - dep_amt_pm1)
+    cap_gain_pm1 = (PCR34_PY_15P + PCR7_PY_15P - PWR_DOWN_VAL_1ST_DAY_PY_15P -
+                    PADDTNS_180_DAYS__MOR_PY_15P - PEXP_INCURRD_TRF_ASSTS_15P -
+                    PADDTNS_LESS_180_DAYS_15P)
+    # Consider unusual cases when Capital Gains is negative and block DNE
+    if (PCAP_GAINS_LOSS_SEC50_15P >= 0):
+        cap_gain_pm1 = max(0.0, cap_gain_pm1)
+    return (dep_amt_pm1, close_wdv_pm1)
+
+
+@iterate_jit(nopython=True)
+def corp_income_business_profession(dep_amt_pm1, PRFT_GAIN_BP_OTHR_SPECLTV_BUS,
+                                    PRFT_GAIN_BP_SPECLTV_BUS,
+                                    PRFT_GAIN_BP_SPCFD_BUS,
+                                    PRFT_GAIN_BP_INC_115BBF, Income_BP):
+    """
+    Compute Income from Business and Profession by adding the different
+    sub-heads (i.e speculative, non-speculative, specified, patents, etc)
+    """
+    # TODO: when reading from schedule BP, calculate Income_BP from the read
+    # TODO: variables of the schedule
+    Income_BP = (PRFT_GAIN_BP_OTHR_SPECLTV_BUS + PRFT_GAIN_BP_SPECLTV_BUS +
+                 PRFT_GAIN_BP_SPCFD_BUS + PRFT_GAIN_BP_INC_115BBF -
+                 dep_amt_pm1)
+    return Income_BP
+
+
+@iterate_jit(nopython=True)
 def corp_GTI_before_set_off(INCOME_HP, Income_BP, ST_CG_AMT_1, ST_CG_AMT_2,
                             ST_CG_AMT_APPRATE, LT_CG_AMT_1, LT_CG_AMT_2,
                             TOTAL_INCOME_OS, GTI_Before_Loss):
