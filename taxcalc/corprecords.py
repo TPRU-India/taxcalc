@@ -117,7 +117,7 @@ class CorpRecords(object):
         if self.WT.size > 0 and self.array_length != len(self.WT.index):
             # scale-up sub-sample weights by year-specific factor
             sum_full_weights = self.WT.sum()
-            self.WT = self.WT.iloc[self.__index]
+            self.WT = self.WT.iloc[self.__index[:len(self.WT.index)]]
             sum_sub_weights = self.WT.sum()
             factor = sum_full_weights / sum_sub_weights
             self.WT *= factor
@@ -132,7 +132,12 @@ class CorpRecords(object):
         if self.WT.size > 0:
             wt_colname = 'WT{}'.format(self.current_year)
             if wt_colname in self.WT.columns:
-                self.weight = self.WT[wt_colname]
+                if len(self.WT[wt_colname]) == self.array_length:
+                    self.weight = self.WT[wt_colname]
+                else:
+                    self.weight = (np.ones(self.array_length) *
+                                   sum(self.WT[wt_colname]) /
+                                   len(self.WT[wt_colname]))
 
     @property
     def data_year(self):
@@ -169,9 +174,24 @@ class CorpRecords(object):
         else:
             self.increment_panel_year()
         # specify current-year sample weights
+        # weights must be same size as tax record data
+        if self.WT.size > 0 and self.array_length != len(self.WT.index):
+            # scale-up sub-sample weights by year-specific factor
+            sum_full_weights = self.WT.sum()
+            self.WT = self.WT.iloc[self.__index[:len(self.WT.index)]]
+            sum_sub_weights = self.WT.sum()
+            factor = sum_full_weights / sum_sub_weights
+            self.WT *= factor
+        # construct sample weights for current_year
         if self.WT.size > 0:
-            wt_colname = 'WT{}'.format(self.__current_year)
-            self.weight = self.WT[wt_colname]
+            wt_colname = 'WT{}'.format(self.current_year)
+            if wt_colname in self.WT.columns:
+                if len(self.WT[wt_colname]) == self.array_length:
+                    self.weight = self.WT[wt_colname]
+                else:
+                    self.weight = (np.ones(self.array_length) *
+                                   sum(self.WT[wt_colname]) /
+                                   len(self.WT[wt_colname]))
 
     def increment_panel_year(self):
         """
