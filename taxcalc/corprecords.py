@@ -360,28 +360,29 @@ class CorpRecords(object):
         """
         # read in the blow-up factors
         blowup_path = os.path.join(CorpRecords.CUR_PATH, self.blowfactors_path)
-        blowup_data = pd.read_csv(blowup_path)
+        blowup_data_all = pd.read_csv(blowup_path, index_col='YEAR')
+        blowup_data = blowup_data_all.loc[self.panelyear + 4]
         # extract the observations for the intended year
         assessyear = np.array(self.full_panel['ASSESSMENT_YEAR'])
         data1 = self.full_panel[assessyear == self.panelyear].reset_index()
         # apply the blowup factors
-        BF_CORP1 = blowup_data.loc[0, 'AGGREGATE_LIABILTY']
-        BF_RENT = blowup_data.loc[0, 'INCOME_HP']
-        BF_BP_NONSPECULAT = blowup_data.loc[0, 'PRFT_GAIN_BP_OTHR_SPECLTV_BUS']
-        BF_BP_SPECULATIVE = blowup_data.loc[0, 'PRFT_GAIN_BP_SPECLTV_BUS']
-        BF_BP_SPECIFIED = blowup_data.loc[0, 'PRFT_GAIN_BP_SPCFD_BUS']
-        BF_BP_PATENT115BBF = blowup_data.loc[0, 'AGGREGATE_LIABILTY']
-        BF_ST_CG_AMT_1 = blowup_data.loc[0, 'ST_CG_AMT_1']
-        BF_ST_CG_AMT_2 = blowup_data.loc[0, 'ST_CG_AMT_2']
-        BF_LT_CG_AMT_1 = blowup_data.loc[0, 'LT_CG_AMT_1']
-        BF_LT_CG_AMT_2 = blowup_data.loc[0, 'LT_CG_AMT_2']
-        BF_STCG_APPRATE = blowup_data.loc[0, 'ST_CG_AMT_APPRATE']
-        BF_OINCOME = blowup_data.loc[0, 'TOTAL_INCOME_OS']
-        BF_CYL_SET_OFF = blowup_data.loc[0, 'CYL_SET_OFF']
-        BF_DEDUCTIONS = blowup_data.loc[0, 'TOTAL_DEDUC_VIA']
-        BF_DEDUCTION_10AA = blowup_data.loc[0, 'DEDUCT_SEC_10A_OR_10AA']
-        BF_NET_AGRC_INC = blowup_data.loc[0, 'NET_AGRC_INCOME']
-        BF_INVESTMENT = blowup_data.loc[0, 'INVESTMENT']
+        BF_CORP1 = blowup_data['AGGREGATE_LIABILTY']
+        BF_RENT = blowup_data['INCOME_HP']
+        BF_BP_NONSPECULAT = blowup_data['PRFT_GAIN_BP_OTHR_SPECLTV_BUS']
+        BF_BP_SPECULATIVE = blowup_data['PRFT_GAIN_BP_SPECLTV_BUS']
+        BF_BP_SPECIFIED = blowup_data['PRFT_GAIN_BP_SPCFD_BUS']
+        BF_BP_PATENT115BBF = blowup_data['AGGREGATE_LIABILTY']
+        BF_ST_CG_AMT_1 = blowup_data['ST_CG_AMT_1']
+        BF_ST_CG_AMT_2 = blowup_data['ST_CG_AMT_2']
+        BF_LT_CG_AMT_1 = blowup_data['LT_CG_AMT_1']
+        BF_LT_CG_AMT_2 = blowup_data['LT_CG_AMT_2']
+        BF_STCG_APPRATE = blowup_data['ST_CG_AMT_APPRATE']
+        BF_OINCOME = blowup_data['TOTAL_INCOME_OS']
+        BF_CYL_SET_OFF = blowup_data['CYL_SET_OFF']
+        BF_DEDUCTIONS = blowup_data['TOTAL_DEDUC_VIA']
+        BF_DEDUCTION_10AA = blowup_data['DEDUCT_SEC_10A_OR_10AA']
+        BF_NET_AGRC_INC = blowup_data['NET_AGRC_INCOME']
+        BF_INVESTMENT = blowup_data['INVESTMENT']
         # Apply blow-up factors
         data1['INCOME_HP'] = data1['INCOME_HP'] * BF_RENT
         temp = data1['PRFT_GAIN_BP_OTHR_SPECLTV_BUS']
