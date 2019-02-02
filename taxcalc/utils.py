@@ -292,12 +292,12 @@ def create_distribution_table(vdf, groupby, income_measure,
     if scaling:
         for col in DIST_TABLE_COLUMNS:
             if col == 'weight':
-                dist_table[col] = np.round(dist_table[col] * 1e-6, 3)
+                dist_table[col] = np.round(dist_table[col] * 1e-5, 3)
             else:
                 if averages:
-                    dist_table[col] = np.round(dist_table[col] * 1e-3, 3)
+                    dist_table[col] = np.round(dist_table[col] * 1, 0)
                 else:
-                    dist_table[col] = np.round(dist_table[col] * 1e-9, 3)
+                    dist_table[col] = np.round(dist_table[col] * 1e-7, 3)
     # return table as Pandas DataFrame
     vdf.sort_index(inplace=True)
     return dist_table
