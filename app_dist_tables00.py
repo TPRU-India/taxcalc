@@ -1,5 +1,6 @@
 """
-app_dist_Tables00.py illustrates use of pitaxcalc-demo release 2.0.0 (India version).
+app_dist_Tables00.py illustrates use of pitaxcalc-demo release 2.0.0
+(India version).
 USAGE: python app_dist_Tables00.py
 """
 import locale
@@ -31,19 +32,25 @@ for year in range(2017, 2020):
     weighted_tax1 = calc1.weighted_total('pitax')
     weighted_tax2 = calc2.weighted_total('pitax')
     total_weights = calc1.total_weight()
-    print(f'****************  Total Tax Collection for {year}  ****************')
+    print(f'****************  Total Tax Collection for {year}', end=' ')
+    print('****************')
     print('\n')
-    print(f'Current Law: Tax Collection in Cr. for {year}: {weighted_tax1 * 1e-7:,.2f} Cr.')
-    print(f'Reform     : Tax Collection in Cr. for {year}: {weighted_tax2 * 1e-7:,.2f} Cr.')
-    print(f'               Difference in Tax Collection: {(weighted_tax2-weighted_tax1) * 1e-7:,.2f} Cr.')
+    print(f'Current Law: Tax Collection in Cr. for {year}:', end=' ')
+    print(f'{weighted_tax1 * 1e-7:,.2f} Cr.')
+    print(f'Reform     : Tax Collection in Cr. for {year}:', end=' ')
+    print(f'{weighted_tax2 * 1e-7:,.2f} Cr.')
+    print('               Difference in Tax Collection:', end=' ')
+    print(f'{(weighted_tax2-weighted_tax1) * 1e-7:,.2f} Cr.')
     print('\n')
     print(f'Representing: {total_weights * 1e-5:,.2f} Lakh taxpayers')
     print('\n')
-    output_in_averages=False
+    output_in_averages = False
     output_categories = 'standard_income_bins'
-    #pd.options.display.float_format = '{:,.3f}'.format
-    #dt1, dt2 = calc1.distribution_tables(calc2, 'weighted_deciles')
-    dt1, dt2 = calc1.distribution_tables(calc2, output_categories, averages=output_in_averages, scaling=True)
+    # pd.options.display.float_format = '{:,.3f}'.format
+    # dt1, dt2 = calc1.distribution_tables(calc2, 'weighted_deciles')
+    dt1, dt2 = calc1.distribution_tables(calc2, output_categories,
+                                         averages=output_in_averages,
+                                         scaling=True)
     dt2['pitax diff'] = dt2['pitax'] - dt1['pitax']
     if (output_categories == 'standard_income_bins'):
         dt1.rename_axis('Income Bracket', inplace=True)
@@ -53,13 +60,15 @@ for year in range(2017, 2020):
         dt2.rename_axis('Decile', inplace=True)
     dt1 = dt1.reset_index().copy()
     dt2 = dt2.reset_index().copy()
-    dt1=dt1.fillna(0)
-    dt2=dt2.fillna(0)
+    dt1 = dt1.fillna(0)
+    dt2 = dt2.fillna(0)
     if output_in_averages:
-        print(f'***************************  Average Tax Burden (in Rs.) per Taxpayer for {year}  ***************************')
+        print('***************************  Average Tax Burden ', end=' ')
+        print(f'(in Rs.) per Taxpayer for {year}  ***************************')
         pd.options.display.float_format = '{:,.0f}'.format
     else:
-        print(f'**********************  Distribution Tables for Total Tax Collection (in Rs. crores) for {year}  **********************')
+        print('*****************  Distribution Tables ', end=' ')
+        print(f'for Total Tax Collection (in Rs. crores) for {year} *********')
         pd.options.display.float_format = '{:,.3f}'.format
     print('\n')
     print('     Current-Law Distribution Table')
