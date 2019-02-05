@@ -22,7 +22,8 @@ from taxcalc.functions import (net_salary_income, net_rental_income,
                                tax_stcg_splrate, tax_ltcg_splrate,
                                tax_specialrates, current_year_losses,
                                brought_fwd_losses, agri_income, pit_liability)
-from taxcalc.corpfunctions import (depreciation_PM, corp_income_business_profession,
+from taxcalc.corpfunctions import (depreciation_PM,
+                                   corp_income_business_profession,
                                    corp_GTI_before_set_off, GTI_and_losses,
                                    cit_liability)
 from taxcalc.policy import Policy
