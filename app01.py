@@ -82,12 +82,3 @@ print('Tax, reform, panel: ' + str(sum(citaxPR * wgtPR) / 10**7))
 print('\n')
 print('Change in tax, panel: ' + str(sum((citaxPR - citaxPB) * wgtPB) / 10**7))
 print('\n')
-
-
-
-
-
-
-
-
-

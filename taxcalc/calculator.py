@@ -22,7 +22,8 @@ from taxcalc.functions import (net_salary_income, net_rental_income,
                                tax_stcg_splrate, tax_ltcg_splrate,
                                tax_specialrates, current_year_losses,
                                brought_fwd_losses, agri_income, pit_liability)
-from taxcalc.corpfunctions import (corp_income_business_profession,
+from taxcalc.corpfunctions import (depreciation_PM,
+                                   corp_income_business_profession,
                                    corp_GTI_before_set_off, GTI_and_losses,
                                    cit_liability)
 from taxcalc.policy import Policy
@@ -156,6 +157,7 @@ class Calculator(object):
         # pdb.set_trace()
         # Corporate calculations
         net_rental_income(self.__policy, self.__corprecords)
+        depreciation_PM(self.__policy, self.__corprecords)
         corp_income_business_profession(self.__policy, self.__corprecords)
         total_other_income(self.__policy, self.__corprecords)
         current_year_losses(self.__policy, self.__corprecords)

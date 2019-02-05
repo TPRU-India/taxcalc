@@ -5,9 +5,9 @@ USAGE: python app_dist_Tables00.py
 """
 import locale
 from taxcalc import *
+#from ind_curr import *
 
-
-locale.setlocale(locale.LC_ALL, '')
+#locale.setlocale(locale.LC_ALL, '')
 
 # create Records object containing pit.csv and pit_weights.csv input data
 recs = Records(data='pit.csv', weights='pit_weights.csv')
