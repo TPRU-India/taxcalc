@@ -1,5 +1,6 @@
 {
     "policy": {
-	"_Loss_CFLimit": {"2017": [2]}
+	"_Loss_CFLimit": {"2017": [2]},
+  "_dep_rate_pm1": {"2017": [0.30]}
     }
 }

@@ -316,7 +316,7 @@
 
     "_rebate_ceiling": {
         "long_name": "upper limit for rebate",
-        "description": "this is the ceiling for rebate",
+        "description": "this is the ceiling for rebate u/s 87A",
         "itr_ref": "ITR-1 instructions, Tax Computation Table",
         "notes": "",
         "row_var": "AYEAR",
