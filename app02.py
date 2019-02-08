@@ -23,10 +23,14 @@ reform = Calculator.read_json_param_objects('app01_reform.json', None)
 pol2.implement_reform(reform['policy'])
 
 # specify Calculator objects for current-law policy
-calc1c = Calculator(policy=pol1, records=recs, corprecords=crecs1)
-calc1p = Calculator(policy=pol1, records=recs, corprecords=crecs2)
-calc2c = Calculator(policy=pol2, records=recs, corprecords=crecs1)
-calc2p = Calculator(policy=pol2, records=recs, corprecords=crecs2)
+calc1c = Calculator(policy=pol1, records=recs, corprecords=crecs1,
+                    verbose=False)
+calc1p = Calculator(policy=pol1, records=recs, corprecords=crecs2,
+                    verbose=False)
+calc2c = Calculator(policy=pol2, records=recs, corprecords=crecs1,
+                    verbose=False)
+calc2p = Calculator(policy=pol2, records=recs, corprecords=crecs2,
+                    verbose=False)
 
 for year in range(2017, 2022):
     calc1c.advance_to_year(year)
