@@ -44,15 +44,17 @@ calc1 = Calculator(policy=pol, records=recs, gstrecords=grecs,
 assert isinstance(calc1, Calculator)
 assert calc1.current_year == 2017
 
+# Produce DataFrame of results using cross-section
 calc1.calc_all()
-
-dump_vars = ['FILING_SEQ_NO', 'AGEGRP', 'SALARIES', 'INCOME_HP',
-             'Income_BP', 'TOTAL_INCOME_OS', 'Aggregate_Income',
-             'TI_special_rates', 'tax_TI_special_rates', 'GTI', 'TTI', 'pitax']
-dumpdf = calc1.dataframe(dump_vars)
-column_order = dumpdf.columns
-
-assert len(dumpdf.index) == calc1.array_len
-
-dumpdf.to_csv('app0-dump.csv', columns=column_order,
-              index=False, float_format='%.0f')
+id_gst = calc1.garray('ID_NO')
+gst_cereal = calc1.garray('gst_cereal')
+gst_other = calc1.garray('gst_other')
+gst_total = calc1.garray('gst')
+wgt_gst = calc1.garray('weight')
+results = pd.DataFrame({'GST_ID_NO': id_gst,
+                        'Weight': wgt_gst,
+                        'GST_Cereal': gst_cereal,
+                        'GST_Cereal': gst_other,
+                        'GST_Total': gst_total})
+results.to_csv('app000-dump-gst.csv', index=False,
+                     float_format='%.0f')

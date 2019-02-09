@@ -10,6 +10,8 @@ from taxcalc import *
 # create Records object containing pit.csv and pit_weights.csv input data
 recs = Records()
 
+grecs = GSTRecords()
+
 # create CorpRecords object using cross-section data
 crecs1 = CorpRecords(data='cit_cross.csv', weights='cit_cross_wgts.csv')
 # Note: weights argument is optional
@@ -25,8 +27,10 @@ assert crecs2.current_year == 2017
 pol = Policy()
 
 # specify Calculator objects for current-law policy
-calc1 = Calculator(policy=pol, records=recs, corprecords=crecs1)
-calc2 = Calculator(policy=pol, records=recs, corprecords=crecs2)
+calc1 = Calculator(policy=pol, records=recs, corprecords=crecs1,
+                   gstrecords=grecs)
+calc2 = Calculator(policy=pol, records=recs, corprecords=crecs2,
+                   gstrecords=grecs)
 
 # NOTE: calc1 now contains a PRIVATE COPY of pol and a PRIVATE COPY of recs,
 #       so we can continue to use pol and recs in this script without any
@@ -107,5 +111,3 @@ print('Tax rate, 2018, panel: ' + str(sum(citax18p * wgt18p) / sum(GTI18p * wgt1
 print('\n')
 print('Average liability, 2017, cross-section: ' + str(sum(citax17c * wgt17c) / sum(wgt17c) / 10**7))
 print('Average liability, 2017, panel: ' + str(sum(citax17p * wgt17p) / sum(wgt17p) / 10**7))
-
-

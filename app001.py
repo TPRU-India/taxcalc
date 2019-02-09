@@ -34,32 +34,33 @@ calc1.calc_all()
 # specify Calculator object for reform in JSON file
 reform = Calculator.read_json_param_objects('GST_reform.json', None)
 pol.implement_reform(reform['policy'])
-calc1 = Calculator(policy=pol, records=recs, gstrecords=grecs,
+calc2 = Calculator(policy=pol, records=recs, gstrecords=grecs,
                    corprecords=crecs, verbose=False)
 calc2.calc_all()
 
-# compare aggregate results from two calculators
-weighted_tax1 = calc1.weighted_total('pitax')
-weighted_tax2 = calc2.weighted_total('pitax')
-total_weights = calc1.total_weight()
-print(f'Tax 1 {weighted_tax1 * 1e-9:,.2f}')
-print(f'Tax 2 {weighted_tax2 * 1e-9:,.2f}')
-print(f'Total weight {total_weights * 1e-6:,.2f}')
-
-# Show results from corporate tax
-print(calc1.carray('NET_TAX_LIABILTY'))
-print(calc2.carray('NET_TAX_LIABILITY_A'))
 
 # dump out records
-dump_vars = ['FILING_SEQ_NO', 'AGEGRP', 'SALARIES', 'INCOME_HP',
-             'TOTAL_PROFTS_GAINS_BP', 'TOTAL_INCOME_OS', 'GTI', 'TTI']
-dumpdf = calc1.dataframe(dump_vars)
-dumpdf['pitax1'] = calc1.array('pitax')
-dumpdf['pitax2'] = calc2.array('pitax')
-dumpdf['pitax_diff'] = dumpdf['pitax2'] - dumpdf['pitax1']
-column_order = dumpdf.columns
+id_gst1 = calc1.garray('ID_NO')
+gst_cereal1 = calc1.garray('gst_cereal')
+gst_other1 = calc1.garray('gst_other')
+gst_total1 = calc1.garray('gst')
+wgt_gst1 = calc1.garray('weight')
+total_gst1 = sum(gst_total1 * wgt_gst1) / 10**7
+print(f'Total GST collection - Current Law, 2017: {total_gst1:,.2f}')
 
-assert len(dumpdf.index) == calc1.array_len
+id_gst2 = calc2.garray('ID_NO')
+gst_cereal2 = calc2.garray('gst_cereal')
+gst_other2 = calc2.garray('gst_other')
+gst_total2 = calc2.garray('gst')
+wgt_gst2 = calc2.garray('weight')
+total_gst2 = sum(gst_total2 * wgt_gst2) / 10**7
+print(f'Total GST collection - Reform, 2017     : {total_gst2:,.2f}')
 
-dumpdf.to_csv('app1-dump.csv', columns=column_order,
-              index=False, float_format='%.0f')
+
+results = pd.DataFrame({'GST_ID_NO': id_gst2,
+                        'Weight': wgt_gst2,
+                        'GST_Cereal': gst_cereal2,
+                        'GST_Cereal': gst_other2,
+                        'GST_Total': gst_total2})
+results.to_csv('app001-dump-gst.csv', index=False,
+                     float_format='%.0f')
