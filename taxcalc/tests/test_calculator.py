@@ -9,23 +9,27 @@ import copy
 import pytest
 import numpy as np
 import pandas as pd
-from taxcalc import Policy, Records, CorpRecords, Calculator
+from taxcalc import Policy, Records, GSTRecords, CorpRecords, Calculator
 
 
-def test_incorrect_Calculator_instantiation(pit_subsample, cit_crosssample):
+def test_incorrect_Calculator_instantiation(pit_subsample, gst_sample,
+                                            cit_crosssample):
     pol = Policy()
     rec = Records(data=pit_subsample)
+    grec = GSTRecords(data=gst_sample)
     crec = CorpRecords(data=cit_crosssample)
     with pytest.raises(ValueError):
-        Calculator(policy=None, records=rec, corprecords=crec)
+        Calculator(policy=None, records=rec, gstrecords=grec,
+                   corprecords=crec)
     with pytest.raises(ValueError):
-        Calculator(policy=pol, records=None, corprecords=crec)
+        Calculator(policy=pol, records=None, gstrecords=grec,
+                   corprecords=crec)
     with pytest.raises(ValueError):
         Policy(num_years=0)
 
 
 def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample,
-                                          cit_crosssample):
+                                          gst_sample, cit_crosssample):
     syr = Policy.JSON_START_YEAR
     pol = Policy()
     assert pol.current_year == syr
@@ -36,8 +40,10 @@ def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample,
     # expect_citax = ???
     # create full-sample Calculator object
     rec_full = Records(data=pit_fullsample)
+    grec = GSTRecords(data=gst_sample)
     crec = CorpRecords(data=cit_crosssample)
-    calc_full = Calculator(policy=pol, records=rec_full, corprecords=crec)
+    calc_full = Calculator(policy=pol, records=rec_full, gstrecords=grec,
+                           corprecords=crec)
     assert isinstance(calc_full, Calculator)
     assert calc_full.current_year == syr
     assert calc_full.records_current_year() == syr
@@ -59,11 +65,14 @@ def test_correct_Calculator_instantiation(pit_fullsample, pit_subsample,
     """
 
 
-def test_Calculator_results_consistency(pit_fullsample, cit_crosssample):
+def test_Calculator_results_consistency(pit_fullsample, gst_sample,
+                                        cit_crosssample):
     # generate calculated-variable dataframe for full sample in second year
     recs = Records(data=pit_fullsample)
+    grecs = GSTRecords(data=gst_sample)
     crecs = CorpRecords(data=cit_crosssample)
-    calc = Calculator(policy=Policy(), records=recs, corprecords=crecs)
+    calc = Calculator(policy=Policy(), records=recs, gstrecords=grecs,
+                      corprecords=crecs)
     assert isinstance(calc, Calculator)
     assert calc.current_year == Policy.JSON_START_YEAR
     calc.advance_to_year(Policy.JSON_START_YEAR + 1)

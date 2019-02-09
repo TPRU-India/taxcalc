@@ -250,14 +250,14 @@ class GSTRecords(object):
             msg = 'file {} cannot be found'.format(var_info_path)
             raise ValueError(msg)
         GSTRecords.INTEGER_READ_VARS = set(k for k,
-                                            v in vardict['read'].items()
-                                            if v['type'] == 'int')
+                                           v in vardict['read'].items()
+                                           if v['type'] == 'int')
         FLOAT_READ_VARS = set(k for k, v in vardict['read'].items()
                               if v['type'] == 'float')
         GSTRecords.MUST_READ_VARS = set(k for k, v in vardict['read'].items()
-                                         if v.get('required'))
+                                        if v.get('required'))
         GSTRecords.USABLE_READ_VARS = (GSTRecords.INTEGER_READ_VARS |
-                                        FLOAT_READ_VARS)
+                                       FLOAT_READ_VARS)
         INT_CALCULATED_VARS = set(k for k, v in vardict['calc'].items()
                                   if v['type'] == 'int')
         FLOAT_CALCULATED_VARS = set(k for k, v in vardict['calc'].items()
@@ -265,11 +265,11 @@ class GSTRecords(object):
         FIXED_CALCULATED_VARS = set(k for k, v in vardict['calc'].items()
                                     if v['type'] == 'unchanging_float')
         GSTRecords.CALCULATED_VARS = (INT_CALCULATED_VARS |
-                                       FLOAT_CALCULATED_VARS |
-                                       FIXED_CALCULATED_VARS)
+                                      FLOAT_CALCULATED_VARS |
+                                      FIXED_CALCULATED_VARS)
         GSTRecords.CHANGING_CALCULATED_VARS = FLOAT_CALCULATED_VARS
         GSTRecords.INTEGER_VARS = (GSTRecords.INTEGER_READ_VARS |
-                                    INT_CALCULATED_VARS)
+                                   INT_CALCULATED_VARS)
         return vardict
 
     # specify various sets of variable names

@@ -63,4 +63,4 @@ results = pd.DataFrame({'GST_ID_NO': id_gst2,
                         'GST_Cereal': gst_other2,
                         'GST_Total': gst_total2})
 results.to_csv('app001-dump-gst.csv', index=False,
-                     float_format='%.0f')
+               float_format='%.0f')
