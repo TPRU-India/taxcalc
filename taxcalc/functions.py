@@ -12,13 +12,27 @@ from taxcalc.decorators import iterate_jit
 
 
 @iterate_jit(nopython=True)
-def net_salary_income(SALARIES):
+def net_salary_income(SALARIES, std_deduction, Income_Salary):
     """
-    Compute net salary as gross salary minus u/s 16 deductions.
+    Compute net salary as gross salary minus deductions u/s 16.
     """
     # TODO: when gross salary and deductions are avaiable, do the calculation
     # TODO: when using net_salary as function argument, no calculations neeed
-    return SALARIES
+    """
+    The deductions (transport and medical) that are being done away with while
+    intrducing Standard Deduction is not captured in the schedule also. Thus,
+    the two deductions combined (crude estimate gives a figure of 30000) is
+    added to "SALARIES" and then "std_deduction" (introduced as a policy
+    variable) is deducted to get "Income_Salary". Standard Deduction is being
+    intruduced only from AY 2019 onwards, "std_deduction" is set as 30000 for
+    AY 2017 and of 2018 thus resulting in no change for those years.
+    """
+    Income_Salary = SALARIES + 30000
+    if Income_Salary <= std_deduction:
+        Income_Salary = 0
+    else:
+        Income_Salary -= std_deduction
+    return Income_Salary
 
 
 @iterate_jit(nopython=True)
@@ -93,14 +107,14 @@ def agri_income(Income_Rate_Purpose, NET_AGRC_INCOME):
 
 
 @iterate_jit(nopython=True)
-def gross_total_income(SALARIES, INCOME_HP, Income_BP, ST_CG_AMT_1,
+def gross_total_income(Income_Salary, INCOME_HP, Income_BP, ST_CG_AMT_1,
                        ST_CG_AMT_2, ST_CG_AMT_APPRATE, LT_CG_AMT_1,
                        LT_CG_AMT_2, TOTAL_INCOME_OS, CY_Losses, BF_Losses,
                        GTI):
     """
     Compute GTI including capital gains amounts taxed at special rates.
     """
-    GTI = (SALARIES + INCOME_HP + Income_BP + ST_CG_AMT_1 + ST_CG_AMT_2 +
+    GTI = (Income_Salary + INCOME_HP + Income_BP + ST_CG_AMT_1 + ST_CG_AMT_2 +
            ST_CG_AMT_APPRATE + LT_CG_AMT_1 + LT_CG_AMT_2 +
            TOTAL_INCOME_OS) - (CY_Losses + BF_Losses)
     GTI = np.maximum(0., GTI)

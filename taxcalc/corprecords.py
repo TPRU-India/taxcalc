@@ -117,7 +117,7 @@ class CorpRecords(object):
         if self.WT.size > 0 and self.array_length != len(self.WT.index):
             # scale-up sub-sample weights by year-specific factor
             sum_full_weights = self.WT.sum()
-            self.WT = self.WT.iloc[self.__index]
+            self.WT = self.WT.iloc[self.__index[:len(self.WT.index)]]
             sum_sub_weights = self.WT.sum()
             factor = sum_full_weights / sum_sub_weights
             self.WT *= factor
@@ -132,7 +132,12 @@ class CorpRecords(object):
         if self.WT.size > 0:
             wt_colname = 'WT{}'.format(self.current_year)
             if wt_colname in self.WT.columns:
-                self.weight = self.WT[wt_colname]
+                if len(self.WT[wt_colname]) == self.array_length:
+                    self.weight = self.WT[wt_colname]
+                else:
+                    self.weight = (np.ones(self.array_length) *
+                                   sum(self.WT[wt_colname]) /
+                                   len(self.WT[wt_colname]))
 
     @property
     def data_year(self):
@@ -169,9 +174,24 @@ class CorpRecords(object):
         else:
             self.increment_panel_year()
         # specify current-year sample weights
+        # weights must be same size as tax record data
+        if self.WT.size > 0 and self.array_length != len(self.WT.index):
+            # scale-up sub-sample weights by year-specific factor
+            sum_full_weights = self.WT.sum()
+            self.WT = self.WT.iloc[self.__index[:len(self.WT.index)]]
+            sum_sub_weights = self.WT.sum()
+            factor = sum_full_weights / sum_sub_weights
+            self.WT *= factor
+        # construct sample weights for current_year
         if self.WT.size > 0:
-            wt_colname = 'WT{}'.format(self.__current_year)
-            self.weight = self.WT[wt_colname]
+            wt_colname = 'WT{}'.format(self.current_year)
+            if wt_colname in self.WT.columns:
+                if len(self.WT[wt_colname]) == self.array_length:
+                    self.weight = self.WT[wt_colname]
+                else:
+                    self.weight = (np.ones(self.array_length) *
+                                   sum(self.WT[wt_colname]) /
+                                   len(self.WT[wt_colname]))
 
     def increment_panel_year(self):
         """
@@ -190,7 +210,8 @@ class CorpRecords(object):
                                         'newloss5': self.newloss5,
                                         'newloss6': self.newloss6,
                                         'newloss7': self.newloss7,
-                                        'newloss8': self.newloss8})
+                                        'newloss8': self.newloss8,
+                                        'close_wdv_pm1': self.close_wdv_pm1})
         # Update years
         self.panelyear += 1
         # Get new panel data
@@ -216,6 +237,9 @@ class CorpRecords(object):
                                       data2['LOSS_LAG7'])
         data2['LOSS_LAG8'] = np.where(to_update, data2['newloss8'],
                                       data2['LOSS_LAG8'])
+        temp = np.where(to_update, data2['close_wdv_pm1'],
+                        data2['PWR_DOWN_VAL_1ST_DAY_PY_15P'])
+        data2['PWR_DOWN_VAL_1ST_DAY_PY_15P'] = temp
         data3 = data2[to_keep]
         self._read_data(data3)
 
@@ -301,6 +325,7 @@ class CorpRecords(object):
         GF_DEDUCTION_10AA = self.gfactors.factor_value('DEDU_SEC_10A_OR_10AA',
                                                        year)
         GF_NET_AGRC_INCOME = self.gfactors.factor_value('AGRI_INCOME', year)
+        GF_INVESTMENT = self.gfactors.factor_value('INVESTMENT', year)
         self.ST_CG_AMT_1 *= GF_ST_CG_AMT_1
         self.ST_CG_AMT_2 *= GF_ST_CG_AMT_2
         self.ST_CG_AMT_APPRATE *= GF_STCG_APPRATE
@@ -316,6 +341,13 @@ class CorpRecords(object):
         self.TOTAL_DEDUC_VIA *= GF_DEDUCTIONS
         self.TOTAL_DEDUC_10AA *= GF_DEDUCTION_10AA
         self.NET_AGRC_INCOME *= GF_NET_AGRC_INCOME
+        self.PWR_DOWN_VAL_1ST_DAY_PY_15P *= GF_INVESTMENT
+        self.PADDTNS_180_DAYS__MOR_PY_15P *= GF_INVESTMENT
+        self.PCR34_PY_15P *= GF_INVESTMENT
+        self.PADDTNS_LESS_180_DAYS_15P *= GF_INVESTMENT
+        self.PCR7_PY_15P *= GF_INVESTMENT
+        self.PEXP_INCURRD_TRF_ASSTS_15P *= GF_INVESTMENT
+        self.PCAP_GAINS_LOSS_SEC50_15P *= GF_INVESTMENT
 
     def _extract_panel_year(self):
         """
@@ -328,27 +360,29 @@ class CorpRecords(object):
         """
         # read in the blow-up factors
         blowup_path = os.path.join(CorpRecords.CUR_PATH, self.blowfactors_path)
-        blowup_data = pd.read_csv(blowup_path)
+        blowup_data_all = pd.read_csv(blowup_path, index_col='YEAR')
+        blowup_data = blowup_data_all.loc[self.panelyear + 4]
         # extract the observations for the intended year
         assessyear = np.array(self.full_panel['ASSESSMENT_YEAR'])
         data1 = self.full_panel[assessyear == self.panelyear].reset_index()
         # apply the blowup factors
-        BF_CORP1 = blowup_data.loc[0, 'AGGREGATE_LIABILTY']
-        BF_RENT = blowup_data.loc[0, 'INCOME_HP']
-        BF_BP_NONSPECULAT = blowup_data.loc[0, 'PRFT_GAIN_BP_OTHR_SPECLTV_BUS']
-        BF_BP_SPECULATIVE = blowup_data.loc[0, 'PRFT_GAIN_BP_SPECLTV_BUS']
-        BF_BP_SPECIFIED = blowup_data.loc[0, 'PRFT_GAIN_BP_SPCFD_BUS']
-        BF_BP_PATENT115BBF = blowup_data.loc[0, 'AGGREGATE_LIABILTY']
-        BF_ST_CG_AMT_1 = blowup_data.loc[0, 'ST_CG_AMT_1']
-        BF_ST_CG_AMT_2 = blowup_data.loc[0, 'ST_CG_AMT_2']
-        BF_LT_CG_AMT_1 = blowup_data.loc[0, 'LT_CG_AMT_1']
-        BF_LT_CG_AMT_2 = blowup_data.loc[0, 'LT_CG_AMT_2']
-        BF_STCG_APPRATE = blowup_data.loc[0, 'ST_CG_AMT_APPRATE']
-        BF_OINCOME = blowup_data.loc[0, 'TOTAL_INCOME_OS']
-        BF_CYL_SET_OFF = blowup_data.loc[0, 'CYL_SET_OFF']
-        BF_DEDUCTIONS = blowup_data.loc[0, 'TOTAL_DEDUC_VIA']
-        BF_DEDUCTION_10AA = blowup_data.loc[0, 'DEDUCT_SEC_10A_OR_10AA']
-        BF_NET_AGRC_INC = blowup_data.loc[0, 'NET_AGRC_INCOME']
+        BF_CORP1 = blowup_data['AGGREGATE_LIABILTY']
+        BF_RENT = blowup_data['INCOME_HP']
+        BF_BP_NONSPECULAT = blowup_data['PRFT_GAIN_BP_OTHR_SPECLTV_BUS']
+        BF_BP_SPECULATIVE = blowup_data['PRFT_GAIN_BP_SPECLTV_BUS']
+        BF_BP_SPECIFIED = blowup_data['PRFT_GAIN_BP_SPCFD_BUS']
+        BF_BP_PATENT115BBF = blowup_data['AGGREGATE_LIABILTY']
+        BF_ST_CG_AMT_1 = blowup_data['ST_CG_AMT_1']
+        BF_ST_CG_AMT_2 = blowup_data['ST_CG_AMT_2']
+        BF_LT_CG_AMT_1 = blowup_data['LT_CG_AMT_1']
+        BF_LT_CG_AMT_2 = blowup_data['LT_CG_AMT_2']
+        BF_STCG_APPRATE = blowup_data['ST_CG_AMT_APPRATE']
+        BF_OINCOME = blowup_data['TOTAL_INCOME_OS']
+        BF_CYL_SET_OFF = blowup_data['CYL_SET_OFF']
+        BF_DEDUCTIONS = blowup_data['TOTAL_DEDUC_VIA']
+        BF_DEDUCTION_10AA = blowup_data['DEDUCT_SEC_10A_OR_10AA']
+        BF_NET_AGRC_INC = blowup_data['NET_AGRC_INCOME']
+        BF_INVESTMENT = blowup_data['INVESTMENT']
         # Apply blow-up factors
         data1['INCOME_HP'] = data1['INCOME_HP'] * BF_RENT
         temp = data1['PRFT_GAIN_BP_OTHR_SPECLTV_BUS']
@@ -367,6 +401,20 @@ class CorpRecords(object):
         data1['CYL_SET_OFF'] = data1['CYL_SET_OFF'] * BF_CYL_SET_OFF
         data1['TOTAL_DEDUC_VIA'] = data1['TOTAL_DEDUC_VIA'] * BF_DEDUCTIONS
         data1['NET_AGRC_INCOME'] = data1['NET_AGRC_INCOME'] * BF_NET_AGRC_INC
+        temp = data1['PWR_DOWN_VAL_1ST_DAY_PY_15P']
+        data1['PWR_DOWN_VAL_1ST_DAY_PY_15P'] = temp * BF_INVESTMENT
+        temp = data1['PADDTNS_180_DAYS__MOR_PY_15P']
+        data1['PADDTNS_180_DAYS__MOR_PY_15P'] = temp * BF_INVESTMENT
+        temp = data1['PCR34_PY_15P']
+        data1['PCR34_PY_15P'] = temp * BF_INVESTMENT
+        temp = data1['PADDTNS_LESS_180_DAYS_15P']
+        data1['PADDTNS_LESS_180_DAYS_15P'] = temp * BF_INVESTMENT
+        temp = data1['PCR7_PY_15P']
+        data1['PCR7_PY_15P'] = temp * BF_INVESTMENT
+        temp = data1['PEXP_INCURRD_TRF_ASSTS_15P']
+        data1['PEXP_INCURRD_TRF_ASSTS_15P'] = temp * BF_INVESTMENT
+        temp = data1['PCAP_GAINS_LOSS_SEC50_15P']
+        data1['PCAP_GAINS_LOSS_SEC50_15P'] = temp * BF_INVESTMENT
         # Handle potential missing variables
         if 'PRFT_GAIN_BP_INC_115BBF' in list(data1):
             temp = data1['PRFT_GAIN_BP_INC_115BBF']
@@ -388,10 +436,16 @@ class CorpRecords(object):
             if self.data_type == 'cross-section':
                 taxdf = data
             else:
-                self.full_panel = data
-                assessyear = np.array(self.full_panel['ASSESSMENT_YEAR'])
-                self.panelyear = min(assessyear)
-                taxdf = self._extract_panel_year()
+                try:
+                    # If receiving the next year's data
+                    self.panelyear
+                    taxdf = data
+                except AttributeError:
+                    # New CorpRecords object, using full panel
+                    self.full_panel = data
+                    assessyear = np.array(self.full_panel['ASSESSMENT_YEAR'])
+                    self.panelyear = min(assessyear)
+                    taxdf = self._extract_panel_year()
         elif isinstance(data, str):
             data_path = os.path.join(CorpRecords.CUR_PATH, data)
             if os.path.exists(data_path):
