@@ -206,7 +206,8 @@ class Calculator(object):
         # GST calculations
         agg_consumption(self.__policy, self.__gstrecords)
         gst_liability_cereal(self.__policy, self.__gstrecords)
-        gst_liability_other(self.__policy, self.__gstrecords)
+        # gst_liability_other(self.__policy, self.__gstrecords)
+        gst_liability_other(self)        
         gst_liability(self.__policy, self.__gstrecords)
         # TODO: ADD: expanded_income(self.__policy, self.__records)
         # TODO: ADD: aftertax_income(self.__policy, self.__records)
@@ -217,6 +218,18 @@ class Calculator(object):
         """
         return (self.array(variable_name) * self.array('weight')).sum()
 
+    def weighted_garray(self, variable_name):
+        """
+        Return all-filing-unit weighted total of named Records variable.
+        """
+        return (self.garray(variable_name) * self.garray('weight'))
+    
+    def weighted_total_garray(self, variable_name):
+        """
+        Return all-filing-unit weighted total of named Records variable.
+        """
+        return (self.garray(variable_name) * self.garray('weight')).sum()
+    
     def total_weight(self):
         """
         Return all-filing-unit total of sampling weights.

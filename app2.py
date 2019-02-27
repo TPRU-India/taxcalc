@@ -7,6 +7,9 @@ from taxcalc import *
 # create Records object containing pit.csv and pit_weights.csv input data
 recs = Records()
 
+# create Records object containing pit.csv and pit_weights.csv input data
+grecs = GSTRecords()
+
 # create CorpRecords object containing cit.csv and cit_weights.csv input data
 crecs = CorpRecords()
 
@@ -14,12 +17,14 @@ crecs = CorpRecords()
 pol = Policy()
 
 # specify Calculator object for current-law policy
-calc1 = Calculator(policy=pol, records=recs, corprecords=crecs)
+calc1 = Calculator(policy=pol, records=recs, gstrecords=grecs,
+                   corprecords=crecs, verbose=False)
 
 # specify Calculator object for reform in JSON file
 reform = Calculator.read_json_param_objects('app1_reform.json', None)
 pol.implement_reform(reform['policy'])
-calc2 = Calculator(policy=pol, records=recs, corprecords=crecs)
+calc2 = Calculator(policy=pol, records=recs, gstrecords=grecs,
+                   corprecords=crecs, verbose=False)
 
 # loop through years 2017, 2018, and 2019 and print out pitax
 for year in range(2017, 2020):
@@ -34,6 +39,7 @@ for year in range(2017, 2020):
     print(f'Tax 2 for {year}: {weighted_tax2 * 1e-9:,.2f}')
     print(f'Total weight for {year}: {total_weights * 1e-6:,.2f}')
 
+"""
 # dump out records for 2019
 dump_vars = ['FILING_SEQ_NO', 'AGEGRP', 'SALARIES', 'INCOME_HP',
              'TOTAL_PROFTS_GAINS_BP', 'TOTAL_INCOME_OS', 'GTI', 'TTI']
@@ -47,3 +53,4 @@ assert len(dumpdf.index) == calc1.array_len
 
 dumpdf.to_csv('app2-dump.csv', columns=column_order,
               index=False, float_format='%.0f')
+"""

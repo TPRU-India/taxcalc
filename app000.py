@@ -34,8 +34,8 @@ assert isinstance(pol, Policy)
 assert pol.current_year == 2017
 
 # specify Calculator object for current-law policy
-calc1 = Calculator(policy=pol, records=recs, gstrecords=grecs,
-                   corprecords=crecs, verbose=False)
+calc1 = Calculator(policy=pol, records=recs, corprecords=crecs,
+                   gstrecords=grecs, verbose=False)
 
 # NOTE: calc1 now contains a PRIVATE COPY of pol and a PRIVATE COPY of recs,
 #       so we can continue to use pol and recs in this script without any
@@ -51,10 +51,11 @@ gst_cereal = calc1.garray('gst_cereal')
 gst_other = calc1.garray('gst_other')
 gst_total = calc1.garray('gst')
 wgt_gst = calc1.garray('weight')
+print(f'gst_cereal, {gst_cereal}')
 results = pd.DataFrame({'GST_ID_NO': id_gst,
                         'Weight': wgt_gst,
                         'GST_Cereal': gst_cereal,
-                        'GST_Cereal': gst_other,
+                        'GST_Other': gst_other,
                         'GST_Total': gst_total})
 results.to_csv('app000-dump-gst.csv', index=False,
                float_format='%.0f')

@@ -1,41 +1,300 @@
 {
   "read": {
-    "ID_NO": {
+   "ID_NO": {
       "required": true,
       "type": "int",
-      "desc": "Unique positive numeric identifier for filing unit",
-      "form": {"2017": "Household Survey"}
-    },
-    "ASSESSMENT_YEAR": {
+      "desc": "Household ID HHID",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_BEDDING": {
+      "type": "float",
+      "desc": "CONSUMPTION OF BEDDING",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_BEVERAGE": {
+      "type": "float",
+      "desc": "CONSUMPTION OF BEVERAGE",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_CEREAL": {
+      "type": "float",
+      "desc": "CONSUMPTION OF CEREAL",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_CEREAL_SUB": {
+      "type": "float",
+      "desc": "CONSUMPTION OF CEREAL_SUB",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_CLOTHING": {
+      "type": "float",
+      "desc": "CONSUMPTION OF CLOTHING",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_CONS_SERVICES": {
+      "type": "float",
+      "desc": "CONSUMPTION OF CONSUMPTION OF SERVICES",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_CONS_TAXES": {
+      "type": "float",
+      "desc": "CONSUMPTION OF CONSUMPTION OF TAXES",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_CONVEYANCE": {
+      "type": "float",
+      "desc": "CONSUMPTION OF CONVEYANCE",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_DRY_FRUIT": {
+      "type": "float",
+      "desc": "CONSUMPTION OF DRY_FRUIT",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_DURABLE_GOODS": {
+      "type": "float",
+      "desc": "CONSUMPTION OF DURABLE_GOODS",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_EDIBLE_OIL": {
+      "type": "float",
+      "desc": "CONSUMPTION OF EDIBLE_OIL",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_EDUCATION": {
+      "type": "float",
+      "desc": "CONSUMPTION OF EDUCATION",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_ENTERTAINMENT": {
+      "type": "float",
+      "desc": "CONSUMPTION OF ENTERTAINMENT",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_FOOTWEAR": {
+      "type": "float",
+      "desc": "CONSUMPTION OF FOOTWEAR",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_FRUIT": {
+      "type": "float",
+      "desc": "CONSUMPTION OF FRUIT",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_FUEL": {
+      "type": "float",
+      "desc": "CONSUMPTION OF FUEL",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_IMPUTED_RENT": {
+      "type": "float",
+      "desc": "CONSUMPTION OF IMPUTED_RENT",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_INTOXICANT": {
+      "type": "float",
+      "desc": "CONSUMPTION OF INTOXICANT",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_MEDICAL_INST": {
+      "type": "float",
+      "desc": "CONSUMPTION OF MEDICAL_INST",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_MEDICAL_NON_INST": {
+      "type": "float",
+      "desc": "CONSUMPTION OF MEDICAL_NON_INST",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_MILK_PROD": {
+      "type": "float",
+      "desc": "CONSUMPTION OF MILK_PROD",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_MINOR_DURABLE_GOODS": {
+      "type": "float",
+      "desc": "CONSUMPTION OF MINOR_DURABLE_GOODS",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_NON_VEG": {
+      "type": "float",
+      "desc": "CONSUMPTION OF NON_VEG",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_OTHER_HOUSEHOLD_CONSUMABLES": {
+      "type": "float",
+      "desc": "CONSUMPTION OF OTHER_HOUSEHOLD_CONSUMABLES",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_PACK_PROC_FOOD": {
+      "type": "float",
+      "desc": "CONSUMPTION OF PACK_PROC_FOOD",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_PAN": {
+      "type": "float",
+      "desc": "CONSUMPTION OF PAN",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_PROC_FOOD": {
+      "type": "float",
+      "desc": "CONSUMPTION OF PROC_FOOD",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_PULSES": {
+      "type": "float",
+      "desc": "CONSUMPTION OF PULSES",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_RENT": {
+      "type": "float",
+      "desc": "CONSUMPTION OF RENT",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_SALT_SUGAR": {
+      "type": "float",
+      "desc": "CONSUMPTION OF SALT_SUGAR",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_SPICES": {
+      "type": "float",
+      "desc": "CONSUMPTION OF SPICES",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_TOBACCO": {
+      "type": "float",
+      "desc": "CONSUMPTION OF TOBACCO",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_TOILETARIES": {
+      "type": "float",
+      "desc": "CONSUMPTION OF TOILETARIES",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "CONS_VEGETABLE": {
+      "type": "float",
+      "desc": "CONSUMPTION OF VEGETABLE",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   },
+   "HH_SIZE": {
       "type": "int",
-      "desc": "Assessment year of ITR form that include prior year information",
-      "form": {"2017": "Year of Household Survey"}
-    },
-    "weight": {
+      "desc": "Household Size",
+      "form": {
+         "2011": "Household Survey 48th Round Block 3 Level 2"
+      }
+   },
+   "URBAN": {
+      "type": "int",
+      "desc": "URBAN=1, RURAL=0",
+      "form": {
+         "2011": "Household Survey 48th Round Block 3 Level 2"
+      }
+   },
+   "DISTRICT": {
+      "type": "int",
+      "desc": "District Code",
+      "form": {
+         "2011": "Household Survey 48th Round Block 3 Level 2"
+      }
+   },
+   "STATE_CODE": {
+      "type": "int",
+      "desc": "State Code",
+      "form": {
+         "2011": "Household Survey 48th Round Block 3 Level 2"
+      }
+   },
+   "weight": {
       "type": "float",
-      "desc": "Filing unit sampling weight",
-      "form": {"2017": "not used in filing unit tax calculations"}
-    },
-    "AGE": {
+      "desc": "Household unit sampling weight",
+      "form": {
+         "2017": "not used in filing unit tax calculations"
+      }
+   },
+   "ASSESSMENT_YEAR": {
+      "type": "int",
+      "desc": "Year of Consumption",
+      "form": {
+         "2011": "Household Survey 48th Round Block 3 Level 2"
+      }
+   },
+   "CONS_OTHER": {
       "type": "float",
-      "desc": "Age of taxpayer",
-      "form": {"2017": "Household Survey"}
-    },
-    "GENDER": {
-      "type": "string",
-      "desc": "Gender of taxpayer",
-      "form": {"2017": "Household Survey"}
-    },
-    "CONS_CEREAL": {
-      "type": "float",
-      "desc": "Consumption of Cereals in Rupees by taxpayer during the year",
-      "form": {"2017": "Household Survey 48th Round Block 12"}
-    },
-    "CONS_OTHER": {
-      "type": "float",
-      "desc": "Consumption of Other items in Rupees by taxpayer during the year",
-      "form": {"2017": "Household Survey 48th Round Block 12"}
-    }
+      "desc": "CONSUMPTION OF OTHER",
+      "form": {
+         "2011": "Household Survey 48th Round Block 12"
+      }
+   }
   },
   "calc": {
     "total_consumption": {
