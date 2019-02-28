@@ -1,12 +1,10 @@
 {
   "policy": {
   // increase standard deduction to 50000
-  "_std_deduction": {"2019": [50000]},
+  "_std_deduction": {"2020": [50000]},
   // increase rebate threshold to 5,00,000
-	"_rebate_thd": {"2019": [500000]},
+	"_rebate_thd": {"2020": [500000]},
 	// increase the rebate ceiling to 12,500
-  "_rebate_ceiling": {"2019": [12500]},
-  // increase cess to 4%
-  "_cess_rate": {"2019": [0.04]}
+  "_rebate_ceiling": {"2020": [12500]}
   }
 }

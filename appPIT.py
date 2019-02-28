@@ -35,14 +35,14 @@ crecs = CorpRecords()
 pol = Policy()
 
 # specify Calculator object for current-law policy
-calc1 = Calculator(policy=pol, records=recs, corprecords=crecs)
+calc1 = Calculator(policy=pol, records=recs, corprecords=crecs, verbose=False)
 
 # specify Calculator object for reform in JSON file
 reform = Calculator.read_json_param_objects('Budget2019_reform.json', None)
 pol.implement_reform(reform['policy'])
-calc2 = Calculator(policy=pol, records=recs, corprecords=crecs)
-# loop through years 2017, 2018, and 2019 and print out pitax
-for year in range(2017, 2020):
+calc2 = Calculator(policy=pol, records=recs, corprecords=crecs, verbose=False)
+# loop through years 2017, 2018, 2019, 2020 and print out pitax
+for year in range(2017, 2021):
     calc1.advance_to_year(year)
     calc2.advance_to_year(year)
     calc1.calc_all()
@@ -54,7 +54,7 @@ for year in range(2017, 2020):
     print(f'Post reform Tax in Cr Rs. for {year}: {weighted_tax2 * 1e-7:,.0f}')
     print(f'Total weight in Lacs for {year}: {total_weights * 1e-6:,.2f}')
 
-# dump out records for 2019
+# dump out records for 2020
 dump_vars = ['FILING_SEQ_NO', 'AGEGRP', 'SALARIES', 'INCOME_HP',
              'Income_BP', 'TOTAL_INCOME_OS', 'Aggregate_Income',
              'TI_special_rates', 'tax_TI_special_rates', 'GTI', 'TTI', 'pitax']
@@ -82,7 +82,7 @@ df1 = df1.reset_index()
 df1['GTI'] = df1['GTI'].apply(gti_format)
 df1.rename(renames, axis=1, inplace=True)
 df1.index = [i for i in range(1, 11)]
-print('\nIndividual Level - Average by Decile 2019')
+print('\nIndividual Level - Average by Decile 2020')
 print(df1)
 df1.to_csv('Decilemeans_Budget.csv')  # conversion to csv files
 
@@ -92,6 +92,6 @@ df2 = df2.reset_index()
 df2['GTI'] = df2['GTI'].apply(gti_format)
 df2.rename(renames, axis=1, inplace=True)
 df2.index = [i for i in range(1, 11)]
-print('\nAggregate Tax Liability by Decile 2019')
+print('\nAggregate Tax Liability by Decile 2020')
 print(df2)
 df2.to_csv('Decilesum_Budget.csv')
