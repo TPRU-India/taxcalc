@@ -227,7 +227,7 @@ class Calculator(object):
         Return all-filing-unit weighted total of named Records variable.
         """
         return (self.garray(variable_name) * self.garray('weight')).sum()
-        
+
     def total_weight(self):
         """
         Return all-filing-unit total of sampling weights.

@@ -16,8 +16,7 @@ def gst_liability_item(calc):
     json_data = open('taxcalc/gstrecords_variables.json').read()
     vardict = json.loads(json_data)
     FIELD_VARS = list(k for k, v in vardict['read'].items()
-                      if (v['type'] == 'int'
-                          or v['type'] == 'float'))
+                      if (v['type'] == 'int' or v['type'] == 'float'))
     total_consumption = np.zeros(len(calc.garray('CONS_CEREAL')))
     gst = np.zeros(len(calc.garray('CONS_CEREAL')))
     for v in FIELD_VARS:
