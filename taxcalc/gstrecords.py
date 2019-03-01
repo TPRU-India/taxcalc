@@ -206,7 +206,6 @@ class GSTRecords(object):
                                     if v['type'] == 'float')
         FIXED_CALCULATED_VARS = set(k for k, v in vardict['calc'].items()
                                     if v['type'] == 'unchanging_float')
-
         GSTRecords.CALCULATED_VARS = (INT_CALCULATED_VARS |
                                       FLOAT_CALCULATED_VARS |
                                       FIXED_CALCULATED_VARS)
@@ -215,8 +214,7 @@ class GSTRecords(object):
                                    INT_CALCULATED_VARS)
         GSTRecords.FIELD_VARS = list(k for k, v in vardict['read'].items()
                                      if ((v['type'] == 'int') or
-                                         (v['type'] == 'float'))
-
+                                         (v['type'] == 'float')))
         return vardict
 
     # specify various sets of variable names
