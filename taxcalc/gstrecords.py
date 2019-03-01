@@ -216,6 +216,7 @@ class GSTRecords(object):
         GSTRecords.FIELD_VARS = list(k for k, v in vardict['read'].items()
                                      if ((v['type'] == 'int') or
                                          (v['type'] == 'float'))
+
         return vardict
 
     # specify various sets of variable names
