@@ -5,12 +5,12 @@ USAGE: python app_dist_Tables00.py
 """
 import locale
 from taxcalc import *
-#from ind_curr import *
+# from ind_curr import *
 
-#locale.setlocale(locale.LC_ALL, '')
+# locale.setlocale(locale.LC_ALL, '')
 
 # create Records object containing pit.csv and pit_weights.csv input data
-recs = Records(data='pit.csv', weights='pit_weights.csv')
+recs = Records(data='pitBigData.csv', weights='pit_weightsBD.csv')
 crecs = CorpRecords()
 
 # create Policy object containing current-law policy
@@ -23,8 +23,8 @@ calc1 = Calculator(policy=pol, records=recs, corprecords=crecs, verbose=False)
 reform = Calculator.read_json_param_objects('Budget2019_reform.json', None)
 pol.implement_reform(reform['policy'])
 calc2 = Calculator(policy=pol, records=recs, corprecords=crecs, verbose=False)
-# loop through years 2017, 2018, and 2019 and print out pitax
-for year in range(2017, 2020):
+# loop through years 2017, 2018, 2019, and 2020 and print out pitax
+for year in range(2017, 2021):
     calc1.advance_to_year(year)
     calc2.advance_to_year(year)
     calc1.calc_all()
@@ -35,10 +35,10 @@ for year in range(2017, 2020):
     print(f'****************  Total Tax Collection for {year}', end=' ')
     print('****************')
     print('\n')
-    print(f'Current Law: Tax Collection in Cr. for {year}:', end=' ')
-    print(f'{weighted_tax1 * 1e-7:,.2f} Cr.')
-    print(f'Reform     : Tax Collection in Cr. for {year}:', end=' ')
-    print(f'{weighted_tax2 * 1e-7:,.2f} Cr.')
+    print(f'Current Law: Tax Collection in Rs. Cr. for {year}:', end=' ')
+    print(f'{weighted_tax1 * 1e-7:,.2f}')
+    print(f'Reform     : Tax Collection in Rs. Cr. for {year}:', end=' ')
+    print(f'{weighted_tax2 * 1e-7:,.2f}')
     print('               Difference in Tax Collection:', end=' ')
     print(f'{(weighted_tax2-weighted_tax1) * 1e-7:,.2f} Cr.')
     print('\n')

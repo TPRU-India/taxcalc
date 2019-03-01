@@ -1,0 +1,6 @@
+{
+  "policy": {
+  // increase GST rate for cereals to 5%
+  "_gst_rate_cereal": {"2017": [0.05]}
+  }
+}

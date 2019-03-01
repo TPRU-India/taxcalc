@@ -151,10 +151,10 @@ def test_json_file_contents(tests_path, fname):
         raise ValueError(failures)
 
 
-@pytest.mark.parametrize("jfname, pfname, cpfname",
+@pytest.mark.parametrize("jfname, pfname, gpfname, cpfname",
                          [("current_law_policy.json", "functions.py",
-                           "corpfunctions.py")])
-def test_parameters_mentioned(tests_path, jfname, pfname, cpfname):
+                           "gstfunctions.py", "corpfunctions.py")])
+def test_parameters_mentioned(tests_path, jfname, pfname, gpfname, cpfname):
     """
     Make sure each JSON parameter is mentioned in PYTHON code file.
     """
@@ -169,6 +169,11 @@ def test_parameters_mentioned(tests_path, jfname, pfname, cpfname):
     pfile = open(path, 'r')
     code_text = pfile.read()
     pfile.close()
+    # read GST PYTHON file text
+    gpath = os.path.join(tests_path, '..', gpfname)
+    gpfile = open(gpath, 'r')
+    code_text3 = gpfile.read()
+    gpfile.close()
     # read corporate PYTHON file text
     cpath = os.path.join(tests_path, '..', cpfname)
     cpfile = open(cpath, 'r')
@@ -176,7 +181,10 @@ def test_parameters_mentioned(tests_path, jfname, pfname, cpfname):
     cpfile.close()
     # check that each param (without leading _) is mentioned in code text
     for pname in allparams:
-        assert pname[1:] in code_text or pname[1:] in code_text2
+        temp1 = (pname[1:] in code_text)
+        temp2 = (pname[1:] in code_text2)
+        temp3 = (pname[1:] in code_text3)
+        assert temp1 or temp2 or temp3
 
 
 # following tests access private methods, so pylint: disable=protected-access
