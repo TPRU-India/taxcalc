@@ -8,7 +8,7 @@ from taxcalc import *
 recs = Records()
 
 # create Records object containing pit.csv and pit_weights.csv input data
-grecs = GSTRecords(data = 'gst_updated.csv', weights = 'gst_weights.csv')
+grecs = GSTRecords(data='gst.csv', weights='gst_weights.csv')
 
 # create CorpRecords object containing cit.csv and cit_weights.csv input data
 crecs = CorpRecords()
@@ -33,28 +33,34 @@ for year in range(2017, 2020):
     calc2.advance_to_year(year)
     calc1.calc_all()
     id_gst1 = calc1.garray('ID_NO')
-    CONS_CEREAL = calc1.garray('CONS_CEREAL')
-    CONS_OTHER = calc1.garray('CONS_OTHER')    
     gst_cereal1 = calc1.garray('gst_cereal')
-    gst_other1 = calc1.garray('gst_other')
+    total_consumption1 = calc1.garray('total consumption')
     gst_total1 = calc1.garray('gst')
-    #gst_total1[np.isnan(gst_total1)] = 0
     wgt_gst1 = calc1.garray('weight')
-    print(f'ID_NO, {id_gst1}')
-    print(f'CONS_CEREAL, {CONS_CEREAL}')
-    print(f'gst_cereal, {gst_cereal1}')
-    print(f'CONS_OTHER, {CONS_OTHER}')
-    print(f'gst_other, {gst_other1}')
+    weighted_gst_cereal1 = calc1.weighted_garray('gst_cereal')
+    weighted_gst1 = calc1.weighted_garray('gst')
+    weighted_consumption = calc1.weighted_garray('total consumption')
+    total_consumption_all1 = calc1.weighted_total_garray('total consumption')
+    total_consumption_all1 = total_consumption_all1 / 10**7
     total_gst1 = calc1.weighted_total_garray('gst') / 10**7
-    print(f'Total GST collection - Current Law, {year}: {total_gst1:,.2f}')
+    total_weight1 = calc1.weighted_total_garray('weight') / 10**7
+    print(f'Total Consumption in - {year}: {total_consumption_all1:,.0f}')
+    print(f'Total GST Collection - {year}: {total_gst1:,.0f}')
+    print(f'Total Weight - {year}: {total_weight1:,.0f}')
 
     calc2.calc_all()
     id_gst2 = calc2.garray('ID_NO')
     gst_cereal2 = calc2.garray('gst_cereal')
-    gst_other2 = calc2.garray('gst_other')
+    total_consumption2 = calc2.garray('total consumption')
     gst_total2 = calc2.garray('gst')
-    #gst_total2[np.isnan(gst_total2)] = 0
     wgt_gst2 = calc2.garray('weight')
-    #total_gst2 = sum(gst_total2 * wgt_gst2) / 10**7
-    total_gst2 = calc2.weighted_total_garray('gst') / 10**7   
-    print(f'Total GST collection - Reform, {year}     : {total_gst2:,.2f}')
+    weighted_gst_cereal2 = calc2.weighted_garray('gst_cereal')
+    weighted_gst2 = calc2.weighted_garray('gst')
+    weighted_consumption = calc2.weighted_garray('total consumption')
+    total_consumption_all2 = calc2.weighted_total_garray('total consumption')
+    total_consumption_all2 = total_consumption_all2 / 10**7
+    total_gst2 = calc2.weighted_total_garray('gst') / 10**7
+    total_weight2 = calc2.weighted_total_garray('weight') / 10**7
+    print(f'Total Consumption in - {year}: {total_consumption_all2:,.0f}')
+    print(f'Total GST Collection - {year}: {total_gst2:,.0f}')
+    print(f'Total Weight - {year}: {total_weight2:,.0f}')

@@ -166,7 +166,7 @@ class GSTRecords(object):
         if self.WT.size > 0:
             wt_colname = 'WT{}'.format(self.__current_year)
             self.weight = self.WT[wt_colname]
-  
+
     def set_current_year(self, new_current_year):
         """
         Set current year to specified value and updates ASSESSMENT_YEAR
@@ -234,14 +234,14 @@ class GSTRecords(object):
         """
         # pylint: disable=too-many-locals,too-many-statements
 
-        GF_CEREAL = self.gfactors.factor_value('CEREAL', year)
+        GF_CONSUMPTION = self.gfactors.factor_value('CONSUMPTION', year)
         GF_OTHER = self.gfactors.factor_value('OTHER_CONS_ITEM', year)
-        
+
         for v in GSTRecords.FIELD_VARS:
             if v.startswith('CONS_') and not(v.startswith('CONS_OTHER')):
                 setattr(self, v,
-                        getattr(self, v) * GF_CEREAL)
-        self.CONS_OTHER *= GF_OTHER
+                        getattr(self, v) * GF_CONSUMPTION)
+        # self.CONS_OTHER *= GF_OTHER
 
     def _extract_panel_year(self):
         """
