@@ -92,6 +92,12 @@ for year in range(2017, 2021):
     with open('dist-table-part-ref-total'+str(year)+'.txt', 'w') as dfile:
         dt2.to_string(dfile, columns=to_include)
 
+recs = Records(data='pit.csv', weights='pit_weights.csv')
+grecs = GSTRecords()
+crecs = CorpRecords()
+
+# create Policy object containing current-law policy
+pol = Policy()
 # specify Calculator object for current-law policy
 calc1 = Calculator(policy=pol, records=recs, gstrecords=grecs, corprecords=crecs, verbose=False)
 
