@@ -1,7 +1,0 @@
-@iterate_jit(nopython=True)
-def gst_liability_cereal(gst_rate_cereal, CONS_CEREAL, gst_cereal):
-    """  
-    Calculates the gst paid on Cereal consumption
-    """   
-    gst_cereal = gst_rate_cereal * CONS_CEREAL
-    return gst_cereal
