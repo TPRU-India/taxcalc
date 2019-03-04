@@ -7,7 +7,8 @@
         "row_var": "AYEAR",
         "row_label": [
             "2017",
-            "2018"
+            "2018",
+            "2019"
         ],
         "start_year": 2017,
         "cpi_inflatable": true,
@@ -18,7 +19,8 @@
         "integer_value": false,
         "value": [
             30000,
-            30000
+            30000,
+            40000
         ],
         "range": {
             "min": 0,
@@ -463,7 +465,7 @@
         "integer_value": false,
         "value": [
             5000,
-            3500
+            2500
         ],
         "range": {
             "min": 0,
@@ -628,7 +630,8 @@
         "row_var": "AYEAR",
         "row_label": [
             "2017",
-            "2018"
+            "2018",
+            "2019"
         ],
         "start_year": 2017,
         "cpi_inflatable": false,
@@ -639,7 +642,8 @@
         "integer_value": false,
         "value": [
             0.03,
-            0.03
+            0.03,
+            0.04
         ],
         "range": {
             "min": 0,
