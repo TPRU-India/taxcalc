@@ -2,7 +2,6 @@
 app1.py illustrates use of pitaxcalc-demo release 2.0.0 (India version).
 USAGE: python app2.py
 """
-from babel.numbers import format_currency
 from taxcalc import *
 
 # create Records object containing pit.csv and pit_weights.csv input data
@@ -45,14 +44,9 @@ for year in range(2017, 2020):
     total_consumption_all1 = total_consumption_all1 / 10**7
     total_gst1 = calc1.weighted_total_garray('gst') / 10**7
     total_weight1 = calc1.weighted_total_garray('weight') / 10**7
-    total_consumption_all1_inr = format_currency(total_consumption_all1, 'INR', locale='en_IN').replace(u'\xa0', u' ')
-    total_consumption_all1_inr_rs = total_consumption_all1_inr[:-3]
-    total_gst1_inr = format_currency(total_gst1, 'INR', locale='en_IN').replace(u'\xa0', u' ')
-    total_gst1_inr_rs = total_gst1_inr[:-3]
-    print(f'*****  Due to Current Law in {year} *****')
-    print(f'Total Consumption in - {year}: {total_consumption_all1_inr_rs} Cr.')
-    print(f'Total GST Potential in - {year}: {total_gst1_inr_rs} Cr.')
-    print(f'Total Number of Households in - {year}: {total_weight1:,.0f}')
+    print(f'Total Consumption in - {year}: {total_consumption_all1:,.0f}')
+    print(f'Total GST Collection - {year}: {total_gst1:,.0f}')
+    print(f'Total Weight - {year}: {total_weight1:,.0f}')
 
     calc2.calc_all()
     id_gst2 = calc2.garray('ID_NO')
@@ -67,11 +61,6 @@ for year in range(2017, 2020):
     total_consumption_all2 = total_consumption_all2 / 10**7
     total_gst2 = calc2.weighted_total_garray('gst') / 10**7
     total_weight2 = calc2.weighted_total_garray('weight') / 10**7
-    total_consumption_all2_inr = format_currency(total_consumption_all2, 'INR', locale='en_IN').replace(u'\xa0', u' ')
-    total_consumption_all2_inr_rs = total_consumption_all2_inr[:-3]
-    total_gst2_inr = format_currency(total_gst2, 'INR', locale='en_IN').replace(u'\xa0', u' ')
-    total_gst2_inr_rs = total_gst2_inr[:-3]
-    print(f'*****  Due to Reform in {year} *****')
-    print(f'Total Consumption in - {year}: {total_consumption_all2_inr_rs} Cr.')
-    print(f'Total GST Potential in - {year}: {total_gst2_inr_rs} Cr.')
-    print(f'Total Number of Households in - {year}: {total_weight2:,.0f}')
+    print(f'Total Consumption in - {year}: {total_consumption_all2:,.0f}')
+    print(f'Total GST Collection - {year}: {total_gst2:,.0f}')
+    print(f'Total Weight - {year}: {total_weight2:,.0f}')
