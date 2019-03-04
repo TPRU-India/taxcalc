@@ -10,19 +10,20 @@ from taxcalc import *
 # locale.setlocale(locale.LC_ALL, '')
 
 # create Records object containing pit.csv and pit_weights.csv input data
-recs = Records(data='pitBigData.csv', weights='pit_weightsBD.csv')
+recs = Records(data='pit.csv', weights='pit_weights.csv')
+grecs = GSTRecords()
 crecs = CorpRecords()
 
 # create Policy object containing current-law policy
 pol = Policy()
 
 # specify Calculator object for current-law policy
-calc1 = Calculator(policy=pol, records=recs, corprecords=crecs, verbose=False)
+calc1 = Calculator(policy=pol, records=recs, gstrecords=grecs, corprecords=crecs, verbose=False)
 
 # specify Calculator object for reform in JSON file
 reform = Calculator.read_json_param_objects('Budget2019_reform.json', None)
 pol.implement_reform(reform['policy'])
-calc2 = Calculator(policy=pol, records=recs, corprecords=crecs, verbose=False)
+calc2 = Calculator(policy=pol, records=recs, gstrecords=grecs, corprecords=crecs, verbose=False)
 # loop through years 2017, 2018, 2019, and 2020 and print out pitax
 for year in range(2017, 2021):
     calc1.advance_to_year(year)
@@ -90,6 +91,14 @@ for year in range(2017, 2021):
         dt1.to_string(dfile, columns=to_include)
     with open('dist-table-part-ref-total'+str(year)+'.txt', 'w') as dfile:
         dt2.to_string(dfile, columns=to_include)
+
+# specify Calculator object for current-law policy
+calc1 = Calculator(policy=pol, records=recs, gstrecords=grecs, corprecords=crecs, verbose=False)
+
+# specify Calculator object for reform in JSON file
+reform = Calculator.read_json_param_objects('Budget2019_reform.json', None)
+pol.implement_reform(reform['policy'])
+calc2 = Calculator(policy=pol, records=recs, gstrecords=grecs, corprecords=crecs, verbose=False)
 
 for year in range(2017, 2021):
     calc1.advance_to_year(year)
