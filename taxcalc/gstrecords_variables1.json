@@ -1,0 +1,62 @@
+{
+  "read": {
+    "ID_NO": {
+      "required": true,
+      "type": "int",
+      "desc": "Unique positive numeric identifier for filing unit",
+      "form": {"2017": "Household Survey"}
+    },
+    "ASSESSMENT_YEAR": {
+      "type": "int",
+      "desc": "Assessment year of ITR form that include prior year information",
+      "form": {"2017": "Year of Household Survey"}
+    },
+    "weight": {
+      "type": "float",
+      "desc": "Filing unit sampling weight",
+      "form": {"2017": "not used in filing unit tax calculations"}
+    },
+    "URBAN": {
+      "type": "int",
+      "desc": "Household - Urban or Rural",
+      "form": {"2017": "Household Survey"}
+    },
+    "DISTRICT": {
+      "type": "District",
+      "desc": "District of household",
+      "form": {"2017": "Household Survey"}
+    },
+    "CONS_CEREAL": {
+      "type": "float",
+      "desc": "Consumption of Cereals in Rupees by taxpayer during the year",
+      "form": {"2017": "Household Survey 48th Round Block 12"}
+    },
+    "CONS_OTHER": {
+      "type": "float",
+      "desc": "Consumption of Other items in Rupees by taxpayer during the year",
+      "form": {"2017": "Household Survey 48th Round Block 12"}
+    }
+  },
+  "calc": {
+    "total_consumption": {
+      "type": "float",
+      "desc": "Total Consumption",
+      "form": {"2017": "Calculated"}
+    },
+    "gst_cereal": {
+      "type": "float",
+      "desc": "GST on Cereal Consumption",
+      "form": {"2017": "Calculated"}
+    },
+    "gst_other": {
+      "type": "float",
+      "desc": "GST on Other items of Consumption",
+      "form": {"2017": "Calculated"}
+    },
+    "gst": {
+      "type": "float",
+      "desc": "Total GST paid",
+      "form": {"2017": "Calculated"}
+    }
+  }
+}
