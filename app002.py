@@ -19,7 +19,8 @@ def ind_currency(curr):
 recs = Records()
 
 # create Records object containing pit.csv and pit_weights.csv input data
-grecs = GSTRecords(data='gst.csv', weights='gst_weights.csv')
+#grecs = GSTRecords(data='gst.csv', weights='gst_weights.csv')
+grecs = GSTRecords()
 
 # create CorpRecords object containing cit.csv and cit_weights.csv input data
 crecs = CorpRecords()
@@ -38,7 +39,7 @@ calc2 = Calculator(policy=pol, records=recs, gstrecords=grecs,
                    corprecords=crecs, verbose=False)
 
 # loop through years 2017, 2018, and 2019 and print out pitax
-for year in range(2017, 2020):
+for year in range(2017, 2023):
     print('\n')
     calc1.advance_to_year(year)
     calc2.advance_to_year(year)
