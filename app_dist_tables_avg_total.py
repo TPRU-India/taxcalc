@@ -57,12 +57,14 @@ calc1 = Calculator(policy=pol, records=recs, gstrecords=grecs, corprecords=crecs
 
 # specify Calculator object for reform in JSON file
 reform = Calculator.read_json_param_objects('Budget2019_reform.json', None)
+#print(reform['policy'])
 pol.implement_reform(reform['policy'])
+
 calc2 = Calculator(policy=pol, records=recs, gstrecords=grecs, corprecords=crecs, verbose=False)
 # loop through years 2017, 2018, 2019, and 2020 and print out pitax
 
 START_YEAR = 2017
-END_YEAR = 2020
+END_YEAR = 2023
 wtd_tax_clp={}
 wtd_tax_ref={}
 wtd_tot={}
@@ -248,7 +250,7 @@ for year in range(START_YEAR, END_YEAR+1):
     print(f'Representing: {wtd_tot[year] * 1e-5:,.2f} Lakh taxpayers')
     print('\n')
     
-# Generate Charts
+# Generate files for Charts
 # first merge the files
 year = START_YEAR
 a={}
