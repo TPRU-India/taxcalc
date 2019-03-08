@@ -3,6 +3,7 @@ app_dist_Tables00.py illustrates use of pitaxcalc-demo release 2.0.0
 (India version).
 USAGE: python app_dist_Tables00.py
 """
+
 import locale
 import pandas as pd
 from taxcalc import *
@@ -115,11 +116,12 @@ for year in range(START_YEAR, END_YEAR+1):
             if output_in_averages:
                 print('***************************  Average Tax Burden ', end=' ')
                 print(f'(in Rs.) per Taxpayer for {year}  ***************************')
-                pd.options.display.float_format = '{:,.0f}'.format
+                pd.options.display.float_format = '{:.0f}'.format
             else:
                 print('*****************  Distribution Tables ', end=' ')
                 print(f'for Total Tax Collection (in Rs. crores) for {year} *********')
-                pd.options.display.float_format = '{:,.3f}'.format
+                #pd.options.display.float_format = '{:,.0f}'.format
+                pd.options.display.float_format = '{:.0f}'.format
             
             # list of columns for printing in rupees
             col_list1 = list(dt1.columns)
@@ -220,18 +222,20 @@ for year in range(BASE_YEAR+1, END_YEAR+1):
     df = pd.merge(df, a[year], how="inner", on="Income_Bracket")
 
 df.set_index('Income_Bracket', inplace=True)
-
 df.to_csv('dist-table-all-years.csv', index=True)
 
 df = pd.read_csv('dist-table-all-years.csv')
 df.set_index('Income_Bracket', inplace=True)
+
+# generating bar chart for Total Tax collection due to current law and reform 
+# for all years
 df_pit_totals_clp = df[df.columns[df.columns.str.startswith('pitax_total_clp')]]
 df_pit_totals_ref = df[df.columns[df.columns.str.startswith('pitax_total_ref')]]
 clp_pitax_list = df_pit_totals_clp.loc['ALL'].tolist()
-clp_pitax_list = [float(i.replace(',','')) for i in clp_pitax_list]
+#clp_pitax_list = [float(i.replace(',','')) for i in clp_pitax_list]
 clp_pitax_list = [round(elem, 0) for elem in clp_pitax_list ]
 ref_pitax_list = df_pit_totals_ref.loc['ALL'].tolist()
-ref_pitax_list = [float(i.replace(',','')) for i in ref_pitax_list]
+#ref_pitax_list = [float(i.replace(',','')) for i in ref_pitax_list]
 ref_pitax_list = [round(elem, 0) for elem in ref_pitax_list ]
 years = [x[-4:] for x in list(df_pit_totals_clp.columns)]
 
@@ -269,7 +273,7 @@ df_pitax_diff = df_pitax_diff.reset_index()
 pitax_inc_brac_list = df_pitax_diff['Income_Bracket'].tolist()
 pitax_diff_list = df_pitax_diff['pitax_diff_avg_ref_'+str(year)].tolist()
 
-pitax_diff_list = [float(i.replace(',','')) for i in pitax_diff_list]
+#pitax_diff_list = [float(i.replace(',','')) for i in pitax_diff_list]
 
 plt.rcdefaults()
 #plt.style.use('seaborn-whitegrid')
@@ -288,6 +292,36 @@ ax.set_title('Change in Average Tax Burden Due to Reform in 2020')
 plt.savefig('Average Tax Burden Change.png')
 plt.show()
 
+# generating bar chart for Difference in Total tax collection due to reform 
+# for 2020 - the first year of reform
+
+#df_pit_totals_clp = df[df.columns[df.columns.str.startswith('pitax_diff_clp')]]
+df_pitax_diff_totals_ref = df[df.columns[df.columns.str.startswith('pitax_diff_total_ref')]]
+pitax_diff_totals_ref_list = df_pitax_diff_totals_ref.loc['ALL'].tolist()
+# ref_pitax_diff_list = [float(i.replace(',','')) for i in ref_pitax_diff_list]
+pitax_diff_totals_ref_list = [round(elem, 0) for elem in pitax_diff_totals_ref_list ]
+years = [x[-4:] for x in list(df_pitax_diff_totals_ref.columns)]
+
+#plt.style.use('seaborn-whitegrid')
+#fig = plt.figure()
+plt.rcdefaults()
+#plt.style.use('seaborn-whitegrid')
+fig, ax = plt.subplots(figsize=(8, 5))
+width = 0.35
+x_pos = np.arange(len(years))
+ax.bar(x_pos, pitax_diff_totals_ref_list, width,
+        color='orange')
+ax.set_xticks(x_pos)
+ax.set_xticklabels(years)
+#ax.invert_yaxis()  # labels read top-to-bottom
+ax.set_ylabel('Rupees in Crores')
+ax.set_xlabel('Years')
+ax.invert_yaxis()
+ax.set_title('Change in Total Tax Burden Due to Reform in 2020', fontweight="bold")
+plt.savefig('Change in Total Tax Burden Due to Reform.png')
+plt.show()
+
+
 # generating pie chart for contribution of tax by different income groups 
 # for 2020 - the first year of reform
 
@@ -298,7 +332,7 @@ df_pitax_tot_clp = df_pitax_tot_clp[2:]
 df_pitax_tot_clp = df_pitax_tot_clp.reset_index()
 pitax_inc_brac_list_clp = df_pitax_tot_clp['Income_Bracket'].tolist()
 pitax_tot_list_clp = df_pitax_tot_clp['pitax_total_clp_'+str(year)].tolist()
-pitax_tot_list_clp = [float(i.replace(',','')) for i in pitax_tot_list_clp]
+#pitax_tot_list_clp = [float(i.replace(',','')) for i in pitax_tot_list_clp]
 pitax_tot_list_clp = [round(elem) for elem in pitax_tot_list_clp ]
 
 fig, ax = plt.subplots(figsize=(10, 5))
@@ -312,6 +346,7 @@ plt.suptitle('Contribution by Income Bracket to total PIT in 2020 - Current Law'
 plt.savefig('Contribution to total PIT.png')
 plt.show()
 
+
 # generating pie chart for comparing contribution of tax by 
 # different income groups for clp and reform for 2020 - the first year of reform
 
@@ -324,7 +359,7 @@ df_pitax_tot = df_pitax_tot[2:]
 df_pitax_tot = df_pitax_tot.reset_index()
 pitax_inc_brac_list = df_pitax_tot['Income_Bracket'].tolist()
 pitax_tot_list = df_pitax_tot['pitax_total_ref_'+str(year)].tolist()
-pitax_tot_list = [float(i.replace(',','')) for i in pitax_tot_list]
+#pitax_tot_list = [float(i.replace(',','')) for i in pitax_tot_list]
 pitax_tot_list = [round(elem) for elem in pitax_tot_list ]
 
 

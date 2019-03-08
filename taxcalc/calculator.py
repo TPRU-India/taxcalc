@@ -1059,6 +1059,7 @@ class Calculator(object):
             msg = 'illegal key(s) "{}" in policy reform file'
             raise ValueError(msg.format(illegal_keys))
         # convert raw_dict['policy'] dictionary into prdict
+        raw_dict_policy = raw_dict['policy']
         tdict = Policy.translate_json_reform_suffixes(raw_dict['policy'])
         prdict = Calculator._convert_parameter_dict(tdict)
         return prdict
