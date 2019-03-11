@@ -1,62 +1,545 @@
 {
-  "read": {
-    "ID_NO": {
-      "required": true,
-      "type": "int",
-      "desc": "Unique positive numeric identifier for filing unit",
-      "form": {"2017": "Household Survey"}
+    "calc": {
+        "gst": {
+            "desc": "Potential GST paid by Household during the year in Rupees",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_bedding": {
+            "desc": "GST paid by Household on consumption of BEDDING",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_beverage": {
+            "desc": "GST paid by Household on consumption of BEVERAGE",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_c_services": {
+            "desc": "GST paid by Household on consumption of C_SERVICES",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_c_taxes": {
+            "desc": "GST paid by Household on consumption of C_TAXES",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_cereal": {
+            "desc": "GST paid by Household on consumption of CEREAL",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_cereal_sub": {
+            "desc": "GST paid by Household on consumption of CEREAL_SUB",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_clothing": {
+            "desc": "GST paid by Household on consumption of CLOTHING",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_conveyance": {
+            "desc": "GST paid by Household on consumption of CONVEYANCE",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_dry_fruit": {
+            "desc": "GST paid by Household on consumption of DRY_FRUIT",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_durable_goods": {
+            "desc": "GST paid by Household on consumption of DURABLE_GOODS",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_edible_oil": {
+            "desc": "GST paid by Household on consumption of EDIBLE_OIL",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_education": {
+            "desc": "GST paid by Household on consumption of EDUCATION",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_entertainment": {
+            "desc": "GST paid by Household on consumption of ENTERTAINMENT",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_footwear": {
+            "desc": "GST paid by Household on consumption of FOOTWEAR",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_fruit": {
+            "desc": "GST paid by Household on consumption of FRUIT",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_fuel": {
+            "desc": "GST paid by Household on consumption of FUEL",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_imputed_rent": {
+            "desc": "GST paid by Household on consumption of IMPUTED_RENT",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_intoxicant": {
+            "desc": "GST paid by Household on consumption of INTOXICANT",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_medical_inst": {
+            "desc": "GST paid by Household on consumption of MEDICAL_INST",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_medical_non_inst": {
+            "desc": "GST paid by Household on consumption of MEDICAL_NON_INST",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_milk_prod": {
+            "desc": "GST paid by Household on consumption of MILK_PROD",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_minor_durable_goods": {
+            "desc": "GST paid by Household on consumption of MINOR_DURABLE_GOODS",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_non_veg": {
+            "desc": "GST paid by Household on consumption of NON_VEG",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_other_household_c_onsumables": {
+            "desc": "GST paid by Household on consumption of OTHER_HOUSEHOLD_C_ONSUMABLES",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_pack_proc_food": {
+            "desc": "GST paid by Household on consumption of PACK_PROC_FOOD",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_pan": {
+            "desc": "GST paid by Household on consumption of PAN",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_proc_food": {
+            "desc": "GST paid by Household on consumption of PROC_FOOD",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_pulses": {
+            "desc": "GST paid by Household on consumption of PULSES",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_rent": {
+            "desc": "GST paid by Household on consumption of RENT",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_salt_sugar": {
+            "desc": "GST paid by Household on consumption of SALT_SUGAR",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_spices": {
+            "desc": "GST paid by Household on consumption of SPICES",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_tobacco": {
+            "desc": "GST paid by Household on consumption of TOBACCO",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_toiletaries": {
+            "desc": "GST paid by Household on consumption of TOILETARIES",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "gst_vegetable": {
+            "desc": "GST paid by Household on consumption of VEGETABLE",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        },
+        "total consumption": {
+            "desc": "Total Consumption by Household during the year in Rupees",
+            "form": {
+                "2017": "Calculated"
+            },
+            "type": "float"
+        }
     },
-    "ASSESSMENT_YEAR": {
-      "type": "int",
-      "desc": "Assessment year of ITR form that include prior year information",
-      "form": {"2017": "Year of Household Survey"}
-    },
-    "weight": {
-      "type": "float",
-      "desc": "Filing unit sampling weight",
-      "form": {"2017": "not used in filing unit tax calculations"}
-    },
-    "AGE": {
-      "type": "float",
-      "desc": "Age of taxpayer",
-      "form": {"2017": "Household Survey"}
-    },
-    "GENDER": {
-      "type": "string",
-      "desc": "Gender of taxpayer",
-      "form": {"2017": "Household Survey"}
-    },
-    "CONS_CEREAL": {
-      "type": "float",
-      "desc": "Consumption of Cereals in Rupees by taxpayer during the year",
-      "form": {"2017": "Household Survey 48th Round Block 12"}
-    },
-    "CONS_OTHER": {
-      "type": "float",
-      "desc": "Consumption of Other items in Rupees by taxpayer during the year",
-      "form": {"2017": "Household Survey 48th Round Block 12"}
+    "read": {
+        "ASSESSMENT_YEAR": {
+            "desc": "Year of Consumption",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "int"
+        },
+        "CONS_BEDDING": {
+            "desc": "CONSUMPTION OF BEDDING",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_BEVERAGE": {
+            "desc": "CONSUMPTION OF BEVERAGE",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_CEREAL": {
+            "desc": "CONSUMPTION OF CEREAL",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_CEREAL_SUB": {
+            "desc": "CONSUMPTION OF CEREAL_SUB",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_CLOTHING": {
+            "desc": "CONSUMPTION OF CLOTHING",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_CONVEYANCE": {
+            "desc": "CONSUMPTION OF CONVEYANCE",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_C_SERVICES": {
+            "desc": "CONSUMPTION OF C_SERVICES",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_C_TAXES": {
+            "desc": "CONSUMPTION OF C_TAXES",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_DRY_FRUIT": {
+            "desc": "CONSUMPTION OF DRY_FRUIT",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_DURABLE_GOODS": {
+            "desc": "CONSUMPTION OF DURABLE_GOODS",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_EDIBLE_OIL": {
+            "desc": "CONSUMPTION OF EDIBLE_OIL",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_EDUCATION": {
+            "desc": "CONSUMPTION OF EDUCATION",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_ENTERTAINMENT": {
+            "desc": "CONSUMPTION OF ENTERTAINMENT",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_FOOTWEAR": {
+            "desc": "CONSUMPTION OF FOOTWEAR",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_FRUIT": {
+            "desc": "CONSUMPTION OF FRUIT",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_FUEL": {
+            "desc": "CONSUMPTION OF FUEL",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_IMPUTED_RENT": {
+            "desc": "CONSUMPTION OF IMPUTED_RENT",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_INTOXICANT": {
+            "desc": "CONSUMPTION OF INTOXICANT",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_MEDICAL_INST": {
+            "desc": "CONSUMPTION OF MEDICAL_INST",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_MEDICAL_NON_INST": {
+            "desc": "CONSUMPTION OF MEDICAL_NON_INST",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_MILK_PROD": {
+            "desc": "CONSUMPTION OF MILK_PROD",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_MINOR_DURABLE_GOODS": {
+            "desc": "CONSUMPTION OF MINOR_DURABLE_GOODS",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_NON_VEG": {
+            "desc": "CONSUMPTION OF NON_VEG",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_OTHER_HOUSEHOLD_C_ONSUMABLES": {
+            "desc": "CONSUMPTION OF OTHER_HOUSEHOLD_C_ONSUMABLES",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_PACK_PROC_FOOD": {
+            "desc": "CONSUMPTION OF PACK_PROC_FOOD",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_PAN": {
+            "desc": "CONSUMPTION OF PAN",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_PROC_FOOD": {
+            "desc": "CONSUMPTION OF PROC_FOOD",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_PULSES": {
+            "desc": "CONSUMPTION OF PULSES",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_RENT": {
+            "desc": "CONSUMPTION OF RENT",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_SALT_SUGAR": {
+            "desc": "CONSUMPTION OF SALT_SUGAR",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_SPICES": {
+            "desc": "CONSUMPTION OF SPICES",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_TOBACCO": {
+            "desc": "CONSUMPTION OF TOBACCO",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_TOILETARIES": {
+            "desc": "CONSUMPTION OF TOILETARIES",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "CONS_VEGETABLE": {
+            "desc": "CONSUMPTION OF VEGETABLE",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "float"
+        },
+        "DISTRICT": {
+            "desc": "District Code",
+            "form": {
+                "2017": "Household Survey 48th Round Block 3 Level 2"
+            },
+            "type": "int"
+        },
+        "HH_SIZE": {
+            "desc": "Household Size",
+            "form": {
+                "2017": "Household Survey 48th Round Block 3 Level 2"
+            },
+            "type": "int"
+        },
+        "ID_NO": {
+            "desc": "Household ID HHID",
+            "form": {
+                "2017": "Household Survey 48th Round Block 12"
+            },
+            "type": "int"
+        },
+        "STATE_CODE": {
+            "desc": "State Code",
+            "form": {
+                "2017": "Household Survey 48th Round Block 3 Level 2"
+            },
+            "type": "int"
+        },
+        "URBAN": {
+            "desc": "URBAN=1, RURAL=0",
+            "form": {
+                "2017": "Household Survey 48th Round Block 3 Level 2"
+            },
+            "type": "int"
+        },
+        "weight": {
+            "desc": "Household unit sampling weight",
+            "form": {
+                "2017": "Household Survey 48th Round Block 3 Level 2"
+            },
+            "type": "float"
+        }
     }
-  },
-  "calc": {
-    "total_consumption": {
-      "type": "float",
-      "desc": "Total Consumption",
-      "form": {"2017": "Calculated"}
-    },
-    "gst_cereal": {
-      "type": "float",
-      "desc": "GST on Cereal Consumption",
-      "form": {"2017": "Calculated"}
-    },
-    "gst_other": {
-      "type": "float",
-      "desc": "GST on Other items of Consumption",
-      "form": {"2017": "Calculated"}
-    },
-    "gst": {
-      "type": "float",
-      "desc": "Total GST paid",
-      "form": {"2017": "Calculated"}
-    }
-  }
 }

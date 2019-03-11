@@ -10,6 +10,8 @@ from taxcalc import *
 # create Records object containing pit.csv and pit_weights.csv input data
 recs = Records()
 
+grecs = GSTRecords()
+
 # create CorpRecords object using cross-section data
 crecs1 = CorpRecords(data='cit_cross.csv', weights='cit_cross_wgts.csv')
 
@@ -24,13 +26,13 @@ pol2.implement_reform(reform['policy'])
 
 # specify Calculator objects for current-law policy
 calc1c = Calculator(policy=pol1, records=recs, corprecords=crecs1,
-                    verbose=False)
+                    gstrecords=grecs, verbose=False)
 calc1p = Calculator(policy=pol1, records=recs, corprecords=crecs2,
-                    verbose=False)
+                    gstrecords=grecs, verbose=False)
 calc2c = Calculator(policy=pol2, records=recs, corprecords=crecs1,
-                    verbose=False)
+                    gstrecords=grecs, verbose=False)
 calc2p = Calculator(policy=pol2, records=recs, corprecords=crecs2,
-                    verbose=False)
+                    gstrecords=grecs, verbose=False)
 
 for year in range(2017, 2022):
     calc1c.advance_to_year(year)

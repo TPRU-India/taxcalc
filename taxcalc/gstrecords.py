@@ -88,7 +88,6 @@ class GSTRecords(object):
 
     def __init__(self,
                  data=GST_DATA_FILENAME,
-                 data_type='cross-section',
                  gfactors=GrowFactors(),
                  weights=GST_WEIGHTS_FILENAME,
                  panel_blowup=GST_BLOWFACTORS_FILENAME,
@@ -96,13 +95,6 @@ class GSTRecords(object):
         # pylint: disable=too-many-arguments,too-many-locals
         self.__data_year = start_year
         # read specified data
-        if data_type == 'cross-section':
-            self.data_type = data_type
-        elif data_type == 'panel':
-            self.data_type = data_type
-            self.blowfactors_path = panel_blowup
-        else:
-            raise ValueError('data_type is not cross-section or panel')
         self._read_data(data)
         # handle grow factors
         is_correct_type = isinstance(gfactors, GrowFactors)
@@ -175,56 +167,6 @@ class GSTRecords(object):
             wt_colname = 'WT{}'.format(self.__current_year)
             self.weight = self.WT[wt_colname]
 
-    def increment_panel_year(self):
-        """
-        Add one to current year and to panel year.
-        Saves measures to be carried forward.
-        Extracts next year of the panel data.
-        Updates carried forward measures.
-        WARNING: MUST FIX UNIQUE GSTORATE ID FOR MERGING ACROSS YEARS
-        """
-        # Specify the variables to be carried forward
-        carryforward_df = pd.DataFrame({'ID_NO': self.ID_NO,
-                                        'newloss1': self.newloss1,
-                                        'newloss2': self.newloss2,
-                                        'newloss3': self.newloss3,
-                                        'newloss4': self.newloss4,
-                                        'newloss5': self.newloss5,
-                                        'newloss6': self.newloss6,
-                                        'newloss7': self.newloss7,
-                                        'newloss8': self.newloss8,
-                                        'close_wdv_pm1': self.close_wdv_pm1})
-        # Update years
-        self.panelyear += 1
-        # Get new panel data
-        data1 = self._extract_panel_year()
-        data2 = data1.merge(right=carryforward_df, how='outer',
-                            on='ID_NO', indicator=True)
-        merge_info = np.array(data2['_merge'])
-        to_update = np.where(merge_info == 'both', True, False)
-        to_keep = np.where(merge_info != 'right_only', True, False)
-        data2['LOSS_LAG1'] = np.where(to_update, data2['newloss1'],
-                                      data2['LOSS_LAG1'])
-        data2['LOSS_LAG2'] = np.where(to_update, data2['newloss2'],
-                                      data2['LOSS_LAG2'])
-        data2['LOSS_LAG3'] = np.where(to_update, data2['newloss3'],
-                                      data2['LOSS_LAG3'])
-        data2['LOSS_LAG4'] = np.where(to_update, data2['newloss4'],
-                                      data2['LOSS_LAG4'])
-        data2['LOSS_LAG5'] = np.where(to_update, data2['newloss5'],
-                                      data2['LOSS_LAG5'])
-        data2['LOSS_LAG6'] = np.where(to_update, data2['newloss6'],
-                                      data2['LOSS_LAG6'])
-        data2['LOSS_LAG7'] = np.where(to_update, data2['newloss7'],
-                                      data2['LOSS_LAG7'])
-        data2['LOSS_LAG8'] = np.where(to_update, data2['newloss8'],
-                                      data2['LOSS_LAG8'])
-        temp = np.where(to_update, data2['close_wdv_pm1'],
-                        data2['PWR_DOWN_VAL_1ST_DAY_PY_15P'])
-        data2['PWR_DOWN_VAL_1ST_DAY_PY_15P'] = temp
-        data3 = data2[to_keep]
-        self._read_data(data3)
-
     def set_current_year(self, new_current_year):
         """
         Set current year to specified value and updates ASSESSMENT_YEAR
@@ -270,6 +212,9 @@ class GSTRecords(object):
         GSTRecords.CHANGING_CALCULATED_VARS = FLOAT_CALCULATED_VARS
         GSTRecords.INTEGER_VARS = (GSTRecords.INTEGER_READ_VARS |
                                    INT_CALCULATED_VARS)
+        GSTRecords.FIELD_VARS = list(k for k, v in vardict['read'].items()
+                                     if ((v['type'] == 'int') or
+                                         (v['type'] == 'float')))
         return vardict
 
     # specify various sets of variable names
@@ -279,6 +224,7 @@ class GSTRecords(object):
     CALCULATED_VARS = None
     CHANGING_CALCULATED_VARS = None
     INTEGER_VARS = None
+    FIELD_VARS = None
 
     # ----- begin private methods of Records class -----
 
@@ -288,11 +234,14 @@ class GSTRecords(object):
         """
         # pylint: disable=too-many-locals,too-many-statements
 
-        GF_CEREAL = self.gfactors.factor_value('CEREAL', year)
+        GF_CONSUMPTION = self.gfactors.factor_value('CONSUMPTION', year)
         GF_OTHER = self.gfactors.factor_value('OTHER_CONS_ITEM', year)
 
-        self.CONS_CEREAL *= GF_CEREAL
-        self.CONS_OTHER *= GF_OTHER
+        for v in GSTRecords.FIELD_VARS:
+            if v.startswith('CONS_') and not(v.startswith('CONS_OTHER')):
+                setattr(self, v,
+                        getattr(self, v) * GF_CONSUMPTION)
+        # self.CONS_OTHER *= GF_OTHER
 
     def _extract_panel_year(self):
         """

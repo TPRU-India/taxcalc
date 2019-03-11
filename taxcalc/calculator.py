@@ -26,9 +26,7 @@ from taxcalc.corpfunctions import (depreciation_PM,
                                    corp_income_business_profession,
                                    corp_GTI_before_set_off, GTI_and_losses,
                                    cit_liability)
-from taxcalc.gstfunctions import (agg_consumption,
-                                  gst_liability_cereal,
-                                  gst_liability_other, gst_liability)
+from taxcalc.gstfunctions import (gst_liability_item)
 from taxcalc.policy import Policy
 from taxcalc.records import Records
 from taxcalc.corprecords import CorpRecords
@@ -204,10 +202,11 @@ class Calculator(object):
         tax_specialrates(self.__policy, self.__records)
         pit_liability(self.__policy, self.__records)
         # GST calculations
-        agg_consumption(self.__policy, self.__gstrecords)
-        gst_liability_cereal(self.__policy, self.__gstrecords)
-        gst_liability_other(self.__policy, self.__gstrecords)
-        gst_liability(self.__policy, self.__gstrecords)
+        # agg_consumption(self.__policy, self.__gstrecords)
+        # gst_liability_cereal(self.__policy, self.__gstrecords)
+        # gst_liability_other(self.__policy, self.__gstrecords)
+        gst_liability_item(self)
+        # gst_liability_item(self.__policy, self.__gstrecords)
         # TODO: ADD: expanded_income(self.__policy, self.__records)
         # TODO: ADD: aftertax_income(self.__policy, self.__records)
 
@@ -216,6 +215,18 @@ class Calculator(object):
         Return all-filing-unit weighted total of named Records variable.
         """
         return (self.array(variable_name) * self.array('weight')).sum()
+
+    def weighted_garray(self, variable_name):
+        """
+        Return all-filing-unit weighted total of named Records variable.
+        """
+        return (self.garray(variable_name) * self.garray('weight'))
+
+    def weighted_total_garray(self, variable_name):
+        """
+        Return all-filing-unit weighted total of named Records variable.
+        """
+        return (self.garray(variable_name) * self.garray('weight')).sum()
 
     def total_weight(self):
         """
@@ -1048,6 +1059,7 @@ class Calculator(object):
             msg = 'illegal key(s) "{}" in policy reform file'
             raise ValueError(msg.format(illegal_keys))
         # convert raw_dict['policy'] dictionary into prdict
+        raw_dict_policy = raw_dict['policy']
         tdict = Policy.translate_json_reform_suffixes(raw_dict['policy'])
         prdict = Calculator._convert_parameter_dict(tdict)
         return prdict

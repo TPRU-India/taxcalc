@@ -1,0 +1,1451 @@
+{
+  "_std_deduction": {
+        "long_name": "Standard Deduction for income from Salary",
+        "description": "This amount is deducted from salary to compute taxable incomee.",
+        "itr_ref": "Section 16(ia) of the Income Tax Act",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017", "2018"],
+        "start_year": 2017,
+        "cpi_inflatable": true,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [30000, 30000],
+        "range": {"min": 0, "max": 9e99},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_rate1": {
+        "long_name": "PIT tax rate 1",
+        "description": "The lowest tax rate, applied to the portion of taxable income below tax bracket 1.",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [0.0],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_tbrk1": {
+        "long_name": "PIT tax bracket 1 (upper threshold)",
+        "description": "Taxable income below this threshold is taxed at tax rate 1.",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": true,
+        "cpi_inflated": false,
+        "col_var": "AGEGRP",
+        "col_label": ["<60", "60-79", ">=80"],
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [[0.25e6, 0.30e6, 0.50e6]],
+        "range": {"min": 0, "max": "_tbrk2"},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "for _tbrk2",
+        "out_of_range_action": "stop"
+    },
+
+    "_rate2": {
+        "long_name": "PIT tax rate 2",
+        "description": "The second lowest tax rate, applied to the portion of taxable income below tax bracket 2 and above tax bracket 1.",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017", "2018"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [0.10, 0.05],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_tbrk2": {
+        "long_name": "PIT tax bracket 2 (upper threshold)",
+        "description": "Income below this threshold and above tax bracket 1 is taxed at tax rate 2.",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": true,
+        "cpi_inflated": false,
+        "col_var": "AGEGRP",
+        "col_label": ["<60", "60-79", ">=80"],
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [[0.5e6, 0.5e6, 0.5e6]],
+        "range": {"min": "_tbrk1", "max": "_tbrk3"},
+        "out_of_range_minmsg": "for _tbrk1",
+        "out_of_range_maxmsg": "for _tbrk3",
+        "out_of_range_action": "stop"
+    },
+
+    "_rate3": {
+        "long_name": "PIT tax rate 3",
+        "description": "The third lowest tax rate, applied to the portion of taxable income below tax bracket 3 and above tax bracket 2.",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [0.20],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_tbrk3": {
+        "long_name": "PIT tax bracket 3 (upper threshold)",
+        "description": "Income below this threshold and above tax bracket 2 is taxed at tax rate 3.",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": true,
+        "cpi_inflated": false,
+        "col_var": "AGEGRP",
+        "col_label": ["<60", "60-79", ">=80"],
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [[1e6, 1e6, 1e6]],
+        "range": {"min": "_tbrk2", "max": "_tbrk4"},
+        "out_of_range_minmsg": "for _tbrk2",
+        "out_of_range_maxmsg": "for _tbrk4",
+        "out_of_range_action": "stop"
+    },
+
+    "_rate4": {
+        "long_name": "PIT tax rate 4",
+        "description": "The fourth lowest tax rate, applied to the portion of taxable income below tax bracket 4 and above tax bracket 3.",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [0.30],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_tbrk4": {
+        "long_name": "PIT tax bracket 4 (upper threshold)",
+        "description": "Income below this threshold and above tax bracket 3 is taxed at tax rate 4.",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": true,
+        "cpi_inflated": false,
+        "col_var": "AGEGRP",
+        "col_label": ["<60", "60-79", ">=80"],
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [[9e99, 9e99, 9e99]],
+        "range": {"min": 9e99, "max": 9e99},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_ST_CG_RATE1": {
+        "long_name": "PIT STCG Rate 1",
+        "description": "Rate at which 111A (STCG on shares units on which where STT paid) is taxed",
+        "itr_ref": "ITR-3, Schedule SI, Line 1",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [0.15],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_ST_CG_RATE2": {
+        "long_name": "PIT STCG Rate 2",
+        "description": "Rate at which 115AD (STCG for FIIs on securities where STT not paid) is taxed",
+        "itr_ref": "ITR-3, Schedule SI, Line 2",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [0.30],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_LT_CG_RATE1": {
+        "long_name": "PIT LTCG Rate 1",
+        "description": "Rate at which 112(prov), 112(1)(c)(iii), 115AC, 115ACA, 115AD, 115E (LTCG) is taxed",
+        "itr_ref": "ITR-3, Schedule SI, Line 3-9",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [0.10],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_LT_CG_RATE2": {
+        "long_name": "PIT LTCG Rate 2",
+        "description": "Rate at which 112 (LTCG on Others) is taxed",
+        "itr_ref": "ITR-3, Schedule SI, Line 10",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [0.20],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_rebate_thd": {
+        "long_name": "rebate under section 87A threshold)",
+        "description": "Income below this threshold is eligible for the rebate.",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017", "2018"],
+        "start_year": 2017,
+        "cpi_inflatable": true,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [500000, 350000],
+        "range": {"min": 0, "max": 9e99},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_rebate_rate": {
+      "long_name": "rebate rate under section 87A",
+      "description": "rebate rate",
+      "itr_ref": "ITR-1 instructions, Tax Computation Table",
+      "notes": "",
+      "row_var": "AYEAR",
+      "row_label": ["2017", "2018"],
+      "start_year": 2017,
+      "cpi_inflatable": false,
+      "cpi_inflated": false,
+      "col_var": "",
+      "col_label": "",
+      "boolean_value": false,
+      "integer_value": false,
+      "value": [0.1, 0.05],
+      "range": {"min": 0, "max": 1},
+      "out_of_range_minmsg": "",
+      "out_of_range_maxmsg": "",
+      "out_of_range_action": "stop"
+    },
+
+    "_rebate_ceiling": {
+        "long_name": "upper limit for rebate",
+        "description": "this is the ceiling for rebate u/s 87A",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017", "2018"],
+        "start_year": 2017,
+        "cpi_inflatable": true,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [5000, 3500],
+        "range": {"min": 0, "max": 9e99},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_surcharge_rate": {
+        "long_name": "rate at which surcharge is levied",
+        "description": "rate applied to tax liability if income is above a threshold",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017", "2018"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "TTI1",
+        "col_label": ["bracket1", "bracket2", "bracket3"],
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [[0.0, 0.15, 0.15],
+                  [0.0, 0.10, 0.15]],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_surcharge_thd": {
+        "long_name": "income threshold for levy of surcharge",
+        "description": "income threshold for surcharge",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017", "2018"],
+        "start_year": 2017,
+        "cpi_inflatable": true,
+        "cpi_inflated": false,
+        "col_var": "TTI2",
+        "col_label": ["bracket1", "bracket2"],
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [[10000000, 10000000],
+                  [5000000, 10000000]],
+        "range": {"min": 0, "max": 9e99},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_cit_surcharge_rate": {
+        "long_name": "rate at which surcharge is levied for companies",
+        "description": "surcharge rates for companies",
+        "itr_ref": "Tax Computation Table, Finance Act",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "TTI1",
+        "col_label": ["bracket1", "bracket2", "bracket3"],
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [[0.0, 0.07, 0.12]],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_cit_surcharge_thd": {
+        "long_name": "income threshold for levy of surcharge for companies",
+        "description": "income threshold for surcharge for companies",
+        "itr_ref": "Tax Computation Table, Finance Act",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": true,
+        "cpi_inflated": false,
+        "col_var": "TTI2",
+        "col_label": ["bracket1", "bracket2"],
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [[10000000, 100000000]],
+        "range": {"min": 0, "max": 9e99},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_cess_rate": {
+        "long_name": "rate at which cess is levied",
+        "description": "cess applied to sum of tax and surcharge",
+        "itr_ref": "ITR-1 instructions, Tax Computation Table",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017", "2018"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [0.03, 0.03],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_cit_rate": {
+        "long_name": "rate at which corporates are taxed",
+        "description": "Corporate Tax rate",
+        "itr_ref": "Schedule 1 Finance Act",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [0.3],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+
+    "_Loss_CFLimit": {
+        "long_name": "Loss carryforward limit (years)",
+        "description": "Number of years for loss carryforward",
+        "itr_ref": "IT Act",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017", "2018"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": true,
+        "value": [8, 8],
+        "range": {"min": 0, "max": 9e99},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+    "_dep_rate_pm1": {
+        "long_name": "Depreciation Rate for first block for Plant and Machinery",
+        "description": "Depreciation Rate for first block for Plant and Machinery",
+        "itr_ref": "ITR6 Schedule DPM 2(i)",
+        "notes": "",
+        "row_var": "AYEAR",
+        "row_label": ["2017", "2018"],
+        "start_year": 2017,
+        "cpi_inflatable": false,
+        "cpi_inflated": false,
+        "col_var": "",
+        "col_label": "",
+        "boolean_value": false,
+        "integer_value": false,
+        "value": [0.15, 0.15],
+        "range": {"min": 0, "max": 1},
+        "out_of_range_minmsg": "",
+        "out_of_range_maxmsg": "",
+        "out_of_range_action": "stop"
+    },
+    "_gst_rate_bedding": {
+       "long_name": "GST Rate for bedding",
+       "description": "GST Rate relevant for consumption of bedding",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.13833334
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_beverage": {
+       "long_name": "GST Rate for beverage",
+       "description": "GST Rate relevant for consumption of beverage",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.1325
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_c_services": {
+       "long_name": "GST Rate for c_services",
+       "description": "GST Rate relevant for consumption of c_services",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.10058823
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_c_taxes": {
+       "long_name": "GST Rate for c_taxes",
+       "description": "GST Rate relevant for consumption of c_taxes",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_cereal": {
+       "long_name": "GST Rate for cereal",
+       "description": "GST Rate relevant for consumption of cereal",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.0285
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_cereal_sub": {
+       "long_name": "GST Rate for cereal_sub",
+       "description": "GST Rate relevant for consumption of cereal_sub",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_clothing": {
+       "long_name": "GST Rate for clothing",
+       "description": "GST Rate relevant for consumption of clothing",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.0712
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_conveyance": {
+       "long_name": "GST Rate for conveyance",
+       "description": "GST Rate relevant for consumption of conveyance",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.15307692
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_dry_fruit": {
+       "long_name": "GST Rate for dry_fruit",
+       "description": "GST Rate relevant for consumption of dry_fruit",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.03125
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_durable_goods": {
+       "long_name": "GST Rate for durable_goods",
+       "description": "GST Rate relevant for consumption of durable_goods",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.16158654
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_edible_oil": {
+       "long_name": "GST Rate for edible_oil",
+       "description": "GST Rate relevant for consumption of edible_oil",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.071666665
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_education": {
+       "long_name": "GST Rate for education",
+       "description": "GST Rate relevant for consumption of education",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.08
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_entertainment": {
+       "long_name": "GST Rate for entertainment",
+       "description": "GST Rate relevant for consumption of entertainment",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.18444444
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_footwear": {
+       "long_name": "GST Rate for footwear",
+       "description": "GST Rate relevant for consumption of footwear",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.15
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_fruit": {
+       "long_name": "GST Rate for fruit",
+       "description": "GST Rate relevant for consumption of fruit",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_fuel": {
+       "long_name": "GST Rate for fuel",
+       "description": "GST Rate relevant for consumption of fuel",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.17333333
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_imputed_rent": {
+       "long_name": "GST Rate for imputed_rent",
+       "description": "GST Rate relevant for consumption of imputed_rent",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_intoxicant": {
+       "long_name": "GST Rate for intoxicant",
+       "description": "GST Rate relevant for consumption of intoxicant",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.32099834
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_medical_inst": {
+       "long_name": "GST Rate for medical_inst",
+       "description": "GST Rate relevant for consumption of medical_inst",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.048
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_medical_non_inst": {
+       "long_name": "GST Rate for medical_non_inst",
+       "description": "GST Rate relevant for consumption of medical_non_inst",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.048
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_milk_prod": {
+       "long_name": "GST Rate for milk_prod",
+       "description": "GST Rate relevant for consumption of milk_prod",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.08
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_minor_durable_goods": {
+       "long_name": "GST Rate for minor_durable_goods",
+       "description": "GST Rate relevant for consumption of minor_durable_goods",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.16
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_non_veg": {
+       "long_name": "GST Rate for non_veg",
+       "description": "GST Rate relevant for consumption of non_veg",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_other_household_c_onsumables": {
+       "long_name": "GST Rate for other_household_c_onsumables",
+       "description": "GST Rate relevant for consumption of other_household_c_onsumables",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.14461538
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_pack_proc_food": {
+       "long_name": "GST Rate for pack_proc_food",
+       "description": "GST Rate relevant for consumption of pack_proc_food",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.09714286
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_pan": {
+       "long_name": "GST Rate for pan",
+       "description": "GST Rate relevant for consumption of pan",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.19
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_proc_food": {
+       "long_name": "GST Rate for proc_food",
+       "description": "GST Rate relevant for consumption of proc_food",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.05
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_pulses": {
+       "long_name": "GST Rate for pulses",
+       "description": "GST Rate relevant for consumption of pulses",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.014166667
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_rent": {
+       "long_name": "GST Rate for rent",
+       "description": "GST Rate relevant for consumption of rent",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.09
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_salt_sugar": {
+       "long_name": "GST Rate for salt_sugar",
+       "description": "GST Rate relevant for consumption of salt_sugar",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.025
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_spices": {
+       "long_name": "GST Rate for spices",
+       "description": "GST Rate relevant for consumption of spices",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.04090909
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_tobacco": {
+       "long_name": "GST Rate for tobacco",
+       "description": "GST Rate relevant for consumption of tobacco",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.4516625
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_toiletaries": {
+       "long_name": "GST Rate for toiletaries",
+       "description": "GST Rate relevant for consumption of toiletaries",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.1725
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "_gst_rate_vegetable": {
+       "long_name": "GST Rate for vegetable",
+       "description": "GST Rate relevant for consumption of vegetable",
+       "itr_ref": "GST Rules",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    },
+    "gst_rate_benchmark": {
+       "long_name": "GST Benchmark Rate",
+       "description": "GST Benchmark Rate to calculate Policy Gap",
+       "itr_ref": "Benchmark Rate",
+       "notes": "",
+       "row_var": "AYEAR",
+       "row_label": [
+          "2017"
+       ],
+       "start_year": 2017,
+       "cpi_inflatable": false,
+       "cpi_inflated": false,
+       "col_var": "",
+       "col_label": "",
+       "boolean_value": false,
+       "integer_value": false,
+       "value": [
+          0.18
+       ],
+       "range": {
+          "min": 0,
+          "max": 1
+       },
+       "out_of_range_minmsg": "",
+       "out_of_range_maxmsg": "",
+       "out_of_range_action": "stop"
+    }
+}

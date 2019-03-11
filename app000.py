@@ -34,8 +34,8 @@ assert isinstance(pol, Policy)
 assert pol.current_year == 2017
 
 # specify Calculator object for current-law policy
-calc1 = Calculator(policy=pol, records=recs, gstrecords=grecs,
-                   corprecords=crecs, verbose=False)
+calc1 = Calculator(policy=pol, records=recs, corprecords=crecs,
+                   gstrecords=grecs, verbose=False)
 
 # NOTE: calc1 now contains a PRIVATE COPY of pol and a PRIVATE COPY of recs,
 #       so we can continue to use pol and recs in this script without any
@@ -48,13 +48,23 @@ assert calc1.current_year == 2017
 calc1.calc_all()
 id_gst = calc1.garray('ID_NO')
 gst_cereal = calc1.garray('gst_cereal')
-gst_other = calc1.garray('gst_other')
+total_consumption = calc1.garray('total consumption')
 gst_total = calc1.garray('gst')
 wgt_gst = calc1.garray('weight')
+weighted_gst_cereal = calc1.weighted_garray('gst_cereal')
+weighted_gst = calc1.weighted_garray('gst')
+weighted_consumption = calc1.weighted_garray('total consumption')
+total_consumption_all = calc1.weighted_total_garray('total consumption')
+total_consumption_all = total_consumption_all / 10**7
+total_gst = calc1.weighted_total_garray('gst') / 10**7
+total_weight = calc1.weighted_total_garray('weight') / 10**7
+print(f'Total Consumption in Economy - 2017: {total_consumption_all:,.0f}')
+print(f'Total GST Collection - 2017: {total_gst:,.0f}')
+print(f'Total Weight - 2017: {total_weight:,.0f}')
 results = pd.DataFrame({'GST_ID_NO': id_gst,
                         'Weight': wgt_gst,
-                        'GST_Cereal': gst_cereal,
-                        'GST_Cereal': gst_other,
-                        'GST_Total': gst_total})
+                        'Weighted GST_Cereal': weighted_gst_cereal,
+                        'Weighted Total Consumption': weighted_consumption,
+                        'Weighted GST': weighted_gst})
 results.to_csv('app000-dump-gst.csv', index=False,
                float_format='%.0f')
