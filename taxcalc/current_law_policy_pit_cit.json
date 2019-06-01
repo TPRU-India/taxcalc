@@ -1,5 +1,5 @@
 {
-  "_std_deduction": {
+    "_std_deduction": {
         "long_name": "Standard Deduction for income from Salary",
         "description": "This amount is deducted from salary to compute taxable incomee.",
         "itr_ref": "Section 16(ia) of the Income Tax Act",
