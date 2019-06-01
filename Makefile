@@ -26,15 +26,12 @@ define pytest-cleanup
 find . -name *cache -maxdepth 1 -exec rm -r {} \;
 endef
 
-PYLINT_FILES := $(shell grep -rl --include="*py" disable=locally-disabled .)
-PYLINT_OPTIONS = --disable=locally-disabled --score=no --jobs=4
+TAXCALC_JSON_FILES := $(shell ls -l ./taxcalc/*json | awk '{print $$9}')
 
 .PHONY=cstest
 cstest:
 	pycodestyle taxcalc
-	@pycodestyle --ignore=E501,E121 taxcalc/current_law_policy.json
-	@pycodestyle --ignore=E501,E121 taxcalc/records_variables.json
-#	@pylint $(PYLINT_OPTIONS) $(PYLINT_FILES)
+	@-pycodestyle --ignore=E501,E121 $(TAXCALC_JSON_FILES)
 
 .PHONY=pytest
 pytest:
