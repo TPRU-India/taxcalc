@@ -4,18 +4,16 @@ package:
 
 requirements:
   build:
-    - python >=3.6.5,<3.7
-    - numpy >=1.12.1
-    - pandas >=0.22.0
+    - python
+    - "numpy>=1.13"
+    - "pandas>=0.23"
     - numba
-    - toolz
 
   run:
-    - python >=3.6.5,<3.7
-    - numpy >=1.12.1
-    - pandas >=0.22.0
+    - python
+    - "numpy>=1.13"
+    - "pandas>=0.23"
     - numba
-    - toolz
 
 about:
-  home: http://www.github.com/TPRU-demo
+  home: http://www.github.com/TPRU-India
