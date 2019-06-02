@@ -1,8 +1,8 @@
 """
-app1.py illustrates use of pitaxcalc-demo release 2.0.0 (India version).
-USAGE: python app1.py > app1.res
-CHECK: Use your favorite Windows diff utility to confirm that app1.res is
-       the same as the app1.out file that is in the repository.
+app1.py illustrates use of TPRU-India taxcalc release 2.0.0
+USAGE: python app001.py > app001.res
+CHECK: Use your favorite Windows diff utility to confirm that app001.res is
+       the same as the app001.out file that is in the repository.
 """
 from taxcalc import *
 

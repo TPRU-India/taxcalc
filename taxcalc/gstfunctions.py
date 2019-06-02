@@ -1,9 +1,9 @@
 """
-pitaxcalc-demo functions that calculate GST paid.
+Functions that calculate GST paid.
 """
 # CODING-STYLE CHECKS:
-# pycodestyle functions.py
-# pylint --disable=locally-disabled functions.py
+# pycodestyle gstfunctions.py
+# pylint --disable=locally-disabled gstfunctions.py
 
 import math
 import copy

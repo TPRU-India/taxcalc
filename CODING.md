@@ -1,12 +1,12 @@
 Coding Style
 ============
 
-This description of pitaxcalc-demo coding style is written for a
-person who wants to contribute changes to pitaxcalc-demo source code.
+This description of TPRU-India taxcalc coding style is written for a
+person who wants to contribute changes to taxcalc source code.
 It assumes that you have read the [USA Tax-Calculator Contributor
 Guide](https://github.com/PSLmodels/Tax-Calculator/blob/master/CONTRIBUTING.md#tax-calculator-contributor-guide),
-have cloned the [central GitHub pitaxcalc-demo
-repository](https://github.com/TPRU-demo/pitaxcalc-demo)
+have cloned the [central GitHub taxcalc
+repository](https://github.com/TPRU-India/taxcalc)
 to your GitHub account and to your local computer, and are familiar
 with how to prepare a pull request for consideration by the core
 development team.  This document describes the coding style you should
@@ -79,35 +79,4 @@ pycodestyle .
 or
 ```
 pycodestyle taxcalc
-```
-
-pylint
-------
-
-The other of these tools, `pylint`, warns about deviations from a
-broader set coding styles than does `pycodestyle`.  The use of `pylint`,
-while being the number one recommendation in the [Google Python Style
-Guide](https://google.github.io/styleguide/pyguide.html), is
-strictly-speaking optional for pitaxcalc-demo work.  But several
-important files in the repository are maintained in a way that their
-coding style does not generate any `pylint` warnings.  You can
-determine which files these are by looking for the comment near the
-top of the file that begins `# CODING-STYLE CHECKS:`.  It is
-recommended that, if you are proposing changes in one these files, you
-check your work by running the `pylint` command listed in that file's
-coding-style comment.
-
-Make sure you have an up-to-date version of `pylint` installed on your
-computer by entering at the operating system command line:
-```
-pylint --version
-```
-If you get a no-such-command error, install `pylint` as follows:
-```
-conda install pylint
-```
-If you do have `pylint` installed, but the version is before 1.8.4,
-then get a more recent version as follows:
-```
-conda update pylint
 ```

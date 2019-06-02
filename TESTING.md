@@ -1,18 +1,17 @@
 Testing Procedures
 ==================
 
-This description of pitaxcalc-demo testing procedure is written for a
-person who wants to contribute changes to pitaxcalc-demo source code.
+This description of taxcalc testing procedure is written for a
+person who wants to contribute changes to taxcalc source code.
 It assumes that you have read the [USA Tax-Calculator Contributor
 Guide](https://github.com/PSLmodels/Tax-Calculator/blob/master/CONTRIBUTING.md#tax-calculator-contributor-guide)
-and have cloned the [central GitHub pitaxcalc-demo
-repository](https://github.com/TPRU-demo/pitaxcalc-demo)
+and have cloned the [central GitHub TPRU-India taxcalc
+repository](https://github.com/TPRU-India/taxcalc)
 to your GitHub account and to your local computer, and are familiar
 with how to prepare a pull request for consideration by the core
 development team.  This document describes the testing procedure you
 should follow on your local computer before submitting a development
-branch as a pull request to the central pitaxcalc-demo repository at
-GitHub.
+branch as a pull request to the central taxcalc repository at GitHub.
 
 Currently there are two phases of testing.
 
@@ -39,8 +38,7 @@ Testing with pytest
 --------------------
 
 Run the second-phase of testing as follows at the command prompt in
-the pitaxcalc-demo directory at the top of the repository directory
-tree:
+the taxcalc directory at the top of the repository directory tree:
 
 ```
 cd taxcalc
@@ -58,14 +56,14 @@ Interpreting the Test Results
 -----------------------------
 
 If you are adding an enhancement that expands the capabilities of
-pitaxcalc-demo, then all the tests you can run should pass before you
+taxcalc, then all the tests you can run should pass before you
 submit a pull request containing the enhancement.  In addition, it
 would be highly desirable to add a test to the pytest suite, which is
 located in the ```taxcalc/tests``` directory, that somehow checks that
 your enhancement is working as you expect it to work.
 
 On the other hand, if you think you have found a bug in the
-pitaxcalc-demo source code, the first thing to do is add a test to the
+taxcalc source code, the first thing to do is add a test to the
 pytest suite that demonstrates how the source code produces an
 incorrect result (that is, the test fails because the result is
 incorrect).  Then change the source code to fix the bug and
