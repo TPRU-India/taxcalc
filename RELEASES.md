@@ -6,10 +6,10 @@ Release numbering attempts to comply with [semantic
 versioning](https://semver.org/).
 
 
-2019-06-xx Release 2.0.0
+2019-06-02 Release 2.0.0
 ------------------------
 (last merged pull request is
-[#xxx](https://github.com/TPRU-India/taxcalc/pull/xxx))
+[#148](https://github.com/TPRU-India/taxcalc/pull/148))
 
 **Initial version with data and code for simulating the India personal
   income tax, corporate income tax, and goods and services tax (GST)**
