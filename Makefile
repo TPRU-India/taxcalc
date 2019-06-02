@@ -11,6 +11,7 @@ help:
 	@echo "TARGETS:"
 	@echo "help       : show help message"
 	@echo "clean      : remove .pyc files and local taxcalc package"
+	@echo "package    : build and install local package"
 	@echo "cstest     : generate coding-style errors using pycodestyle"
 	@echo "pytest     : generate report for and cleanup after pytest"
 	@echo "coverage   : generate test coverage report"
@@ -21,6 +22,11 @@ help:
 clean:
 	@find . -name *pyc -exec rm {} \;
 	@find . -name *cache -maxdepth 1 -exec rm -r {} \;
+	@conda uninstall taxcalc --yes --quiet 2>&1 > /dev/null
+
+.PHONY=package
+package:
+	@pbrelease taxcalc taxcalc 2.0.0 --local
 
 define pytest-cleanup
 find . -name *cache -maxdepth 1 -exec rm -r {} \;

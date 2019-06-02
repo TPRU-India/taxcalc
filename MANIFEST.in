@@ -1,0 +1,14 @@
+include taxcalc/current_law_policy.json
+include taxcalc/current_law_policy_pit_cit.json
+include taxcalc/records_variables.json
+include taxcalc/corprecords_variables.json
+include taxcalc/gstrecords_variables.json
+include taxcalc/growfactors.csv
+include taxcalc/pit.csv
+include taxcalc/pit_weights.csv
+include taxcalc/gst.csv
+include taxcalc/gst_weights.csv
+include taxcalc/cit_cross.csv
+include taxcalc/cit_cross_wgts.csv
+include taxcalc/cit_panel.csv
+include taxcalc/cit_panel_blowup.csv

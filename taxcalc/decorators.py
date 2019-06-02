@@ -9,7 +9,6 @@ the functions.py module.
 import io
 import ast
 import inspect
-import toolz
 from taxcalc.policy import Policy
 
 
@@ -251,8 +250,10 @@ def iterate_jit(parameters=None, **kwargs):
         in_args = inspect.getfullargspec(func).args
         # Get the numba.jit arguments
         jit_args = inspect.getfullargspec(jit).args + ['nopython']
-        kwargs_for_jit = toolz.keyfilter(jit_args.__contains__, kwargs)
-
+        kwargs_for_jit = dict()
+        for key, val in kwargs.items():
+            if key in jit_args:
+                kwargs_for_jit[key] = val
         # Any name that is a parameter
         # Boolean flag is given special treatment.
         # Identify those names here

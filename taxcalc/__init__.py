@@ -10,3 +10,5 @@ from taxcalc.gstrecords import *
 from taxcalc.gstfunctions import *
 from taxcalc.corprecords import *
 from taxcalc.corpfunctions import *
+
+__version__ = '0.0.0'
