@@ -1,7 +1,6 @@
 """
-app_dist_Tables00.py illustrates use of pitaxcalc-demo release 2.0.0
-(India version).
-USAGE: python app_dist_Tables00.py
+app_dist_tables_with_charts.py illustrates use of TPRU-India taxcalc 2.0.0
+USAGE: python app_dist_tables_with_charts.py
 """
 
 import locale

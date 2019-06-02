@@ -1,5 +1,5 @@
 """
-app0.py illustrates use of pitaxcalc-demo release 2.0.0 (India version).
+app0.py illustrates use of TPRU-India taxcalc release 2.0.0
 USAGE: python app0.py > app0.res
 CHECK: Use your favorite Windows diff utility to confirm that app0.res is
        the same as the app0.out file that is in the repository.

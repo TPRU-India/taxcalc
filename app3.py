@@ -1,6 +1,6 @@
 """
-app1.py illustrates use of pitaxcalc-demo release 2.0.0 (India version).
-USAGE: python app2.py
+app3.py illustrates use of TPRU-India taxcalc release 2.0.0
+USAGE: python app3.py
 """
 from taxcalc import *
 

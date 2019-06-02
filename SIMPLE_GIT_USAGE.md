@@ -4,8 +4,8 @@ Simple Git Usage
 This list of elementary git commands assumes that you (1) have read
 the [USA Tax-Calculator Contributor
 Guide](https://github.com/PSLmodels/Tax-Calculator/blob/master/CONTRIBUTING.md#tax-calculator-contributor-guide),
-(2) have forked the [central GitHub pitaxcalc-demo
-repository](https://github.com/TPRU-demo/pitaxcalc-demo) to your
+(2) have forked the [central GitHub TPRU-India taxcalc
+repository](https://github.com/TPRU-India/taxcalc) to your
 GitHub account, and (3) have cloned your forked repository to your
 local computer.  After doing these three things: the central GitHub
 repository is known as `upstream` and your personal forked GitHub
@@ -90,8 +90,8 @@ git push origin [existing-branch-name]
 **Submit pushed branch as pull request**
 ```
 do this interactively in your browser at the
-[central GitHub pitaxcalc-demo
-repository](https://github.com/TPRU-demo/pitaxcalc-demo)
+[central GitHub TPRU-India taxcalc
+repository](https://github.com/TPRU-India/taxcalc)
 ```
 
 **Delete an old branch from local repo**

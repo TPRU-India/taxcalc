@@ -1,5 +1,5 @@
 """
-pitaxcalc-demo functions that calculate personal income tax liability.
+Functions that calculate personal income tax liability.
 """
 # CODING-STYLE CHECKS:
 # pycodestyle functions.py

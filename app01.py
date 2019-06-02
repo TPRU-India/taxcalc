@@ -1,8 +1,8 @@
 """
-app01.py illustrates use of pitaxcalc-demo release 2.0.0 (India version).
-USAGE: python app0.py > app0.res
-CHECK: Use your favorite Windows diff utility to confirm that app0.res is
-       the same as the app0.out file that is in the repository.
+app01.py illustrates use of TPRU-India taxcalc release 2.0.0
+USAGE: python app01.py > app01.res
+CHECK: Use your favorite Windows diff utility to confirm that app01.res is
+       the same as the app01.out file that is in the repository.
 """
 import pandas as pd
 from taxcalc import *

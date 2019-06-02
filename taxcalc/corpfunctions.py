@@ -1,9 +1,9 @@
 """
-pitaxcalc-demo functions that calculate corporate income tax liability.
+Functions that calculate corporate income tax liability.
 """
 # CODING-STYLE CHECKS:
-# pycodestyle functions.py
-# pylint --disable=locally-disabled functions.py
+# pycodestyle corpfunctions.py
+# pylint --disable=locally-disabled corpfunctions.py
 
 import math
 import copy

@@ -1,8 +1,6 @@
 """
-appKA.py illustrates use of pitaxcalc-demo release 2.0.0 (India version).
-USAGE: python app0.py > app0.res
-CHECK: Use your favorite Windows diff utility to confirm that app0.res is
-       the same as the app0.out file that is in the repository.
+appPIT.py illustrates use of TPRU-India taxcalc release 2.0.0
+USAGE: python appPIT.py
 """
 import locale
 from taxcalc import *
