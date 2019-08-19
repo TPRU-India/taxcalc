@@ -17,7 +17,7 @@ def ind_currency(curr):
     curr_str = format_currency(curr, 'INR', locale='en_IN').replace(u'\xa0', u' ')
     return(remove_decimal(curr_str))
 
-def run_calculator(reform, ref_num, reform_desc):
+def run_calculator(reform):
     # create Records object containing pit.csv and pit_weights.csv input data
     recs = Records(data='pit.csv', weights='pit_weights.csv')
     grecs = GSTRecords()
@@ -39,7 +39,6 @@ def run_calculator(reform, ref_num, reform_desc):
     wtd_tax_clp={}
     wtd_tax_ref={}
     wtd_tax_diff={}
-    wtd_tot={}
 
     for year in range(START_YEAR, END_YEAR+1):
         calc1.advance_to_year(year)
@@ -49,15 +48,8 @@ def run_calculator(reform, ref_num, reform_desc):
         wtd_tax_clp[year] = calc1.weighted_total('pitax')
         wtd_tax_ref[year] = calc2.weighted_total('pitax')
         wtd_tax_diff[year] = wtd_tax_ref[year] - wtd_tax_clp[year]
-        if (year>=BASE_YEAR):
-            print('******')
-            print(f'Current Law: Tax Collection in Rs. Cr. for {year}:', end=' ')
-            print(f'{ind_currency(wtd_tax_clp[year] * 1e-7)}')
-            print(f'   Reform-> \n{reform_desc}Reform: Tax Collection in Rs. Cr. for {year}:', end=' ')
-            print(f'{ind_currency(wtd_tax_ref[year] * 1e-7)}')        
-            print('              Difference in Tax Collection:', end=' ')
-            print(f'{ind_currency(wtd_tax_diff[year] * 1e-7)} Cr.')
-    return(wtd_tax_clp, wtd_tax_ref, wtd_tax_diff, wtd_tot)    
+        
+    return(wtd_tax_clp, wtd_tax_ref, wtd_tax_diff)    
     
 def gen_reform(list_tdict):
     param_key_dict = dict(list_tdict)
@@ -155,8 +147,18 @@ list_tdict_orig = list_tdict[:]
 for i in range(ref_num):
     list_tdict = list_tdict_orig[0:i+1]
     reform_dict = gen_reform(list_tdict)
+    reform_desc_ref = get_reform_desc(list_tdict)
     ref='ref_'+str(i)
-    wtd_tax_clp[ref], wtd_tax_ref[ref], wtd_tax_diff[ref], wtd_tot[ref] = run_calculator(reform_dict, i, get_reform_desc(list_tdict))
+    wtd_tax_clp[ref], wtd_tax_ref[ref], wtd_tax_diff[ref] = run_calculator(reform_dict)
+    for year in range(START_YEAR, END_YEAR+1):
+        if (year>=BASE_YEAR):
+            print('******')
+            print(f'Current Law: Tax Collection in Rs. Cr. for {year}:', end=' ')
+            print(f'{ind_currency(wtd_tax_clp[ref][year] * 1e-7)}')
+            print(f'   Reform-> \n{reform_desc_ref}Reform: Tax Collection in Rs. Cr. for {year}:', end=' ')
+            print(f'{ind_currency(wtd_tax_ref[ref][year] * 1e-7)}')        
+            print('              Difference in Tax Collection:', end=' ')
+            print(f'{ind_currency(wtd_tax_diff[ref][year] * 1e-7)} Cr.')
 
 for i in range(ref_num):
     ref_tag='ref_'+str(i) 
@@ -186,4 +188,3 @@ plt.legend(reform_desc, loc=2)
 plt.suptitle('Composition of the Changes to Total Tax Collection', fontsize=16, fontweight="bold")
 plt.savefig('Composition of Tax Changes due to Reforms.png') 
 plt.show()
-
