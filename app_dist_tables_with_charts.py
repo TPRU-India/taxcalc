@@ -46,7 +46,7 @@ def convert_df(df, cols):
 
 
 # create Records object containing pit.csv and pit_weights.csv input data
-recs = Records(data='pit.csv', weights='pit_weights.csv')
+recs = Records(data='pitSmallData.csv', weights='pit_weightsSD.csv')
 grecs = GSTRecords()
 crecs = CorpRecords()
 
