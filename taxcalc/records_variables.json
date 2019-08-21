@@ -6,6 +6,12 @@
       "desc": "Unique positive numeric identifier for filing unit",
       "form": {"2017": "private info"}
     },
+    "AGE": {
+      "required": true,
+      "type": "int",
+      "desc": "Age of taxpayer",
+      "form": {"2017": "calculated from Date of Birth from Tax ID"}
+    },    
     "AGEGRP": {
       "required": true,
       "type": "int",
