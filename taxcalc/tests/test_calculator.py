@@ -112,3 +112,39 @@ def test_Calculator_results_consistency(pit_fullsample, gst_sample,
     exp = vdf['tax_TTI'] - vdf['rebate'] + vdf['surcharge'] + vdf['cess']
     assert np.allclose(vdf['pitax'], exp)
     # TODO: Add some tests for corporate results
+
+
+def test_calculator_mtr(pit_fullsample, gst_sample, cit_crosssample):
+    """
+    Test Calculator mtr method.
+    """
+    recs = Records(data=pit_fullsample)
+    grecs = GSTRecords(data=gst_sample)
+    crecs = CorpRecords(data=cit_crosssample)
+    calcx = Calculator(policy=Policy(), records=recs, gstrecords=grecs,
+                       corprecords=crecs)
+    calcx.calc_all()
+    pitax_x = calcx.array('pitax')
+    GTIx = calcx.array('GTI')
+    calc = Calculator(policy=Policy(), records=recs, gstrecords=grecs,
+                      corprecords=crecs)
+    recs_pre_SALARIES = copy.deepcopy(calc.array('SALARIES'))
+    mtr_pitax = calc.mtr(variable_str='SALARIES',
+                         zero_out_calculated_vars=True)
+    recs_post_SALARIES = calc.array('SALARIES')
+    assert np.allclose(recs_post_SALARIES, recs_pre_SALARIES)
+    assert np.allclose(calc.array('pitax'), pitax_x)
+    assert np.allclose(calc.array('GTI'), GTIx)
+    with pytest.raises(ValueError):
+        calc.mtr(variable_str='bad_income_type')
+    mtr_pit = calc.mtr(variable_str='SALARIES',
+                       calc_all_already_called=True)
+    assert isinstance(mtr_pit, np.ndarray)
+    mtr_pit = calc.mtr(variable_str='PRFT_GAIN_BP_OTHR_SPECLTV_BUS',
+                       calc_all_already_called=True)
+    assert isinstance(mtr_pit, np.ndarray)
+    mtr_pit = calc.mtr(variable_str='SALARIES',
+                       calc_all_already_called=True)
+    assert np.allclose(mtr_pitax, mtr_pit)
+    assert np.allclose(calc.array('pitax'), pitax_x)
+    assert np.allclose(calc.array('GTI'), GTIx)
