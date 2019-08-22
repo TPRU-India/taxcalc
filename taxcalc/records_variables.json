@@ -11,7 +11,7 @@
       "type": "int",
       "desc": "Age of taxpayer",
       "form": {"2017": "calculated from Date of Birth from Tax ID"}
-    },    
+    },
     "AGEGRP": {
       "required": true,
       "type": "int",
@@ -77,6 +77,21 @@
       "type": "float",
       "desc": "LTCG at special rate 20% under current law",
       "form": {"2017": "ITR-3 Part B-TI-4b-ii"}
+    },
+    "INCOME_OS_NOT_RACEHORSE": {
+      "type": "float",
+      "desc": "Income from Other Sources other than racehorses",
+      "form": {"2017": "ITR-3 Part B-TI-5a"}
+    },
+    "INC_CHARBLE_SPL_RATE": {
+      "type": "float",
+      "desc": "Income chargeable to tax at special rate",
+      "form": {"2017": "ITR-3 Part B-TI-5b"}
+    },
+    "INCOME_OS_RACEHORSE": {
+      "type": "float",
+      "desc": "Income from racehorses",
+      "form": {"2017": "ITR-3 Part B-TI-5c"}
     },
     "TOTAL_INCOME_OS": {
       "type": "float",
