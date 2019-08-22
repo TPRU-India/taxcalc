@@ -51,15 +51,19 @@ def net_rental_income(INCOME_HP):
 def income_business_profession(PRFT_GAIN_BP_OTHR_SPECLTV_BUS,
                                PRFT_GAIN_BP_SPECLTV_BUS,
                                PRFT_GAIN_BP_SPCFD_BUS,
-                               PRFT_GAIN_BP_INC_115BBF, Income_BP):
+                               PRFT_GAIN_BP_INC_115BBF, TOTAL_PROFTS_GAINS_BP,
+                               Income_BP):
     """
     Compute Income from Business and Profession by adding the different
     sub-heads (i.e speculative, non-speculative, specified, patents, etc)
     """
     # TODO: when reading from schedule BP, calculate Income_BP from the read
     # TODO: variables of the schedule
-    Income_BP = (PRFT_GAIN_BP_OTHR_SPECLTV_BUS + PRFT_GAIN_BP_SPECLTV_BUS +
-                 PRFT_GAIN_BP_SPCFD_BUS + PRFT_GAIN_BP_INC_115BBF)
+    Income_BP = np.maximum((PRFT_GAIN_BP_OTHR_SPECLTV_BUS +
+                            PRFT_GAIN_BP_SPECLTV_BUS +
+                            PRFT_GAIN_BP_SPCFD_BUS +
+                            PRFT_GAIN_BP_INC_115BBF), TOTAL_PROFTS_GAINS_BP)
+    
     return Income_BP
 
 

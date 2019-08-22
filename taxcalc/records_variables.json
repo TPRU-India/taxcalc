@@ -53,6 +53,11 @@
       "desc": "Income from patents u/s 115BBF",
       "form": {"2017": "ITR-3 Part B-TI-3iv"}
     },
+    "TOTAL_PROFTS_GAINS_BP": {
+      "type": "float",
+      "desc": "Total Income from Business and Profession",
+      "form": {"2017": "ITR-3 Part B-TI-3v"}
+    },    
     "ST_CG_AMT_1": {
       "type": "float",
       "desc": "111A (STCG on shares units on which where STT paid) @ 15% under current law",
