@@ -158,7 +158,7 @@ class Calculator(object):
             self.increment_year()
         assert self.current_year == year
 
-    def calc_all(self):
+    def calc_all(self, zero_out_calc_vars=False):
         """
         Call all tax-calculation functions for the current_year.
         """
