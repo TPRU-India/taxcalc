@@ -22,20 +22,20 @@ def run_calculator(year, data_file, weights_file):
     recs = Records(data=data_file, weights=weights_file)
     grecs = GSTRecords()
     crecs = CorpRecords()
-    
+
     # create Policy object containing current-law policy
     pol = Policy()
-    
+
     # specify Calculator object for current-law policy
     calc1 = Calculator(policy=pol, records=recs, gstrecords=grecs, corprecords=crecs, verbose=False)
-    
+
     calc1.advance_to_year(year)
     calc1.calc_all()
     pit_df=calc1.dataframe(['FILING_SEQ_NO', 'AGE', 'weight', 'GTI', 'pitax'])
-       
-    return(pit_df)    
-    
-    
+
+    return(pit_df)
+
+
 START_YEAR = 2017
 END_YEAR = 2023
 BASE_YEAR = 2019
@@ -64,25 +64,33 @@ pit_1_df = pit_1_df.rename(columns={'weight':'weight_1', 'GTI':'GTI_1', 'pitax':
 pit_1_df.drop('AGE', axis=1, inplace=True)
 
 pit_df = pd.merge(pit_df, pit_1_df, how="inner", on='FILING_SEQ_NO')
+
+pit_1_df = pit_df[['FILING_SEQ_NO', 'pitax']]
+pit_1_df = pd.merge(pit_1_df, pit_orig_1_df, how="inner", on='FILING_SEQ_NO')
+pit_1_df.to_csv('pitSmallData_1_1.csv', index=False)
+
 pit_df['MTR_Labor'] = (pit_df['pitax_1'] - pit_df['pitax'])/delta
 
 pit_df['ETR'] = pit_df['pitax']/pit_df['GTI']
 
 pit_1_df = pit_df.copy()
 
-sns.distplot(tuple(pit_df['MTR_Labor']), hist = False, kde = True, 
+sns.distplot(tuple(pit_df['MTR_Labor']), hist = False, kde = True,
              kde_kws = {'linewidth': 3}, label = "MTR")
 
 pit_df['ETR'] = pit_df['pitax']/pit_df['GTI']
 
+pit_df = pit_df[['FILING_SEQ_NO', 'MTR_Labor', 'ETR', 'pitax']]
+pit_df = pd.merge(pit_df, pit_orig_df, how="inner", on='FILING_SEQ_NO')
+
+pit_df.to_csv('pitSmallData_MTR.csv', index=False)
+
 pit_clean_df = pit_df.copy()
 pit_df = pit_df[pit_df["MTR_Labor"]>-10]
 pit_df = pit_df[pit_df["MTR_Labor"]<50]
-pit_df = pit_df[pit_df["GTI"]<10000000]
+pit_df = pit_df[pit_df['GROSS_TOTAL_INCOME']<10000000]
 pit_df = pit_df[pit_df["ETR"]<1]
 
-pit_df.plot.scatter(x="GTI", y="MTR_Labor")
-pit_df.plot.scatter(x="GTI", y="ETR")
-
-
-
+pit_df.plot.scatter(x='GROSS_TOTAL_INCOME', y="MTR_Labor")
+pit_df.plot.scatter(x='GROSS_TOTAL_INCOME', y="ETR")
+plt.show()
