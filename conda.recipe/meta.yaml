@@ -1,6 +1,6 @@
 package:
   name: taxcalc
-  version: 0.0.0
+  version: 2.0.0
 
 requirements:
   build:
@@ -16,4 +16,4 @@ requirements:
     - numba
 
 about:
-  home: http://www.github.com/TPRU-India
+  home: http://www.github.com/TPRU-India/taxcalc
