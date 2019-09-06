@@ -6,6 +6,8 @@ include taxcalc/gstrecords_variables.json
 include taxcalc/growfactors.csv
 include taxcalc/pit.csv
 include taxcalc/pit_weights.csv
+include taxcalc/pitSmallData.csv
+include taxcalc/pit_weightsSD.csv
 include taxcalc/gst.csv
 include taxcalc/gst_weights.csv
 include taxcalc/cit_cross.csv
