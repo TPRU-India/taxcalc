@@ -9,3 +9,6 @@ htmlcov/
 
 # Mac OS X
 *.DS_Store
+
+# Jupyter notebook utility files
+*.ipynb_checkpoints/*
