@@ -63,7 +63,7 @@ def income_business_profession(PRFT_GAIN_BP_OTHR_SPECLTV_BUS,
                             PRFT_GAIN_BP_SPECLTV_BUS +
                             PRFT_GAIN_BP_SPCFD_BUS +
                             PRFT_GAIN_BP_INC_115BBF), TOTAL_PROFTS_GAINS_BP)
-    
+
     return Income_BP
 
 
