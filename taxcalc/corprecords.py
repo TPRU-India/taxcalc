@@ -211,7 +211,8 @@ class CorpRecords(object):
                                         'newloss6': self.newloss6,
                                         'newloss7': self.newloss7,
                                         'newloss8': self.newloss8,
-                                        'close_wdv_pm1': self.close_wdv_pm1})
+                                        'close_wdv_pm15': self.close_wdv_pm15,
+                                        'close_wdv_pm30': self.close_wdv_pm30})
         # Update years
         self.panelyear += 1
         # Get new panel data
@@ -237,9 +238,12 @@ class CorpRecords(object):
                                       data2['LOSS_LAG7'])
         data2['LOSS_LAG8'] = np.where(to_update, data2['newloss8'],
                                       data2['LOSS_LAG8'])
-        temp = np.where(to_update, data2['close_wdv_pm1'],
+        temp = np.where(to_update, data2['close_wdv_pm15'],
                         data2['PWR_DOWN_VAL_1ST_DAY_PY_15P'])
         data2['PWR_DOWN_VAL_1ST_DAY_PY_15P'] = temp
+        temp = np.where(to_update, data2['close_wdv_pm30'],
+                        data2['PWR_DOWN_VAL_1ST_DAY_PY_30P'])
+        data2['PWR_DOWN_VAL_1ST_DAY_PY_30P'] = temp
         data3 = data2[to_keep]
         self._read_data(data3)
 

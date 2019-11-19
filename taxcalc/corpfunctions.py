@@ -12,28 +12,69 @@ from taxcalc.decorators import iterate_jit
 
 
 @iterate_jit(nopython=True)
-def depreciation_PM(dep_rate_pm1, PWR_DOWN_VAL_1ST_DAY_PY_15P,
+def depreciation_PM15(dep_rate_pm15, PWR_DOWN_VAL_1ST_DAY_PY_15P,
                     PADDTNS_180_DAYS__MOR_PY_15P, PCR34_PY_15P,
                     PADDTNS_LESS_180_DAYS_15P, PCR7_PY_15P,
-                    PEXP_INCURRD_TRF_ASSTS_15P, PCAP_GAINS_LOSS_SEC50_15P):
-    dep_amt_pm1 = (PWR_DOWN_VAL_1ST_DAY_PY_15P + PADDTNS_180_DAYS__MOR_PY_15P -
-                   PCR34_PY_15P) * dep_rate_pm1
-    dep_amt_pm1 += ((PADDTNS_LESS_180_DAYS_15P - PCR7_PY_15P) *
-                    (dep_rate_pm1 / 2))
-    close_wdv_pm1 = (PWR_DOWN_VAL_1ST_DAY_PY_15P +
+                    PEXP_INCURRD_TRF_ASSTS_15P, PCAP_GAINS_LOSS_SEC50_15P,
+                    PADDTNL_DEPRECTN_ANY_4_15P, PADDTNL_DEPRECTN_ANY_7_15P):
+    '''
+    Schedule DPM of ITR-6 for A.Y. 2017-18
+    '''
+    amt_full_rate15 = (PWR_DOWN_VAL_1ST_DAY_PY_15P +
+                       PADDTNS_180_DAYS__MOR_PY_15P - PCR34_PY_15P)
+    amt_half_rate15 = PADDTNS_LESS_180_DAYS_15P - PCR7_PY_15P
+    dep_amt_pm15 = amt_full_rate15 * dep_rate_pm15
+    dep_amt_pm15 += amt_half_rate15 * (dep_rate_pm15 / 2)
+    addl_dep15 = PADDTNL_DEPRECTN_ANY_4_15P + PADDTNL_DEPRECTN_ANY_7_15P
+    dep_amt_pm15 += addl_dep15
+    close_wdv_pm15 = (PWR_DOWN_VAL_1ST_DAY_PY_15P +
                      PADDTNS_180_DAYS__MOR_PY_15P - PCR34_PY_15P +
-                     PADDTNS_LESS_180_DAYS_15P - PCR7_PY_15P - dep_amt_pm1)
-    cap_gain_pm1 = (PCR34_PY_15P + PCR7_PY_15P - PWR_DOWN_VAL_1ST_DAY_PY_15P -
+                     PADDTNS_LESS_180_DAYS_15P - PCR7_PY_15P - dep_amt_pm15)
+    cap_gain_pm15 = (PCR34_PY_15P + PCR7_PY_15P - PWR_DOWN_VAL_1ST_DAY_PY_15P -
                     PADDTNS_180_DAYS__MOR_PY_15P - PEXP_INCURRD_TRF_ASSTS_15P -
                     PADDTNS_LESS_180_DAYS_15P)
     # Consider unusual cases when Capital Gains is negative and block DNE
     if (PCAP_GAINS_LOSS_SEC50_15P >= 0):
-        cap_gain_pm1 = max(0.0, cap_gain_pm1)
-    return (dep_amt_pm1, close_wdv_pm1)
+        cap_gain_pm15 = max(0.0, cap_gain_pm15)
+    return (dep_amt_pm15, close_wdv_pm15)
 
 
 @iterate_jit(nopython=True)
-def corp_income_business_profession(dep_amt_pm1, PRFT_GAIN_BP_OTHR_SPECLTV_BUS,
+def depreciation_PM30(dep_rate_pm30, PWR_DOWN_VAL_1ST_DAY_PY_30P,
+                      PADDTNS_180_DAYS__MOR_PY_30P, PCR34_PY_30P,
+                      PADDTNS_LESS_180_DAYS_30P, PCR7_PY_30P,
+                      PEXP_INCURRD_TRF_ASSTS_30P, PCAP_GAINS_LOSS_SEC50_30P,
+                      PADDTNL_DEPRECTN_ANY_4_30P, PADDTNL_DEPRECTN_ANY_7_30P):
+    '''
+    Schedule DPM of ITR-6 for A.Y. 2017-18
+    '''
+    amt_full_rate30 = (PWR_DOWN_VAL_1ST_DAY_PY_30P +
+                       PADDTNS_180_DAYS__MOR_PY_30P - PCR34_PY_30P)
+    amt_half_rate30 = PADDTNS_LESS_180_DAYS_30P - PCR7_PY_30P
+    dep_amt_pm30 = amt_full_rate30 * dep_rate_pm30
+    dep_amt_pm30 += amt_half_rate30 * (dep_rate_pm30 / 2)
+    addl_dep30 = PADDTNL_DEPRECTN_ANY_4_30P + PADDTNL_DEPRECTN_ANY_7_30P
+    dep_amt_pm30 += addl_dep30
+    close_wdv_pm30 = (PWR_DOWN_VAL_1ST_DAY_PY_30P +
+                     PADDTNS_180_DAYS__MOR_PY_30P - PCR34_PY_30P +
+                     PADDTNS_LESS_180_DAYS_30P - PCR7_PY_30P - dep_amt_pm30)
+    cap_gain_pm30 = (PCR34_PY_30P + PCR7_PY_30P - PWR_DOWN_VAL_1ST_DAY_PY_30P -
+                    PADDTNS_180_DAYS__MOR_PY_30P - PEXP_INCURRD_TRF_ASSTS_30P -
+                    PADDTNS_LESS_180_DAYS_30P)
+    # Consider unusual cases when Capital Gains is negative and block DNE
+    if (PCAP_GAINS_LOSS_SEC50_30P >= 0):
+        cap_gain_pm30 = max(0.0, cap_gain_pm30)
+    return (dep_amt_pm30, close_wdv_pm30)
+
+
+@iterate_jit(nopython=True)
+def depreciation_PM(dep_amt_pm15, dep_amt_pm30, dep_amt_pm):
+    dep_amt_pm = dep_amt_pm15 + dep_amt_pm30
+    return dep_amt_pm
+
+
+@iterate_jit(nopython=True)
+def corp_income_business_profession(dep_amt_pm, PRFT_GAIN_BP_OTHR_SPECLTV_BUS,
                                     PRFT_GAIN_BP_SPECLTV_BUS,
                                     PRFT_GAIN_BP_SPCFD_BUS,
                                     PRFT_GAIN_BP_INC_115BBF, Income_BP):
@@ -45,7 +86,7 @@ def corp_income_business_profession(dep_amt_pm1, PRFT_GAIN_BP_OTHR_SPECLTV_BUS,
     # TODO: variables of the schedule
     Income_BP = (PRFT_GAIN_BP_OTHR_SPECLTV_BUS + PRFT_GAIN_BP_SPECLTV_BUS +
                  PRFT_GAIN_BP_SPCFD_BUS + PRFT_GAIN_BP_INC_115BBF -
-                 dep_amt_pm1)
+                 dep_amt_pm)
     return Income_BP
 
 

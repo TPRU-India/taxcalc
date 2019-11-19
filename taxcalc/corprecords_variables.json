@@ -165,6 +165,61 @@
       "type": "float",
       "desc": "Capital Gains on Sale of Plant and Machinery for Block1",
       "form": {"2017": "ITR-6 Sch. DPM 17(i)"}
+    },
+    "PWR_DOWN_VAL_1ST_DAY_PY_30P": {
+      "type": "float",
+      "desc": "Opening WDV for Plant and Machinery for Block1",
+      "form": {"2017": "ITR-6 Sch. DPM 3(ii)"}
+    },
+    "PADDTNS_180_DAYS__MOR_PY_30P": {
+      "type": "float",
+      "desc": "Addition to Plant and Machinery for Block1 > 180 days",
+      "form": {"2017": "ITR-6 Sch. DPM 4(ii)"}
+    },
+    "PCR34_PY_30P": {
+      "type": "float",
+      "desc": "Considerations for WDV/Additions to Plant and Machinery Block1 > 180 days",
+      "form": {"2017": "ITR-6 Sch. DPM 5(ii)"}
+    },
+    "PADDTNS_LESS_180_DAYS_30P": {
+      "type": "float",
+      "desc": "Addition to Plant and Machinery for Block1 < 180 days",
+      "form": {"2017": "ITR-6 Sch. DPM 7(ii)"}
+    },
+    "PCR7_PY_30P": {
+      "type": "float",
+      "desc": "Considerations for WDV/Additions to Plant and Machinery Block1 < 180 days",
+      "form": {"2017": "ITR-6 Sch. DPM 8(ii)"}
+    },
+    "PEXP_INCURRD_TRF_ASSTS_30P": {
+      "type": "float",
+      "desc": "Expenditure in connection with transfer of Plant and Machinery for Block1",
+      "form": {"2017": "ITR-6 Sch. DPM 16(ii)"}
+    },
+    "PCAP_GAINS_LOSS_SEC50_30P": {
+      "type": "float",
+      "desc": "Capital Gains on Sale of Plant and Machinery for Block1",
+      "form": {"2017": "ITR-6 Sch. DPM 17(ii)"}
+    },
+    "PADDTNL_DEPRECTN_ANY_4_15P": {
+      "type": "float",
+      "desc": "Additional Depreciation for Plant and Machinery for Block15, more than 180 days",
+      "form": {"2017": "ITR-6 Sch. DPM 12(i)"}
+    },
+    "PADDTNL_DEPRECTN_ANY_7_15P": {
+      "type": "float",
+      "desc": "Additional Depreciation for Plant and Machinery for Block15, less than 180 days",
+      "form": {"2017": "ITR-6 Sch. DPM 13(i)"}
+    },
+    "PADDTNL_DEPRECTN_ANY_4_30P": {
+      "type": "float",
+      "desc": "Additional Depreciation for Plant and Machinery for Block30, more than 180 days",
+      "form": {"2017": "ITR-6 Sch. DPM 12(ii)"}
+    },
+    "PADDTNL_DEPRECTN_ANY_7_30P": {
+      "type": "float",
+      "desc": "Additional Depreciation for Plant and Machinery for Block30, less than 180 days",
+      "form": {"2017": "ITR-6 Sch. DPM 13(ii)"}
     }
   },
   "calc": {
@@ -283,12 +338,27 @@
       "desc": "Gross Total Income (GTI)",
       "form": {"2017": "ITR-6 Part B-TI line 9"}
     },
-    "dep_amt_pm1": {
+    "dep_amt_pm15": {
       "type": "float",
       "desc": "Depreciation allowance for Plant and Machinery Block1",
       "form": {"2017": "ITR-6 Schedule DPM 15(i)"}
     },
-    "close_wdv_pm1": {
+    "dep_amt_pm30": {
+      "type": "float",
+      "desc": "Depreciation allowance for Plant and Machinery Block1",
+      "form": {"2017": "ITR-6 Schedule DPM 15(i)"}
+    },
+    "dep_amt_pm": {
+      "type": "float",
+      "desc": "Depreciation allowance for Plant and Machinery Block1",
+      "form": {"2017": "ITR-6 Schedule DPM 15(i)"}
+    },
+    "close_wdv_pm15": {
+      "type": "float",
+      "desc": "Closing Balance of WDV for Plant and Machinery Block1",
+      "form": {"2017": "ITR-6 Schedule DPM 18(i)"}
+    },
+    "close_wdv_pm30": {
       "type": "float",
       "desc": "Closing Balance of WDV for Plant and Machinery Block1",
       "form": {"2017": "ITR-6 Schedule DPM 18(i)"}
