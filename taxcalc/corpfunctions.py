@@ -344,3 +344,45 @@ def cit_liability(cit_rate, cit_surcharge_rate, cit_surcharge_thd, cess_rate,
     Total_Tax_Cap_Gains = Total_Tax_STCG + Total_Tax_LTCG
     return (Aggregate_Income, tax_Aggregate_Income, tax_TTI,
             Total_Tax_Cap_Gains, surcharge, cess, citax)
+
+@iterate_jit(nopython=True)
+def MAT_liability_and_credit(MAT_CFLimit, TAX_UNDER_SEC115JB_CURR_ASSTYR, citax, 
+                             MAT_CR_CY, MAT_LAG1, MAT_LAG2, MAT_LAG3, MAT_LAG4,
+                             MAT_LAG5, MAT_LAG6, MAT_LAG7, MAT_LAG8, MAT_LAG9, 
+                             MAT_LAG10, NEW_MAT_CR1, NEW_MAT_CR2, NEW_MAT_CR3, NEW_MAT_CR4,
+                             NEW_MAT_CR5, NEW_MAT_CR6, NEW_MAT_CR7, NEW_MAT_CR8,
+                             NEW_MAT_CR9, NEW_MAT_CR10, MAT_UTIL, MAT_CF):
+    
+    MAT_CR_LAGS = [MAT_LAG1, MAT_LAG2, MAT_LAG3, MAT_LAG4, MAT_LAG5,
+                   MAT_LAG6, MAT_LAG7, MAT_LAG8, MAT_LAG9, MAT_LAG10]
+    
+    NEW_MAT_CR = [NEW_MAT_CR1, NEW_MAT_CR2, NEW_MAT_CR3, 
+                  NEW_MAT_CR4, NEW_MAT_CR5, NEW_MAT_CR6, NEW_MAT_CR7, 
+                  NEW_MAT_CR8, NEW_MAT_CR9, NEW_MAT_CR10]
+    
+    citax_liability = max(TAX_UNDER_SEC115JB_CURR_ASSTYR, citax)
+        
+    if TAX_UNDER_SEC115JB_CURR_ASSTYR > citax:
+        
+        MAT_CR_CY = TAX_UNDER_SEC115JB_CURR_ASSTYR - citax
+        NEW_MAT_CR[0] = MAT_CR_CY
+        NEW_MAT_CR[1:10] = [NEW_MAT_CR1, NEW_MAT_CR2, NEW_MAT_CR3, 
+                            NEW_MAT_CR4, NEW_MAT_CR5, NEW_MAT_CR6, NEW_MAT_CR7, 
+                            NEW_MAT_CR8, NEW_MAT_CR9]
+    else:
+        
+        USEMAT_CR = np.zeros(10)
+        
+        for i in range(10, 0, -1):
+            if MAT_CFLimit >= i:
+                USEMAT_CR[i-1] = min(citax_liability, MAT_CR_LAGS[i-1])
+            citax_liability = citax_liability - USEMAT_CR[i-1]
+        NETMAT_CR = np.array(MAT_CR_LAGS) - USEMAT_CR
+        NEW_MAT_CR[1:10] = NETMAT_CR[:9]
+        NEW_MAT_CR[0] = 0
+        
+    citax = citax_liability
+    return (citax, USEMAT_CR, NEW_MAT_CR)
+        
+        
+    
