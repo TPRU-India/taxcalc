@@ -28,11 +28,12 @@ def depreciation_PM15(dep_rate_pm15, PWR_DOWN_VAL_1ST_DAY_PY_15P,
     addl_dep15 = PADDTNL_DEPRECTN_ANY_4_15P + PADDTNL_DEPRECTN_ANY_7_15P
     dep_amt_pm15 += addl_dep15
     close_wdv_pm15 = (PWR_DOWN_VAL_1ST_DAY_PY_15P +
-                     PADDTNS_180_DAYS__MOR_PY_15P - PCR34_PY_15P +
-                     PADDTNS_LESS_180_DAYS_15P - PCR7_PY_15P - dep_amt_pm15)
+                      PADDTNS_180_DAYS__MOR_PY_15P - PCR34_PY_15P +
+                      PADDTNS_LESS_180_DAYS_15P - PCR7_PY_15P - dep_amt_pm15)
     cap_gain_pm15 = (PCR34_PY_15P + PCR7_PY_15P - PWR_DOWN_VAL_1ST_DAY_PY_15P -
-                    PADDTNS_180_DAYS__MOR_PY_15P - PEXP_INCURRD_TRF_ASSTS_15P -
-                    PADDTNS_LESS_180_DAYS_15P)
+                     PADDTNS_180_DAYS__MOR_PY_15P -
+                     PEXP_INCURRD_TRF_ASSTS_15P -
+                     PADDTNS_LESS_180_DAYS_15P)
     # Consider unusual cases when Capital Gains is negative and block DNE
     if (PCAP_GAINS_LOSS_SEC50_15P >= 0):
         cap_gain_pm15 = max(0.0, cap_gain_pm15)
@@ -59,7 +60,8 @@ def depreciation_PM30(dep_rate_pm30, PWR_DOWN_VAL_1ST_DAY_PY_30P,
                       PADDTNS_180_DAYS__MOR_PY_30P - PCR34_PY_30P +
                       PADDTNS_LESS_180_DAYS_30P - PCR7_PY_30P - dep_amt_pm30)
     cap_gain_pm30 = (PCR34_PY_30P + PCR7_PY_30P - PWR_DOWN_VAL_1ST_DAY_PY_30P -
-                     PADDTNS_180_DAYS__MOR_PY_30P - PEXP_INCURRD_TRF_ASSTS_30P -
+                     PADDTNS_180_DAYS__MOR_PY_30P -
+                     PEXP_INCURRD_TRF_ASSTS_30P -
                      PADDTNS_LESS_180_DAYS_30P)
     # Consider unusual cases when Capital Gains is negative and block DNE
     if (PCAP_GAINS_LOSS_SEC50_30P >= 0):
