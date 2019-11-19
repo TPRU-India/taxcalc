@@ -23,7 +23,9 @@ from taxcalc.functions import (net_salary_income, net_rental_income,
                                tax_specialrates, current_year_losses,
                                brought_fwd_losses, agri_income, pit_liability)
 from taxcalc.corpfunctions import (depreciation_PM, depreciation_PM15,
-                                   depreciation_PM30,
+                                   depreciation_PM30,depreciation_PM40,
+                                   depreciation_PM40,depreciation_PM60,
+                                   depreciation_PM80,depreciation_PM100
                                    corp_income_business_profession,
                                    corp_GTI_before_set_off, GTI_and_losses,
                                    cit_liability)
@@ -176,6 +178,11 @@ class Calculator(object):
         depreciation_PM(self.__policy, self.__corprecords)
         depreciation_PM15(self.__policy, self.__corprecords)
         depreciation_PM30(self.__policy, self.__corprecords)
+        depreciation_PM40(self.__policy, self.__corprecords)
+        depreciation_PM50(self.__policy, self.__corprecords)
+        depreciation_PM60(self.__policy, self.__corprecords)
+        depreciation_PM80(self.__policy, self.__corprecords)
+        depreciation_PM100(self.__policy, self.__corprecords)
         corp_income_business_profession(self.__policy, self.__corprecords)
         total_other_income(self.__policy, self.__corprecords)
         current_year_losses(self.__policy, self.__corprecords)
