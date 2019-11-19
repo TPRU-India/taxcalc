@@ -23,9 +23,9 @@ from taxcalc.functions import (net_salary_income, net_rental_income,
                                tax_specialrates, current_year_losses,
                                brought_fwd_losses, agri_income, pit_liability)
 from taxcalc.corpfunctions import (depreciation_PM, depreciation_PM15,
-                                   depreciation_PM30,depreciation_PM40,
-                                   depreciation_PM40,depreciation_PM60,
-                                   depreciation_PM80,depreciation_PM100
+                                   depreciation_PM30, depreciation_PM40,
+                                   depreciation_PM50, depreciation_PM60,
+                                   depreciation_PM80, depreciation_PM100,
                                    corp_income_business_profession,
                                    corp_GTI_before_set_off, GTI_and_losses,
                                    cit_liability)

@@ -217,7 +217,7 @@ class CorpRecords(object):
                                         'close_wdv_pm50': self.close_wdv_pm50,
                                         'close_wdv_pm60': self.close_wdv_pm60,
                                         'close_wdv_pm80': self.close_wdv_pm80,
-                                        'close_wdv_pm100': 
+                                        'close_wdv_pm100':
                                             self.close_wdv_pm100})
         # Update years
         self.panelyear += 1
@@ -244,6 +244,7 @@ class CorpRecords(object):
                                       data2['LOSS_LAG7'])
         data2['LOSS_LAG8'] = np.where(to_update, data2['newloss8'],
                                       data2['LOSS_LAG8'])
+        # used temp to make a long assignment fit in two lines
         temp = np.where(to_update, data2['close_wdv_pm15'],
                         data2['PWR_DOWN_VAL_1ST_DAY_PY_15P'])
         data2['PWR_DOWN_VAL_1ST_DAY_PY_15P'] = temp
