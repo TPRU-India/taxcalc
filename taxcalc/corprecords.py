@@ -212,7 +212,13 @@ class CorpRecords(object):
                                         'newloss7': self.newloss7,
                                         'newloss8': self.newloss8,
                                         'close_wdv_pm15': self.close_wdv_pm15,
-                                        'close_wdv_pm30': self.close_wdv_pm30})
+                                        'close_wdv_pm30': self.close_wdv_pm30,
+                                        'close_wdv_pm40': self.close_wdv_pm40,
+                                        'close_wdv_pm50': self.close_wdv_pm50,
+                                        'close_wdv_pm60': self.close_wdv_pm60,
+                                        'close_wdv_pm80': self.close_wdv_pm80,
+                                        'close_wdv_pm100': 
+                                            self.close_wdv_pm100})
         # Update years
         self.panelyear += 1
         # Get new panel data
@@ -244,6 +250,21 @@ class CorpRecords(object):
         temp = np.where(to_update, data2['close_wdv_pm30'],
                         data2['PWR_DOWN_VAL_1ST_DAY_PY_30P'])
         data2['PWR_DOWN_VAL_1ST_DAY_PY_30P'] = temp
+        temp = np.where(to_update, data2['close_wdv_pm40'],
+                        data2['PWR_DOWN_VAL_1ST_DAY_PY_40P'])
+        data2['PWR_DOWN_VAL_1ST_DAY_PY_40P'] = temp
+        temp = np.where(to_update, data2['close_wdv_pm50'],
+                        data2['PWR_DOWN_VAL_1ST_DAY_PY_50P'])
+        data2['PWR_DOWN_VAL_1ST_DAY_PY_50P'] = temp
+        temp = np.where(to_update, data2['close_wdv_pm60'],
+                        data2['PWR_DOWN_VAL_1ST_DAY_PY_60P'])
+        data2['PWR_DOWN_VAL_1ST_DAY_PY_60P'] = temp
+        temp = np.where(to_update, data2['close_wdv_pm80'],
+                        data2['PWR_DOWN_VAL_1ST_DAY_PY_80P'])
+        data2['PWR_DOWN_VAL_1ST_DAY_PY_80P'] = temp
+        temp = np.where(to_update, data2['close_wdv_pm100'],
+                        data2['PWR_DOWN_VAL_1ST_DAY_PY_100P'])
+        data2['PWR_DOWN_VAL_1ST_DAY_PY_100P'] = temp
         data3 = data2[to_keep]
         self._read_data(data3)
 
