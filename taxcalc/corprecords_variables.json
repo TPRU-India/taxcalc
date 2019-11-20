@@ -131,6 +131,81 @@
       "desc": "Loss lagged 8 year",
       "form": {"2017": "ITR-6 Sch. CFL"}
     },
+    "MAT_LAG1": {
+      "type": "float",
+      "desc": "MAT credit lagged 1 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG2": {
+      "type": "float",
+      "desc": "MAT credit lagged 2 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG3": {
+      "type": "float",
+      "desc": "MAT credit lagged 3 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG4": {
+      "type": "float",
+      "desc": "MAT credit lagged 4 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG5": {
+      "type": "float",
+      "desc": "MAT credit lagged 5 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG6": {
+      "type": "float",
+      "desc": "MAT credit lagged 6 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG7": {
+      "type": "float",
+      "desc": "MAT credit lagged 7 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG8": {
+      "type": "float",
+      "desc": "MAT credit lagged 8 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG9": {
+      "type": "float",
+      "desc": "MAT credit lagged 1 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG10": {
+      "type": "float",
+      "desc": "MAT credit lagged 2 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG11": {
+      "type": "float",
+      "desc": "MAT credit lagged 3 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG12": {
+      "type": "float",
+      "desc": "MAT credit lagged 4 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG13": {
+      "type": "float",
+      "desc": "MAT credit lagged 5 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG14": {
+      "type": "float",
+      "desc": "MAT credit lagged 6 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "MAT_LAG15": {
+      "type": "float",
+      "desc": "MAT credit lagged 7 year",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
     "PWR_DOWN_VAL_1ST_DAY_PY_15P": {
       "type": "float",
       "desc": "Opening WDV for Plant and Machinery for Block 15%",
@@ -480,6 +555,11 @@
       "type": "float",
       "desc": "Additional Depreciation for Plant and Machinery for Block 100%, less than 180 days",
       "form": {"2017": "ITR-6 Sch. DPM 13(vii)"}
+    },
+    "DEEMED_TI_SEC115JB": {
+      "type": "float",
+      "desc": "Book Profit on which MAT is calculated",
+      "form": {"2017": "ITR-6 Sch. MAT 7"}
     }
   },
   "calc": {
@@ -588,6 +668,81 @@
       "desc": "Computed carried forward loss",
       "form": {"2017": "ITR-6 Sch. CFL"}
     },
+    "NEW_MAT_CR1": {
+      "type": "float",
+      "desc": "MAT Credit Year-0 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR2": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 1 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR3": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 2 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR4": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 3 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR5": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 4 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR6": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 5 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR7": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 6 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR8": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 7 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR9": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 8 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR10": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 9 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR11": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 10 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR12": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 11 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR13": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 12 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR14": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 13 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "NEW_MAT_CR15": {
+      "type": "float",
+      "desc": "MAT Credit Year minus 14 Carried Forward",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },    
     "Aggregate_Income": {
       "type": "float",
       "desc": "Income taxed at normal rates TTI minus TI_special_rates",
@@ -717,6 +872,16 @@
       "type": "float",
       "desc": "PIT liability",
       "form": {"2017": "ITR-6 Part B TTI-2f"}
-    }
+    },
+    "MAT": {
+      "type": "float",
+      "desc": "MAT liability",
+      "form": {"2017": "ITR-6 Schedule MAT-8"}
+    },
+    "citax_after_MAT": {
+      "type": "float",
+      "desc": "CIT liability after adjusting for MAT",
+      "form": {"2017": "ITR-6 Part B TTI-3"}
+    }    
   }
 }
