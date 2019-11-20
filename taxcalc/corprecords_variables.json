@@ -9,7 +9,7 @@
     "ASSESSMENT_YEAR": {
       "type": "int",
       "desc": "Assessment year of ITR form that include prior year information",
-      "form": {"2017": "ITR-1 Assessment Year (first year)"}
+      "form": {"2017": "ITR-6 Assessment Year (first year)"}
     },
     "INCOME_HP": {
       "type": "float",
@@ -255,7 +255,7 @@
       "type": "float",
       "desc": "Additional Depreciation for Plant and Machinery for Block 30%, less than 180 days",
       "form": {"2017": "ITR-6 Sch. DPM 13(ii)"}
-    },        
+    },
     "PWR_DOWN_VAL_1ST_DAY_PY_30P": {
       "type": "float",
       "desc": "Opening WDV for Plant and Machinery for Block 30%",
@@ -305,7 +305,7 @@
       "type": "float",
       "desc": "Additional Depreciation for Plant and Machinery for Block 30%, less than 180 days",
       "form": {"2017": "ITR-6 Sch. DPM 13(ii)"}
-    },    
+    },
     "PWR_DOWN_VAL_1ST_DAY_PY_40P": {
       "type": "float",
       "desc": "Opening WDV for Plant and Machinery for Block 40%",
@@ -405,7 +405,7 @@
       "type": "float",
       "desc": "Additional Depreciation for Plant and Machinery for Block 50%, less than 180 days",
       "form": {"2017": "ITR-6 Sch. DPM 13(iv)"}
-    },      
+    },
     "PWR_DOWN_VAL_1ST_DAY_PY_60P": {
       "type": "float",
       "desc": "Opening WDV for Plant and Machinery for Block 60%",
@@ -455,7 +455,7 @@
       "type": "float",
       "desc": "Additional Depreciation for Plant and Machinery for Block 60%, less than 180 days",
       "form": {"2017": "ITR-6 Sch. DPM 13(v)"}
-    },    
+    },
     "PWR_DOWN_VAL_1ST_DAY_PY_80P": {
       "type": "float",
       "desc": "Opening WDV for Plant and Machinery for Block 80%",
@@ -560,7 +560,7 @@
       "type": "float",
       "desc": "Book Profit on which MAT is calculated",
       "form": {"2017": "ITR-6 Sch. MAT 7"}
-    }      
+    }
   },
   "calc": {
     "Tax_ST_CG_RATE1": {
@@ -790,8 +790,8 @@
     },
     "dep_amt_pm": {
       "type": "float",
-      "desc": "Depreciation allowance for Plant and Machinery Block 15%",
-      "form": {"2017": "ITR-6 Schedule DPM 15(i)"}
+      "desc": "Depreciation allowance for Plant and Machinery all blocks",
+      "form": {"2017": "ITR-6 sum of Schedule DPM 18(i) to 18(vii)"}
     },
     "close_wdv_pm15": {
       "type": "float",

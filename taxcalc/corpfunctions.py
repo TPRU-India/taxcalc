@@ -16,7 +16,8 @@ def depreciation_PM15(dep_rate_pm15, PWR_DOWN_VAL_1ST_DAY_PY_15P,
                       PADDTNS_180_DAYS__MOR_PY_15P, PCR34_PY_15P,
                       PADDTNS_LESS_180_DAYS_15P, PCR7_PY_15P,
                       PEXP_INCURRD_TRF_ASSTS_15P, PCAP_GAINS_LOSS_SEC50_15P,
-                      PADDTNL_DEPRECTN_ANY_4_15P, PADDTNL_DEPRECTN_ANY_7_15P):
+                      PADDTNL_DEPRECTN_ANY_4_15P, PADDTNL_DEPRECTN_ANY_7_15P,
+                      PADDTNL_DEPRECTN_LESS_180_DAYS_15P):
     '''
     Schedule DPM of ITR-6 for A.Y. 2017-18
     '''
@@ -25,7 +26,8 @@ def depreciation_PM15(dep_rate_pm15, PWR_DOWN_VAL_1ST_DAY_PY_15P,
     amt_half_rate15 = PADDTNS_LESS_180_DAYS_15P - PCR7_PY_15P
     dep_amt_pm15 = amt_full_rate15 * dep_rate_pm15
     dep_amt_pm15 += amt_half_rate15 * (dep_rate_pm15 / 2)
-    addl_dep15 = PADDTNL_DEPRECTN_ANY_4_15P + PADDTNL_DEPRECTN_ANY_7_15P
+    addl_dep15 = (PADDTNL_DEPRECTN_ANY_4_15P + PADDTNL_DEPRECTN_ANY_7_15P +
+                  PADDTNL_DEPRECTN_LESS_180_DAYS_15P)
     dep_amt_pm15 += addl_dep15
     close_wdv_pm15 = (PWR_DOWN_VAL_1ST_DAY_PY_15P +
                       PADDTNS_180_DAYS__MOR_PY_15P - PCR34_PY_15P +
@@ -45,7 +47,8 @@ def depreciation_PM30(dep_rate_pm30, PWR_DOWN_VAL_1ST_DAY_PY_30P,
                       PADDTNS_180_DAYS__MOR_PY_30P, PCR34_PY_30P,
                       PADDTNS_LESS_180_DAYS_30P, PCR7_PY_30P,
                       PEXP_INCURRD_TRF_ASSTS_30P, PCAP_GAINS_LOSS_SEC50_30P,
-                      PADDTNL_DEPRECTN_ANY_4_30P, PADDTNL_DEPRECTN_ANY_7_30P):
+                      PADDTNL_DEPRECTN_ANY_4_30P, PADDTNL_DEPRECTN_ANY_7_30P,
+                      PADDTNL_DEPRECTN_LESS_180_DAYS_30P):
     '''
     Schedule DPM of ITR-6 for A.Y. 2017-18
     '''
@@ -54,7 +57,8 @@ def depreciation_PM30(dep_rate_pm30, PWR_DOWN_VAL_1ST_DAY_PY_30P,
     amt_half_rate30 = PADDTNS_LESS_180_DAYS_30P - PCR7_PY_30P
     dep_amt_pm30 = amt_full_rate30 * dep_rate_pm30
     dep_amt_pm30 += amt_half_rate30 * (dep_rate_pm30 / 2)
-    addl_dep30 = PADDTNL_DEPRECTN_ANY_4_30P + PADDTNL_DEPRECTN_ANY_7_30P
+    addl_dep30 = (PADDTNL_DEPRECTN_ANY_4_30P + PADDTNL_DEPRECTN_ANY_7_30P +
+                  PADDTNL_DEPRECTN_LESS_180_DAYS_30P)
     dep_amt_pm30 += addl_dep30
     close_wdv_pm30 = (PWR_DOWN_VAL_1ST_DAY_PY_30P +
                       PADDTNS_180_DAYS__MOR_PY_30P - PCR34_PY_30P +
@@ -70,8 +74,168 @@ def depreciation_PM30(dep_rate_pm30, PWR_DOWN_VAL_1ST_DAY_PY_30P,
 
 
 @iterate_jit(nopython=True)
-def depreciation_PM(dep_amt_pm15, dep_amt_pm30, dep_amt_pm):
-    dep_amt_pm = dep_amt_pm15 + dep_amt_pm30
+def depreciation_PM40(dep_rate_pm40, PWR_DOWN_VAL_1ST_DAY_PY_40P,
+                      PADDTNS_180_DAYS__MOR_PY_40P, PCR34_PY_40P,
+                      PADDTNS_LESS_180_DAYS_40P, PCR7_PY_40P,
+                      PEXP_INCURRD_TRF_ASSTS_40P, PCAP_GAINS_LOSS_SEC50_40P,
+                      PADDTNL_DEPRECTN_ANY_4_40P, PADDTNL_DEPRECTN_ANY_7_40P,
+                      PADDTNL_DEPRECTN_LESS_180_DAYS_40P):
+    '''
+    Schedule DPM of ITR-6 for A.Y. 2017-18
+    '''
+    amt_full_rate40 = (PWR_DOWN_VAL_1ST_DAY_PY_40P +
+                       PADDTNS_180_DAYS__MOR_PY_40P - PCR34_PY_40P)
+    amt_half_rate40 = PADDTNS_LESS_180_DAYS_40P - PCR7_PY_40P
+    dep_amt_pm40 = amt_full_rate40 * dep_rate_pm40
+    dep_amt_pm40 += amt_half_rate40 * (dep_rate_pm40 / 2)
+    addl_dep40 = (PADDTNL_DEPRECTN_ANY_4_40P + PADDTNL_DEPRECTN_ANY_7_40P +
+                  PADDTNL_DEPRECTN_LESS_180_DAYS_40P)
+    dep_amt_pm40 += addl_dep40
+    close_wdv_pm40 = (PWR_DOWN_VAL_1ST_DAY_PY_40P +
+                      PADDTNS_180_DAYS__MOR_PY_40P - PCR34_PY_40P +
+                      PADDTNS_LESS_180_DAYS_40P - PCR7_PY_40P - dep_amt_pm40)
+    cap_gain_pm40 = (PCR34_PY_40P + PCR7_PY_40P - PWR_DOWN_VAL_1ST_DAY_PY_40P -
+                     PADDTNS_180_DAYS__MOR_PY_40P -
+                     PEXP_INCURRD_TRF_ASSTS_40P -
+                     PADDTNS_LESS_180_DAYS_40P)
+    # Consider unusual cases when Capital Gains is negative and block DNE
+    if (PCAP_GAINS_LOSS_SEC50_40P >= 0):
+        cap_gain_pm40 = max(0.0, cap_gain_pm40)
+    return (dep_amt_pm40, close_wdv_pm40)
+
+
+@iterate_jit(nopython=True)
+def depreciation_PM50(dep_rate_pm50, PWR_DOWN_VAL_1ST_DAY_PY_50P,
+                      PADDTNS_180_DAYS__MOR_PY_50P, PCR34_PY_50P,
+                      PADDTNS_LESS_180_DAYS_50P, PCR7_PY_50P,
+                      PEXP_INCURRD_TRF_ASSTS_50P, PCAP_GAINS_LOSS_SEC50_50P,
+                      PADDTNL_DEPRECTN_ANY_4_50P, PADDTNL_DEPRECTN_ANY_7_50P,
+                      PADDTNL_DEPRECTN_LESS_180_DAYS_50P):
+    '''
+    Schedule DPM of ITR-6 for A.Y. 2017-18
+    '''
+    amt_full_rate50 = (PWR_DOWN_VAL_1ST_DAY_PY_50P +
+                       PADDTNS_180_DAYS__MOR_PY_50P - PCR34_PY_50P)
+    amt_half_rate50 = PADDTNS_LESS_180_DAYS_50P - PCR7_PY_50P
+    dep_amt_pm50 = amt_full_rate50 * dep_rate_pm50
+    dep_amt_pm50 += amt_half_rate50 * (dep_rate_pm50 / 2)
+    addl_dep50 = (PADDTNL_DEPRECTN_ANY_4_50P + PADDTNL_DEPRECTN_ANY_7_50P +
+                  PADDTNL_DEPRECTN_LESS_180_DAYS_50P)
+    dep_amt_pm50 += addl_dep50
+    close_wdv_pm50 = (PWR_DOWN_VAL_1ST_DAY_PY_50P +
+                      PADDTNS_180_DAYS__MOR_PY_50P - PCR34_PY_50P +
+                      PADDTNS_LESS_180_DAYS_50P - PCR7_PY_50P - dep_amt_pm50)
+    cap_gain_pm50 = (PCR34_PY_50P + PCR7_PY_50P - PWR_DOWN_VAL_1ST_DAY_PY_50P -
+                     PADDTNS_180_DAYS__MOR_PY_50P -
+                     PEXP_INCURRD_TRF_ASSTS_50P -
+                     PADDTNS_LESS_180_DAYS_50P)
+    # Consider unusual cases when Capital Gains is negative and block DNE
+    if (PCAP_GAINS_LOSS_SEC50_50P >= 0):
+        cap_gain_pm50 = max(0.0, cap_gain_pm50)
+    return (dep_amt_pm50, close_wdv_pm50)
+
+
+@iterate_jit(nopython=True)
+def depreciation_PM60(dep_rate_pm60, PWR_DOWN_VAL_1ST_DAY_PY_60P,
+                      PADDTNS_180_DAYS__MOR_PY_60P, PCR34_PY_60P,
+                      PADDTNS_LESS_180_DAYS_60P, PCR7_PY_60P,
+                      PEXP_INCURRD_TRF_ASSTS_60P, PCAP_GAINS_LOSS_SEC50_60P,
+                      PADDTNL_DEPRECTN_ANY_4_60P, PADDTNL_DEPRECTN_ANY_7_60P,
+                      PADDTNL_DEPRECTN_LESS_180_DAYS_60P):
+    '''
+    Schedule DPM of ITR-6 for A.Y. 2017-18
+    '''
+    amt_full_rate60 = (PWR_DOWN_VAL_1ST_DAY_PY_60P +
+                       PADDTNS_180_DAYS__MOR_PY_60P - PCR34_PY_60P)
+    amt_half_rate60 = PADDTNS_LESS_180_DAYS_60P - PCR7_PY_60P
+    dep_amt_pm60 = amt_full_rate60 * dep_rate_pm60
+    dep_amt_pm60 += amt_half_rate60 * (dep_rate_pm60 / 2)
+    addl_dep60 = (PADDTNL_DEPRECTN_ANY_4_60P + PADDTNL_DEPRECTN_ANY_7_60P +
+                  PADDTNL_DEPRECTN_LESS_180_DAYS_60P)
+    dep_amt_pm60 += addl_dep60
+    close_wdv_pm60 = (PWR_DOWN_VAL_1ST_DAY_PY_60P +
+                      PADDTNS_180_DAYS__MOR_PY_60P - PCR34_PY_60P +
+                      PADDTNS_LESS_180_DAYS_60P - PCR7_PY_60P - dep_amt_pm60)
+    cap_gain_pm60 = (PCR34_PY_60P + PCR7_PY_60P - PWR_DOWN_VAL_1ST_DAY_PY_60P -
+                     PADDTNS_180_DAYS__MOR_PY_60P -
+                     PEXP_INCURRD_TRF_ASSTS_60P -
+                     PADDTNS_LESS_180_DAYS_60P)
+    # Consider unusual cases when Capital Gains is negative and block DNE
+    if (PCAP_GAINS_LOSS_SEC50_60P >= 0):
+        cap_gain_pm60 = max(0.0, cap_gain_pm60)
+    return (dep_amt_pm60, close_wdv_pm60)
+
+
+@iterate_jit(nopython=True)
+def depreciation_PM80(dep_rate_pm80, PWR_DOWN_VAL_1ST_DAY_PY_80P,
+                      PADDTNS_180_DAYS__MOR_PY_80P, PCR34_PY_80P,
+                      PADDTNS_LESS_180_DAYS_80P, PCR7_PY_80P,
+                      PEXP_INCURRD_TRF_ASSTS_80P, PCAP_GAINS_LOSS_SEC50_80P,
+                      PADDTNL_DEPRECTN_ANY_4_80P, PADDTNL_DEPRECTN_ANY_7_80P,
+                      PADDTNL_DEPRECTN_LESS_180_DAYS_80P):
+    '''
+    Schedule DPM of ITR-6 for A.Y. 2017-18
+    '''
+    amt_full_rate80 = (PWR_DOWN_VAL_1ST_DAY_PY_80P +
+                       PADDTNS_180_DAYS__MOR_PY_80P - PCR34_PY_80P)
+    amt_half_rate80 = PADDTNS_LESS_180_DAYS_80P - PCR7_PY_80P
+    dep_amt_pm80 = amt_full_rate80 * dep_rate_pm80
+    dep_amt_pm80 += amt_half_rate80 * (dep_rate_pm80 / 2)
+    addl_dep80 = (PADDTNL_DEPRECTN_ANY_4_80P + PADDTNL_DEPRECTN_ANY_7_80P +
+                  PADDTNL_DEPRECTN_LESS_180_DAYS_80P)
+    dep_amt_pm80 += addl_dep80
+    close_wdv_pm80 = (PWR_DOWN_VAL_1ST_DAY_PY_80P +
+                      PADDTNS_180_DAYS__MOR_PY_80P - PCR34_PY_80P +
+                      PADDTNS_LESS_180_DAYS_80P - PCR7_PY_80P - dep_amt_pm80)
+    cap_gain_pm80 = (PCR34_PY_80P + PCR7_PY_80P - PWR_DOWN_VAL_1ST_DAY_PY_80P -
+                     PADDTNS_180_DAYS__MOR_PY_80P -
+                     PEXP_INCURRD_TRF_ASSTS_80P -
+                     PADDTNS_LESS_180_DAYS_80P)
+    # Consider unusual cases when Capital Gains is negative and block DNE
+    if (PCAP_GAINS_LOSS_SEC50_80P >= 0):
+        cap_gain_pm80 = max(0.0, cap_gain_pm80)
+    return (dep_amt_pm80, close_wdv_pm80)
+
+
+@iterate_jit(nopython=True)
+def depreciation_PM100(dep_rate_pm100, PWR_DOWN_VAL_1ST_DAY_PY_100P,
+                       PADDTNS_180_DAYS__MOR_PY_100P, PCR34_PY_100P,
+                       PADDTNS_LESS_180_DAYS_100P, PCR7_PY_100P,
+                       PEXP_INCURRD_TRF_ASSTS_100P, PCAP_GAINS_LOSS_SEC50_100P,
+                       PADDTNL_DEPRECTN_ANY_4_100P,
+                       PADDTNL_DEPRECTN_ANY_7_100P,
+                       PADDTNL_DEPRECTN_LESS_180_DAYS_100P):
+    '''
+    Schedule DPM of ITR-6 for A.Y. 2017-18
+    '''
+    amt_full_rate100 = (PWR_DOWN_VAL_1ST_DAY_PY_100P +
+                        PADDTNS_180_DAYS__MOR_PY_100P - PCR34_PY_100P)
+    amt_half_rate100 = PADDTNS_LESS_180_DAYS_100P - PCR7_PY_100P
+    dep_amt_pm100 = amt_full_rate100 * dep_rate_pm100
+    dep_amt_pm100 += amt_half_rate100 * (dep_rate_pm100 / 2)
+    addl_dep100 = (PADDTNL_DEPRECTN_ANY_4_100P + PADDTNL_DEPRECTN_ANY_7_100P +
+                   PADDTNL_DEPRECTN_LESS_180_DAYS_100P)
+    dep_amt_pm100 += addl_dep100
+    close_wdv_pm100 = (PWR_DOWN_VAL_1ST_DAY_PY_100P +
+                       PADDTNS_180_DAYS__MOR_PY_100P - PCR34_PY_100P +
+                       PADDTNS_LESS_180_DAYS_100P - PCR7_PY_100P -
+                       dep_amt_pm100)
+    cap_gain_pm100 = (PCR34_PY_100P + PCR7_PY_100P -
+                      PWR_DOWN_VAL_1ST_DAY_PY_100P -
+                      PADDTNS_180_DAYS__MOR_PY_100P -
+                      PEXP_INCURRD_TRF_ASSTS_100P -
+                      PADDTNS_LESS_180_DAYS_100P)
+    # Consider unusual cases when Capital Gains is negative and block DNE
+    if (PCAP_GAINS_LOSS_SEC50_100P >= 0):
+        cap_gain_pm100 = max(0.0, cap_gain_pm100)
+    return (dep_amt_pm100, close_wdv_pm100)
+
+
+@iterate_jit(nopython=True)
+def depreciation_PM(dep_amt_pm15, dep_amt_pm30, dep_amt_pm40, dep_amt_pm50,
+                    dep_amt_pm60, dep_amt_pm80, dep_amt_pm100, dep_amt_pm):
+    dep_amt_pm = (dep_amt_pm15 + dep_amt_pm30 + dep_amt_pm40 + dep_amt_pm50 +
+                  dep_amt_pm60 + dep_amt_pm80 + dep_amt_pm100)
     return dep_amt_pm
 
 
@@ -180,3 +344,77 @@ def cit_liability(cit_rate, cit_surcharge_rate, cit_surcharge_thd, cess_rate,
     Total_Tax_Cap_Gains = Total_Tax_STCG + Total_Tax_LTCG
     return (Aggregate_Income, tax_Aggregate_Income, tax_TTI,
             Total_Tax_Cap_Gains, surcharge, cess, citax)
+
+
+@iterate_jit(nopython=True)
+def MAT_liability(MAT_rate, cit_surcharge_rate, cit_surcharge_thd, cess_rate,
+                  TTI, DEEMED_TI_SEC115JB, MAT):
+    MAT = DEEMED_TI_SEC115JB * MAT_rate
+
+    # compute MAT surcharge based on Total Income threshold
+    surcharge_rate1 = cit_surcharge_rate[0]
+    surcharge_rate2 = cit_surcharge_rate[1]
+    surcharge_rate3 = cit_surcharge_rate[2]
+    surcharge_thd1 = cit_surcharge_thd[0]
+    surcharge_thd2 = cit_surcharge_thd[1]
+
+    if TTI < surcharge_thd1:
+        surcharge = MAT * surcharge_rate1
+    else:
+        if TTI >= surcharge_thd1 and TTI < surcharge_thd2:
+            surcharge = MAT * surcharge_rate2
+        else:
+            surcharge = MAT * surcharge_rate3
+    MAT += surcharge
+
+    MAT += MAT * cess_rate
+    return (MAT)
+
+
+@iterate_jit(nopython=True)
+def MAT_liability_and_credit(MAT_CFLimit, MAT, citax, citax_after_MAT,
+                             MAT_CR_CY, MAT_LAG1, MAT_LAG2, MAT_LAG3, MAT_LAG4,
+                             MAT_LAG5, MAT_LAG6, MAT_LAG7, MAT_LAG8, MAT_LAG9,
+                             MAT_LAG10, NEW_MAT_CR1, NEW_MAT_CR2, NEW_MAT_CR3,
+                             NEW_MAT_CR4, NEW_MAT_CR5, NEW_MAT_CR6,
+                             NEW_MAT_CR7, NEW_MAT_CR8, NEW_MAT_CR9,
+                             NEW_MAT_CR10, NEW_MAT_CR11, NEW_MAT_CR12,
+                             NEW_MAT_CR13, NEW_MAT_CR14, NEW_MAT_CR15,
+                             MAT_UTIL, MAT_CF):
+
+    MAT_CR_LAGS = np.zeros(15)
+    MAT_CR_LAGS[:10] = [MAT_LAG1, MAT_LAG2, MAT_LAG3, MAT_LAG4, MAT_LAG5,
+                        MAT_LAG6, MAT_LAG7, MAT_LAG8, MAT_LAG9, MAT_LAG10]
+
+    citax_liability = max(MAT, citax)
+    NEW_MAT_CR = np.zeros(15)
+    # MAT is greater than citax, MAT credit increases, NEW_MAT_CR gets updated
+    if MAT > citax:
+        MAT_CR_CY = MAT - citax
+        NEW_MAT_CR[0] = MAT_CR_CY
+        NEW_MAT_CR[1:10] = MAT_CR_LAGS[:9]
+    # else MAT credit will be used up, NEW_MAT_CR gets updated
+    else:
+        USEMAT_CR = np.zeros(10)
+        for i in range(15, 0, -1):
+            if MAT_CFLimit >= i:
+                USEMAT_CR[i-1] = min(citax_liability, MAT_CR_LAGS[i-1])
+            citax_liability = citax_liability - USEMAT_CR[i-1]
+        NETMAT_CR = np.array(MAT_CR_LAGS) - USEMAT_CR
+        NEW_MAT_CR[1:10] = NETMAT_CR[:9]
+        NEW_MAT_CR[0] = 0
+    (NEW_MAT_CR1, NEW_MAT_CR2, NEW_MAT_CR3, NEW_MAT_CR4, NEW_MAT_CR5,
+     NEW_MAT_CR6, NEW_MAT_CR7, NEW_MAT_CR8, NEW_MAT_CR9, NEW_MAT_CR10,
+     NEW_MAT_CR11, NEW_MAT_CR12, NEW_MAT_CR13, NEW_MAT_CR14,
+     NEW_MAT_CR15) = NEW_MAT_CR
+    (USEMAT_CR1, USEMAT_CR2, USEMAT_CR3, USEMAT_CR4, USEMAT_CR5,
+     USEMAT_CR6, USEMAT_CR7, USEMAT_CR8, USEMAT_CR9, USEMAT_CR10,
+     USEMAT_CR11, USEMAT_CR12, USEMAT_CR13, USEMAT_CR14,
+     USEMAT_CR15) = USEMAT_CR
+    citax_after_MAT = citax_liability
+    return (citax_after_MAT, USEMAT_CR1, USEMAT_CR2, USEMAT_CR3, USEMAT_CR4,
+            USEMAT_CR5, USEMAT_CR6, USEMAT_CR7, USEMAT_CR8, USEMAT_CR9,
+            USEMAT_CR10, USEMAT_CR11, USEMAT_CR12, USEMAT_CR13, USEMAT_CR14,
+            USEMAT_CR15, NEW_MAT_CR1, NEW_MAT_CR2, NEW_MAT_CR3,
+            NEW_MAT_CR4, NEW_MAT_CR5, NEW_MAT_CR6, NEW_MAT_CR7, NEW_MAT_CR8,
+            NEW_MAT_CR9, NEW_MAT_CR10)
