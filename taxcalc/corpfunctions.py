@@ -345,44 +345,76 @@ def cit_liability(cit_rate, cit_surcharge_rate, cit_surcharge_thd, cess_rate,
     return (Aggregate_Income, tax_Aggregate_Income, tax_TTI,
             Total_Tax_Cap_Gains, surcharge, cess, citax)
 
+
 @iterate_jit(nopython=True)
-def MAT_liability_and_credit(MAT_CFLimit, TAX_UNDER_SEC115JB_CURR_ASSTYR, citax, 
-                             MAT_CR_CY, MAT_LAG1, MAT_LAG2, MAT_LAG3, MAT_LAG4,
-                             MAT_LAG5, MAT_LAG6, MAT_LAG7, MAT_LAG8, MAT_LAG9, 
-                             MAT_LAG10, NEW_MAT_CR1, NEW_MAT_CR2, NEW_MAT_CR3, NEW_MAT_CR4,
-                             NEW_MAT_CR5, NEW_MAT_CR6, NEW_MAT_CR7, NEW_MAT_CR8,
-                             NEW_MAT_CR9, NEW_MAT_CR10, MAT_UTIL, MAT_CF):
-    
-    MAT_CR_LAGS = [MAT_LAG1, MAT_LAG2, MAT_LAG3, MAT_LAG4, MAT_LAG5,
-                   MAT_LAG6, MAT_LAG7, MAT_LAG8, MAT_LAG9, MAT_LAG10]
-    
-    NEW_MAT_CR = [NEW_MAT_CR1, NEW_MAT_CR2, NEW_MAT_CR3, 
-                  NEW_MAT_CR4, NEW_MAT_CR5, NEW_MAT_CR6, NEW_MAT_CR7, 
-                  NEW_MAT_CR8, NEW_MAT_CR9, NEW_MAT_CR10]
-    
-    citax_liability = max(TAX_UNDER_SEC115JB_CURR_ASSTYR, citax)
-        
-    if TAX_UNDER_SEC115JB_CURR_ASSTYR > citax:
-        
-        MAT_CR_CY = TAX_UNDER_SEC115JB_CURR_ASSTYR - citax
-        NEW_MAT_CR[0] = MAT_CR_CY
-        NEW_MAT_CR[1:10] = [NEW_MAT_CR1, NEW_MAT_CR2, NEW_MAT_CR3, 
-                            NEW_MAT_CR4, NEW_MAT_CR5, NEW_MAT_CR6, NEW_MAT_CR7, 
-                            NEW_MAT_CR8, NEW_MAT_CR9]
+def MAT_liability(MAT_rate, cit_surcharge_rate, cit_surcharge_thd, cess_rate,
+                  TTI, DEEMED_TI_SEC115JB, MAT):
+    MAT = DEEMED_TI_SEC115JB * MAT_rate
+
+    # compute MAT surcharge based on Total Income threshold
+    surcharge_rate1 = cit_surcharge_rate[0]
+    surcharge_rate2 = cit_surcharge_rate[1]
+    surcharge_rate3 = cit_surcharge_rate[2]
+    surcharge_thd1 = cit_surcharge_thd[0]
+    surcharge_thd2 = cit_surcharge_thd[1]
+
+    if TTI < surcharge_thd1:
+        surcharge = MAT * surcharge_rate1
     else:
-        
+        if TTI >= surcharge_thd1 and TTI < surcharge_thd2:
+            surcharge = MAT * surcharge_rate2
+        else:
+            surcharge = MAT * surcharge_rate3
+    MAT += surcharge
+
+    MAT += MAT * cess_rate
+    return (MAT)
+
+
+@iterate_jit(nopython=True)
+def MAT_liability_and_credit(MAT_CFLimit, MAT, citax, citax_after_MAT,
+                             MAT_CR_CY, MAT_LAG1, MAT_LAG2, MAT_LAG3, MAT_LAG4,
+                             MAT_LAG5, MAT_LAG6, MAT_LAG7, MAT_LAG8, MAT_LAG9,
+                             MAT_LAG10, NEW_MAT_CR1, NEW_MAT_CR2, NEW_MAT_CR3,
+                             NEW_MAT_CR4, NEW_MAT_CR5, NEW_MAT_CR6,
+                             NEW_MAT_CR7, NEW_MAT_CR8, NEW_MAT_CR9,
+                             NEW_MAT_CR10, NEW_MAT_CR11, NEW_MAT_CR12,
+                             NEW_MAT_CR13, NEW_MAT_CR14, NEW_MAT_CR15,
+                             MAT_UTIL, MAT_CF):
+
+    MAT_CR_LAGS = np.zeros(15)
+    MAT_CR_LAGS[:10] = [MAT_LAG1, MAT_LAG2, MAT_LAG3, MAT_LAG4, MAT_LAG5,
+                        MAT_LAG6, MAT_LAG7, MAT_LAG8, MAT_LAG9, MAT_LAG10]
+
+    citax_liability = max(MAT, citax)
+    NEW_MAT_CR = np.zeros(15)
+    # MAT is greater than citax, MAT credit increases, NEW_MAT_CR gets updated
+    if MAT > citax:
+        MAT_CR_CY = MAT - citax
+        NEW_MAT_CR[0] = MAT_CR_CY
+        NEW_MAT_CR[1:10] = MAT_CR_LAGS[:9]
+    # else MAT credit will be used up, NEW_MAT_CR gets updated
+    else:
         USEMAT_CR = np.zeros(10)
-        
-        for i in range(10, 0, -1):
+        for i in range(15, 0, -1):
             if MAT_CFLimit >= i:
                 USEMAT_CR[i-1] = min(citax_liability, MAT_CR_LAGS[i-1])
             citax_liability = citax_liability - USEMAT_CR[i-1]
         NETMAT_CR = np.array(MAT_CR_LAGS) - USEMAT_CR
         NEW_MAT_CR[1:10] = NETMAT_CR[:9]
         NEW_MAT_CR[0] = 0
-        
-    citax = citax_liability
-    return (citax, USEMAT_CR, NEW_MAT_CR)
-        
-        
-    
+    (NEW_MAT_CR1, NEW_MAT_CR2, NEW_MAT_CR3, NEW_MAT_CR4, NEW_MAT_CR5,
+     NEW_MAT_CR6, NEW_MAT_CR7, NEW_MAT_CR8, NEW_MAT_CR9, NEW_MAT_CR10,
+     NEW_MAT_CR11, NEW_MAT_CR12, NEW_MAT_CR13, NEW_MAT_CR14,
+     NEW_MAT_CR15) = NEW_MAT_CR
+    (USEMAT_CR1, USEMAT_CR2, USEMAT_CR3, USEMAT_CR4, USEMAT_CR5,
+     USEMAT_CR6, USEMAT_CR7, USEMAT_CR8, USEMAT_CR9, USEMAT_CR10,
+     USEMAT_CR11, USEMAT_CR12, USEMAT_CR13, USEMAT_CR14,
+     USEMAT_CR15) = USEMAT_CR
+    citax_after_MAT = citax_liability
+    return (citax_after_MAT, USEMAT_CR1, USEMAT_CR2, USEMAT_CR3, USEMAT_CR4,
+            USEMAT_CR5, USEMAT_CR6, USEMAT_CR7, USEMAT_CR8, USEMAT_CR9,
+            USEMAT_CR10, USEMAT_CR11, USEMAT_CR12, USEMAT_CR13, USEMAT_CR14,
+            USEMAT_CR15, NEW_MAT_CR1, NEW_MAT_CR2, NEW_MAT_CR3,
+            NEW_MAT_CR4, NEW_MAT_CR5, NEW_MAT_CR6, NEW_MAT_CR7, NEW_MAT_CR8,
+            NEW_MAT_CR9, NEW_MAT_CR10)
