@@ -46,12 +46,14 @@ calc1.calc_all()
 AggInc17c = calc1.carray('GTI_Before_Loss')
 GTI17c = calc1.carray('deductions')
 citax17c = calc1.carray('citax')
+citax17c_with_MAT = calc1.carray('citax_after_MAT')
 wgt17c = calc1.carray('weight')
 calc1.increment_year()
 calc1.calc_all()
 AggInc18c = calc1.carray('GTI_Before_Loss')
 GTI18c = calc1.carray('deductions')
 citax18c = calc1.carray('citax')
+citax18c_with_MAT = calc1.carray('citax_after_MAT')
 wgt18c = calc1.carray('weight')
 results_cross = pd.DataFrame({'Aggregate_Income2017': AggInc17c,
                               'citax2017': citax17c,
@@ -66,6 +68,7 @@ calc2.calc_all()
 AggInc17p = calc2.carray('GTI_Before_Loss')
 GTI17p = calc2.carray('deductions')
 citax17p = calc2.carray('citax')
+citax17p_with_MAT = calc2.carray('citax_after_MAT')
 id17p = calc2.carray('ID_NO')
 wgt17p = calc2.carray('weight')
 results_panel17 = pd.DataFrame({'ID_NO': id17p,
@@ -77,6 +80,7 @@ calc2.calc_all()
 AggInc18p = calc2.carray('GTI_Before_Loss')
 GTI18p = calc2.carray('deductions')
 citax18p = calc2.carray('citax')
+citax18p_with_MAT = calc2.carray('citax_after_MAT')
 id18p = calc2.carray('ID_NO')
 wgt18p = calc2.carray('weight')
 results_panel18 = pd.DataFrame({'ID_NO': id18p,
@@ -95,6 +99,8 @@ print('Deductions, 2017, cross-section: ' +
       str(sum(GTI17c * wgt17c) / 10**7))
 print('Total liability, 2017, cross-section: ' +
       str(sum(citax17c * wgt17c) / 10**7))
+print('Total liability with MAT, 2017, cross-section: ' +
+      str(sum(citax17c_with_MAT * wgt17c) / 10**7))
 print('Tax rate, 2017, cross-section: ' +
       str(sum(citax17c * wgt17c) / sum(GTI17c * wgt17c)))
 print('\n')
@@ -104,6 +110,8 @@ print('Deductions, 2017, panel: ' +
       str(sum(GTI17p * wgt17p) / 10**7))
 print('Total liability, 2017, panel: ' +
       str(sum(citax17p * wgt17p) / 10**7))
+print('Total liability with MAT, 2017, panel: ' +
+      str(sum(citax17p_with_MAT * wgt17p) / 10**7))
 print('Tax rate, 2017, panel: ' +
       str(sum(citax17p * wgt17p) / sum(GTI17p * wgt17p)))
 print('\n')
@@ -112,12 +120,16 @@ print('GTI before loss, 2018, cross-section: ' +
 print('Deductions, 2018, cross-section: ' + str(sum(GTI18c * wgt18c) / 10**7))
 print('Total liability, 2018, cross-section: ' +
       str(sum(citax18c * wgt18c) / 10**7))
+print('Total liability with MAT, 2018, cross-section: ' +
+      str(sum(citax18c_with_MAT * wgt17c) / 10**7))
 print('Tax rate, 2018, cross-section: ' +
       str(sum(citax18c * wgt18c) / sum(GTI18c * wgt18c)))
 print('\n')
 print('GTI before loss, 2018, panel: ' + str(sum(AggInc18p * wgt18p) / 10**7))
 print('Deductions, 2018, panel: ' + str(sum(GTI18p * wgt18p) / 10**7))
 print('Total liability, 2018, panel: ' + str(sum(citax18p * wgt18p) / 10**7))
+print('Total liability with MAT, 2018, panel: ' +
+      str(sum(citax18p_with_MAT * wgt18p) / 10**7))
 print('Tax rate, 2018, panel: ' +
       str(sum(citax18p * wgt18p) / sum(GTI18p * wgt18p)))
 print('\n')
