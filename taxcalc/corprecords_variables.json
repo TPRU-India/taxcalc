@@ -742,7 +742,82 @@
       "type": "float",
       "desc": "MAT Credit Year minus 14 Carried Forward",
       "form": {"2017": "ITR-6 Sch. MATC"}
-    },    
+    },
+    "USE_MAT_CR1": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year-0 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR2": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 1 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR3": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 2 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR4": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 3 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR5": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 4 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR6": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 5 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR7": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 6 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR8": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 7 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR9": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 8 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR10": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 9 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR11": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 10 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR12": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 11 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR13": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 12 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR14": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 13 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
+    "USE_MAT_CR15": {
+      "type": "float",
+      "desc": "MAT Credit used out of Year minus 14 ",
+      "form": {"2017": "ITR-6 Sch. MATC"}
+    },
     "Aggregate_Income": {
       "type": "float",
       "desc": "Income taxed at normal rates TTI minus TI_special_rates",
@@ -882,6 +957,6 @@
       "type": "float",
       "desc": "CIT liability after adjusting for MAT",
       "form": {"2017": "ITR-6 Part B TTI-3"}
-    }    
+    }
   }
 }

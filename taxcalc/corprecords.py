@@ -218,7 +218,22 @@ class CorpRecords(object):
                                         'close_wdv_pm60': self.close_wdv_pm60,
                                         'close_wdv_pm80': self.close_wdv_pm80,
                                         'close_wdv_pm100':
-                                            self.close_wdv_pm100})
+                                            self.close_wdv_pm100,
+                                        'NEW_MAT_CR1': self.NEW_MAT_CR1,
+                                        'NEW_MAT_CR2': self.NEW_MAT_CR2,
+                                        'NEW_MAT_CR3': self.NEW_MAT_CR3,
+                                        'NEW_MAT_CR4': self.NEW_MAT_CR4,
+                                        'NEW_MAT_CR5': self.NEW_MAT_CR5,
+                                        'NEW_MAT_CR6': self.NEW_MAT_CR6,
+                                        'NEW_MAT_CR7': self.NEW_MAT_CR7,
+                                        'NEW_MAT_CR8': self.NEW_MAT_CR8,
+                                        'NEW_MAT_CR9': self.NEW_MAT_CR9,
+                                        'NEW_MAT_CR10': self.NEW_MAT_CR10,
+                                        'NEW_MAT_CR11': self.NEW_MAT_CR11,
+                                        'NEW_MAT_CR12': self.NEW_MAT_CR12,
+                                        'NEW_MAT_CR13': self.NEW_MAT_CR13,
+                                        'NEW_MAT_CR14': self.NEW_MAT_CR14,
+                                        'NEW_MAT_CR15': self.NEW_MAT_CR15})
         # Update years
         self.panelyear += 1
         # Get new panel data
@@ -266,6 +281,37 @@ class CorpRecords(object):
         temp = np.where(to_update, data2['close_wdv_pm100'],
                         data2['PWR_DOWN_VAL_1ST_DAY_PY_100P'])
         data2['PWR_DOWN_VAL_1ST_DAY_PY_100P'] = temp
+
+        data2['MAT_LAG1'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                     data2['MAT_LAG1'])
+        data2['MAT_LAG2'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                     data2['MAT_LAG1'])
+        data2['MAT_LAG3'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                     data2['MAT_LAG1'])
+        data2['MAT_LAG4'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                     data2['MAT_LAG1'])
+        data2['MAT_LAG5'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                     data2['MAT_LAG1'])
+        data2['MAT_LAG6'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                     data2['MAT_LAG1'])
+        data2['MAT_LAG7'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                     data2['MAT_LAG1'])
+        data2['MAT_LAG8'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                     data2['MAT_LAG1'])
+        data2['MAT_LAG9'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                     data2['MAT_LAG1'])
+        data2['MAT_LAG10'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                      data2['MAT_LAG1'])
+        data2['MAT_LAG11'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                      data2['MAT_LAG1'])
+        data2['MAT_LAG12'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                      data2['MAT_LAG1'])
+        data2['MAT_LAG13'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                      data2['MAT_LAG1'])
+        data2['MAT_LAG14'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                      data2['MAT_LAG1'])
+        data2['MAT_LAG15'] = np.where(to_update, data2['NEW_MAT_CR1'],
+                                      data2['MAT_LAG1'])
         data3 = data2[to_keep]
         self._read_data(data3)
 

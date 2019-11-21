@@ -28,7 +28,8 @@ from taxcalc.corpfunctions import (depreciation_PM, depreciation_PM15,
                                    depreciation_PM80, depreciation_PM100,
                                    corp_income_business_profession,
                                    corp_GTI_before_set_off, GTI_and_losses,
-                                   cit_liability)
+                                   cit_liability, MAT_liability,
+                                   MAT_liability_and_credit)
 from taxcalc.gstfunctions import (gst_liability_item)
 from taxcalc.policy import Policy
 from taxcalc.records import Records
@@ -196,6 +197,9 @@ class Calculator(object):
         tax_ltcg_splrate(self.__policy, self.__corprecords)
         tax_specialrates(self.__policy, self.__corprecords)
         cit_liability(self.__policy, self.__corprecords)
+        MAT_liability(self.__policy, self.__corprecords)
+        MAT_liability_and_credit(self.__policy, self.__corprecords)
+
         # Individual calculations
         net_salary_income(self.__policy, self.__records)
         net_rental_income(self.__policy, self.__records)
