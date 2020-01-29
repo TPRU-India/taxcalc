@@ -10,27 +10,6 @@ import copy
 import numpy as np
 from taxcalc.decorators import iterate_jit
 
-@iterate_jit(nopython=True)
-def income_business_profession_CIT(PRFT_GAIN_BP_OTHR_SPECLTV_BUS,
-                               PRFT_GAIN_BP_SPECLTV_BUS,
-                               PRFT_GAIN_BP_SPCFD_BUS,
-                               PRFT_GAIN_BP_INC_115BBF, TOTAL_PROFTS_GAINS_BP,
-                               Income_BP):
-    """
-    Compute Income from Business and Profession by adding the different
-    sub-heads (i.e speculative, non-speculative, specified, patents, etc)
-    """
-    # TODO: when reading from schedule BP, calculate Income_BP from the read
-    # TODO: variables of the schedule
-    
-    Income_BP = (np.max(PRFT_GAIN_BP_OTHR_SPECLTV_BUS,0.0) +
-                 np.max(PRFT_GAIN_BP_SPECLTV_BUS, 0.0) +
-                 np.max(PRFT_GAIN_BP_SPCFD_BUS, 0.0) +
-                 np.max(PRFT_GAIN_BP_INC_115BBF, 0.0))
-                
-    Income_BP = np.max(Income_BP, TOTAL_PROFTS_GAINS_BP)
-
-    return (Income_BP)  
 
 @iterate_jit(nopython=True)
 def depreciation_PM15(dep_rate_pm15, PWR_DOWN_VAL_1ST_DAY_PY_15P,
@@ -289,48 +268,7 @@ def corp_GTI_before_set_off(INCOME_HP, Income_BP, ST_CG_AMT_1, ST_CG_AMT_2,
                        TOTAL_INCOME_OS)
     return GTI_Before_Loss
 
-@iterate_jit(nopython=True)
-def CY_losses(Income_HP_Loss_Limit, GTI_Before_Loss, Income_HP_Loss, Income_BP, ST_CG_AMT_1, ST_CG_AMT_2,
-                  ST_CG_AMT_APPRATE, LT_CG_AMT_1, LT_CG_AMT_2,
-                  TOTAL_INCOME_OS, CY_HP_Loss_After_Set_Off, 
-                  CY_STCG_Loss_After_Set_Off, CY_LTCG_Loss_After_Set_Off, 
-                  CY_BP_Loss_After_Set_Off, CY_BP_Loss_SPEC_After_Set_Off, 
-                  CY_BP_Loss_SPECIF_After_Set_Off):
-    
-    GTI_Before_Loss -= np.min(Income_HP_Loss, Income_HP_Loss_Limit)
-    CY_HP_Loss_After_Set_Off = np.max((Income_HP_Loss - Income_HP_Loss_Limit),
-                                      0.0)
-    
-    
-    return (CY_HP_Loss_After_Set_Off, CY_STCG_Loss_After_Set_Off, 
-            CY_LTCG_Loss_After_Set_Off, CY_BP_Loss_After_Set_Off,
-            CY_BP_Loss_SPEC_After_Set_Off, CY_BP_Loss_SPECIF_After_Set_Off)
 
-@iterate_jit(nopython=True)
-def HP_and_losses(HP_Loss_CFLimit, CY_HP_Loss_After_Set_Off, HP_CY_Losses,
-                  HP_LOSS_LAG1, HP_LOSS_LAG2, HP_LOSS_LAG3, HP_LOSS_LAG4,
-                  HP_LOSS_LAG5, HP_LOSS_LAG6, HP_LOSS_LAG7, HP_LOSS_LAG8,
-                  HP_Income, HP_newloss1, HP_newloss2, HP_newloss3, 
-                  HP_newloss4, HP_newloss5, HP_newloss6, HP_newloss7, 
-                  HP_newloss8):
-    HP_LOSS_LAGS = [HP_LOSS_LAG1, HP_LOSS_LAG2, HP_LOSS_LAG3, HP_LOSS_LAG4, 
-                    HP_LOSS_LAG5, HP_LOSS_LAG6, HP_LOSS_LAG7, HP_LOSS_LAG8]
-    HP_Income1 = max(CY_HP_Loss_After_Set_Off - HP_CY_Losses, 0.)
-    HP_newloss1 = HP_Income1 - CY_HP_Loss_After_Set_Off + HP_CY_Losses
-    USELOSS = np.zeros(8)
-    for i in range(8, 0, -1):
-        if HP_Loss_CFLimit >= i:
-            USELOSS[i-1] = min(HP_Income1, HP_LOSS_LAGS[i-1])
-        HP_Income1 = HP_Income1 - USELOSS[i-1]
-    NETLOSSES = np.array(HP_LOSS_LAGS) - USELOSS
-    (newloss2, newloss3, newloss4, newloss5, newloss6,
-     newloss7, newloss8) = NETLOSSES[:7]
-    HP_Income = HP_Income1
-    return (HP_Income, HP_newloss1, HP_newloss2, HP_newloss3,
-            HP_newloss4, HP_newloss5, HP_newloss6, HP_newloss7,
-            HP_newloss8)
-    
-    
 @iterate_jit(nopython=True)
 def GTI_and_losses(Loss_CFLimit, GTI_Before_Loss, CY_Losses,
                    LOSS_LAG1, LOSS_LAG2, LOSS_LAG3, LOSS_LAG4,
