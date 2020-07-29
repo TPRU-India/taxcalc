@@ -17,7 +17,7 @@ Getting Started
 
 If you want to **propose code changes**, follow the directions in the
 [USA Tax-Calculator Contributor
-Guide](https://github.com/PSLmodels/Tax-Calculator/blob/master/CONTRIBUTING.md#tax-calculator-contributor-guide)
+Guide](https://github.com/PSLmodels/Tax-Calculator/blob/master/docs/contributing/contributor_guide.md)
 on how to clone the TPRU-India taxcalc git repository.  Before developing
 any code changes be sure to read completely the Contributor Guide and
 then read about our [coding
@@ -29,7 +29,7 @@ sheet](https://github.com/TPRU-India/taxcalc/blob/master/SIMPLE_GIT_USAGE.md#sim
 useful in preparing a GitHub pull request that contains your proposed
 code changes.  The step-by-step workflow used to create and modify a
 new pull request has been documented for the USA Tax-Calculator in this
-[workflow document](https://github.com/PSLmodels/Tax-Calculator/blob/master/WORKFLOW.md#tax-calculator-pull-request-workflow).
+[workflow document](https://github.com/PSLmodels/Tax-Calculator/blob/master/docs/contributing/pr_workflow.md).
 
 The taxcalc [release
 history](https://github.com/TPRU-India/taxcalc/blob/master/RELEASES.md#taxcalc-release-history)
