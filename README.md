@@ -29,7 +29,7 @@ sheet](https://github.com/TPRU-India/taxcalc/blob/master/SIMPLE_GIT_USAGE.md#sim
 useful in preparing a GitHub pull request that contains your proposed
 code changes.  The step-by-step workflow used to create and modify a
 new pull request has been documented for the USA Tax-Calculator in this
-[workflow document](https://github.com/PSLmodels/Tax-Calculator/blob/master/docs/contributing/pr_workflow.md#contributor-guide).
+[workflow document](https://github.com/PSLmodels/Tax-Calculator/blob/master/docs/contributing/pr_workflow.md#pull-request-workflow).
 
 The taxcalc [release
 history](https://github.com/TPRU-India/taxcalc/blob/master/RELEASES.md#taxcalc-release-history)
