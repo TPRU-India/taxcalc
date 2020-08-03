@@ -5,8 +5,8 @@ This description of taxcalc testing procedure is written for a
 person who wants to contribute changes to taxcalc source code.
 It assumes that you have read the [USA Tax-Calculator Contributor
 Guide](https://github.com/PSLmodels/Tax-Calculator/blob/master/docs/contributing/contributor_guide.md#contributor-guide)
-and have cloned the [central GitHub TPRU-India taxcalc
-repository](https://github.com/TPRU-India/taxcalc)
+and have cloned the [central GitHub TPRU-India
+taxcalc repository](https://github.com/TPRU-India/taxcalc)
 to your GitHub account and to your local computer, and are familiar
 with how to prepare a pull request for consideration by the core
 development team.  This document describes the testing procedure you
