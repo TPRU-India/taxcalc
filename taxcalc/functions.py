@@ -44,12 +44,12 @@ def net_rental_income(INCOME_HP, CYLOSS_AMT_LOSS_HPL):
     # TODO: when gross rental income and taxes, depreciation, and interest
     #       are available, do the calculation
     # TODO: when using net_rent as function argument, no calculations neeed
-    
+
     return INCOME_HP, CYLOSS_AMT_LOSS_HPL
 
 
 @iterate_jit(nopython=True)
-def income_business_profession_PIT(PRFT_GAIN_BP_OTHR_SPECLTV_BUS,
+def income_business_profession(PRFT_GAIN_BP_OTHR_SPECLTV_BUS,
                                PRFT_GAIN_BP_SPECLTV_BUS,
                                PRFT_GAIN_BP_SPCFD_BUS,
                                PRFT_GAIN_BP_INC_115BBF, TOTAL_PROFTS_GAINS_BP,
@@ -60,12 +60,12 @@ def income_business_profession_PIT(PRFT_GAIN_BP_OTHR_SPECLTV_BUS,
     """
     # TODO: when reading from schedule BP, calculate Income_BP from the read
     # TODO: variables of the schedule
-    
+
     Income_BP = (PRFT_GAIN_BP_OTHR_SPECLTV_BUS +
                 PRFT_GAIN_BP_SPECLTV_BUS +
                 PRFT_GAIN_BP_SPCFD_BUS +
                 PRFT_GAIN_BP_INC_115BBF)
-                
+
     Income_BP = np.max(Income_BP, TOTAL_PROFTS_GAINS_BP)
 
     return Income_BP

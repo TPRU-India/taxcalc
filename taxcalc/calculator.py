@@ -27,8 +27,8 @@ from taxcalc.corpfunctions import (depreciation_PM, depreciation_PM15,
                                    depreciation_PM50, depreciation_PM60,
                                    depreciation_PM80, depreciation_PM100,
                                    corp_income_business_profession,
-                                   corp_GTI_before_set_off, GTI_and_losses,
-                                   cit_liability, MAT_liability,
+                                   corp_GTI_before_set_off, corp_CY_losses,
+                                   GTI_and_losses, cit_liability, MAT_liability,
                                    MAT_liability_and_credit)
 from taxcalc.gstfunctions import (gst_liability_item)
 from taxcalc.policy import Policy
