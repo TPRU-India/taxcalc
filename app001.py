@@ -6,24 +6,27 @@ from babel.numbers import format_currency
 from taxcalc import *
 import numpy as np
 
+
 def remove_decimal(S):
     S = str(S)
     S = S[:-3]
     return S
 
+
 def ind_currency(curr):
-    curr_str = format_currency(curr, 'INR', locale='en_IN').replace(u'\xa0', u' ')
+    curr_str = format_currency(curr, 'INR',
+                               locale='en_IN').replace(u'\xa0', u' ')
     return(remove_decimal(curr_str))
+
 
 # create Records object containing pit.csv and pit_weights.csv input data
 recs = Records()
 
-# create Records object containing pit.csv and pit_weights.csv input data
-#grecs = GSTRecords(data='gst.csv', weights='gst_weights.csv')
-grecs = GSTRecords()
-
 # create CorpRecords object containing cit.csv and cit_weights.csv input data
 crecs = CorpRecords()
+
+# create GSTRecords object containing gst.csv and gst_weights.csv input data
+grecs = GSTRecords(data='gst.csv', weights='gst_weights.csv')
 
 # create Policy object containing current-law policy
 pol = Policy()
@@ -57,9 +60,11 @@ for year in range(2017, 2023):
     total_gst1 = calc1.weighted_total_garray('gst') / 10**7
     total_weight1 = calc1.weighted_total_garray('weight') / 10**7
     print(f'*****  Due to Current Law in {year} *****')
-    print(f'Total Consumption in - {year}: {ind_currency(total_consumption_all1)} Cr.')
+    print(f'Total Consumption in - {year}:', end=' ')
+    print(f'{ind_currency(total_consumption_all1)} Cr.')
     print(f'Total GST Potential in - {year}: {ind_currency(total_gst1)} Cr.')
-    print(f'Total Number of Households in - {year}: {ind_currency(total_weight1)[1:]}')
+    print(f'Total Number of Households in - {year}:', end=' ')
+    print(f'{ind_currency(total_weight1)[1:]}')
 
     calc2.calc_all()
     id_gst2 = calc2.garray('ID_NO')
@@ -75,6 +80,8 @@ for year in range(2017, 2023):
     total_gst2 = calc2.weighted_total_garray('gst') / 10**7
     total_weight2 = calc2.weighted_total_garray('weight') / 10**7
     print(f'*****  Due to Reform in {year} *****')
-    print(f'Total Consumption in - {year}: {ind_currency(total_consumption_all2)} Cr.')
+    print(f'Total Consumption in - {year}:', end=' ')
+    print(f'{ind_currency(total_consumption_all2)} Cr.')
     print(f'Total GST Potential in - {year}: {ind_currency(total_gst2)} Cr.')
-    print(f'Total Number of Households in - {year}: {ind_currency(total_weight2)[1:]}')
+    print(f'Total Number of Households in - {year}:', end=' ')
+    print(f'{ind_currency(total_weight2)[1:]}')
