@@ -1,4 +1,5 @@
 """
+**Basic app for CIT Microsimulation**
 app00.py illustrates use of TPRU-India taxcalc release 2.0.0
 USAGE: python app00.py > app00.res
 CHECK: Use your favorite Windows diff utility to confirm that app00.res is
@@ -9,7 +10,6 @@ from taxcalc import *
 
 # create Records object containing pit.csv and pit_weights.csv input data
 recs = Records()
-
 grecs = GSTRecords()
 
 # create CorpRecords object using cross-section data
@@ -28,9 +28,9 @@ pol = Policy()
 
 # specify Calculator objects for current-law policy
 calc1 = Calculator(policy=pol, records=recs, corprecords=crecs1,
-                   gstrecords=grecs)
+                   gstrecords=grecs, verbose=False)
 calc2 = Calculator(policy=pol, records=recs, corprecords=crecs2,
-                   gstrecords=grecs)
+                   gstrecords=grecs, verbose=False)
 
 # NOTE: calc1 now contains a PRIVATE COPY of pol and a PRIVATE COPY of recs,
 #       so we can continue to use pol and recs in this script without any
@@ -93,47 +93,53 @@ results_panel.drop(['ID_NO'], axis=1, inplace=True)
 results_panel.to_csv('app00-dump-panel.csv', index=False, float_format='%.0f')
 
 
-print('GTI before loss, 2017, cross-section: ' +
-      str(sum(AggInc17c * wgt17c) / 10**7))
-print('Deductions, 2017, cross-section: ' +
-      str(sum(GTI17c * wgt17c) / 10**7))
-print('Total liability, 2017, cross-section: ' +
-      str(sum(citax17c * wgt17c) / 10**7))
-print('Total liability with MAT, 2017, cross-section: ' +
-      str(sum(citax17c_with_MAT * wgt17c) / 10**7))
-print('Tax rate, 2017, cross-section: ' +
-      str(sum(citax17c * wgt17c) / sum(GTI17c * wgt17c)))
+print(f'GTI before loss (in Cr.), 2017, cross-section:', end=' ')
+print(f'{sum(AggInc17c * wgt17c) * 1e-7:,.2f}')
+print(f'Deductions (in Cr.), 2017, cross-section:', end=' ')
+print(f'{sum(GTI17c * wgt17c) * 1e-7:,.2f}')
+print(f'Total liability (in Cr.), 2017, cross-section:', end=' ')
+print(f'{sum(citax17c * wgt17c) * 1e-7:,.2f}')
+print(f'Total liability with MAT (in Cr.), 2017, cross-section:', end=' ')
+print(f'{sum(citax17c_with_MAT * wgt17c) * 1e-7:,.2f}')
+print(f'Tax rate, 2017, cross-section:', end=' ')
+print(f'{sum(citax17c * wgt17c)/sum(GTI17c * wgt17c):,.2f}')
 print('\n')
-print('GTI before loss, 2017, panel: ' +
-      str(sum(AggInc17p * wgt17p) / 10**7))
-print('Deductions, 2017, panel: ' +
-      str(sum(GTI17p * wgt17p) / 10**7))
-print('Total liability, 2017, panel: ' +
-      str(sum(citax17p * wgt17p) / 10**7))
-print('Total liability with MAT, 2017, panel: ' +
-      str(sum(citax17p_with_MAT * wgt17p) / 10**7))
-print('Tax rate, 2017, panel: ' +
-      str(sum(citax17p * wgt17p) / sum(GTI17p * wgt17p)))
+print(f'GTI before loss (in Cr.), 2017, panel:', end=' ')
+print(f'{sum(AggInc17p * wgt17p) * 1e-7:,.2f}')
+print(f'Deductions (in Cr.), 2017, panel:', end=' ')
+print(f'{sum(GTI17p * wgt17p) * 1e-7:,.2f}')
+print(f'Total liability (in Cr.), 2017, panel:', end=' ')
+print(f'{sum(citax17p * wgt17p) * 1e-7:,.2f}')
+print(f'Total liability with MAT (in Cr.), 2017, panel:', end=' ')
+print(f'{sum(citax17p_with_MAT * wgt17p) * 1e-7:,.2f}')
+print(f'Tax rate, 2017, panel:', end=' ')
+print(f'{sum(citax17p * wgt17p)/sum(GTI17p * wgt17p):,.2f}')
 print('\n')
-print('GTI before loss, 2018, cross-section: ' +
-      str(sum(AggInc18c * wgt18c) / 10**7))
-print('Deductions, 2018, cross-section: ' + str(sum(GTI18c * wgt18c) / 10**7))
-print('Total liability, 2018, cross-section: ' +
-      str(sum(citax18c * wgt18c) / 10**7))
-print('Total liability with MAT, 2018, cross-section: ' +
-      str(sum(citax18c_with_MAT * wgt17c) / 10**7))
-print('Tax rate, 2018, cross-section: ' +
-      str(sum(citax18c * wgt18c) / sum(GTI18c * wgt18c)))
+
+print(f'GTI before loss (in Cr.), 2018, cross-section:', end=' ')
+print(f'{sum(AggInc18c * wgt18c) * 1e-7:,.2f}')
+print(f'Deductions (in Cr.), 2018, cross-section:', end=' ')
+print(f'{sum(GTI18c * wgt18c) * 1e-7:,.2f}')
+print(f'Total liability (in Cr.), 2018, cross-section:', end=' ')
+print(f'{sum(citax18c * wgt18c) * 1e-7:,.2f}')
+print(f'Total liability with MAT (in Cr.), 2018, cross-section:', end=' ')
+print(f'{sum(citax18c_with_MAT * wgt18c) * 1e-7:,.2f}')
+print(f'Tax rate, 2018, cross-section:', end=' ')
+print(f'{sum(citax18c * wgt18c)/sum(GTI18c * wgt18c):,.2f}')
 print('\n')
-print('GTI before loss, 2018, panel: ' + str(sum(AggInc18p * wgt18p) / 10**7))
-print('Deductions, 2018, panel: ' + str(sum(GTI18p * wgt18p) / 10**7))
-print('Total liability, 2018, panel: ' + str(sum(citax18p * wgt18p) / 10**7))
-print('Total liability with MAT, 2018, panel: ' +
-      str(sum(citax18p_with_MAT * wgt18p) / 10**7))
-print('Tax rate, 2018, panel: ' +
-      str(sum(citax18p * wgt18p) / sum(GTI18p * wgt18p)))
+print(f'GTI before loss (in Cr.), 2018, panel:', end=' ')
+print(f'{sum(AggInc18p * wgt18p) * 1e-7:,.2f}')
+print(f'Deductions (in Cr.), 2018, panel:', end=' ')
+print(f'{sum(GTI18p * wgt18p) * 1e-7:,.2f}')
+print(f'Total liability (in Cr.), 2018, panel:', end=' ')
+print(f'{sum(citax18p * wgt18p) * 1e-7:,.2f}')
+print(f'Total liability with MAT (in Cr.), 2018, panel:', end=' ')
+print(f'{sum(citax18p_with_MAT * wgt18p) * 1e-7:,.2f}')
+print(f'Tax rate, 2018, panel:', end=' ')
+print(f'{sum(citax18p * wgt18p)/sum(GTI18p * wgt18p):,.2f}')
 print('\n')
-print('Average liability, 2017, cross-section: ' +
-      str(sum(citax17c * wgt17c) / sum(wgt17c) / 10**7))
-print('Average liability, 2017, panel: ' +
-      str(sum(citax17p * wgt17p) / sum(wgt17p) / 10**7))
+
+print(f'Average liabilit (in Lakh), 2017, cross-section:', end=' ')
+print(f'{sum(citax17c * wgt17c) * 1e-5 / sum(wgt17c):,.2f}')
+print(f'Average liabilit (in Lakh), 2017, panel:', end=' ')
+print(f'{sum(citax17p * wgt17p) * 1e-5 / sum(wgt17p):,.2f}')

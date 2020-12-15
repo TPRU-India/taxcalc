@@ -1,6 +1,8 @@
 {
     "policy": {
-	"_Loss_CFLimit": {"2017": [2]},
-  "_dep_rate_pm1": {"2017": [0.30]}
+  // Decrease Loss carry forward limit to 2 years
+  "_Loss_CFLimit": {"2017": [2]},
+  // increase depreciation rate for pm15 to 30%
+  "_dep_rate_pm15": {"2017": [0.30]}
     }
 }

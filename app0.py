@@ -1,4 +1,5 @@
 """
+**Basic app for PIT Microsimulation**
 app0.py illustrates use of TPRU-India taxcalc release 2.0.0
 USAGE: python app0.py > app0.res
 CHECK: Use your favorite Windows diff utility to confirm that app0.res is
@@ -34,8 +35,8 @@ assert isinstance(pol, Policy)
 assert pol.current_year == 2017
 
 # specify Calculator object for current-law policy
-calc1 = Calculator(policy=pol, records=recs, gstrecords=grecs,
-                   corprecords=crecs, verbose=False)
+calc1 = Calculator(policy=pol, records=recs, corprecords=crecs,
+                   gstrecords=grecs, verbose=False)
 
 # NOTE: calc1 now contains a PRIVATE COPY of pol and a PRIVATE COPY of recs,
 #       so we can continue to use pol and recs in this script without any
@@ -45,6 +46,10 @@ assert isinstance(calc1, Calculator)
 assert calc1.current_year == 2017
 
 calc1.calc_all()
+
+weighted_tax1 = calc1.weighted_total('pitax')
+total_weights = calc1.total_weight()
+print(f'Total PIT Liability for 2017 (in Cr.) {weighted_tax1 * 1e-7:,.2f}')
 
 dump_vars = ['FILING_SEQ_NO', 'AGEGRP', 'SALARIES', 'INCOME_HP',
              'Income_BP', 'TOTAL_INCOME_OS', 'Aggregate_Income',

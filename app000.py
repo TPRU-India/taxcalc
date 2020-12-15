@@ -1,4 +1,5 @@
 """
+**Basic app for GST Microsimulation**
 app000.py illustrates use of TPRU-India taxcalc release 2.0.0
 USAGE: python app000.py > app000.res
 CHECK: Use your favorite Windows diff utility to confirm that app000.res is
