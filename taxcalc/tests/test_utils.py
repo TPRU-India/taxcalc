@@ -96,7 +96,7 @@ def test_create_distribution_tables(pit_fullsample, gst_sample,
                 331.218,
                 384.399,
                 302.903]
-    if not np.allclose(dist[tabcol].values, expected):
+    if not np.allclose(dist[tabcol].values.astype('float'), expected):
         test_failure = True
         print('dist xdec', tabcol)
         for val in dist[tabcol].values:
@@ -140,7 +140,7 @@ def test_create_distribution_tables(pit_fullsample, gst_sample,
                 0.000,
                 0.000,
                 1647.270]
-    if not np.allclose(dist[tabcol], expected):
+    if not np.allclose(dist[tabcol].values.astype('float'), expected):
         test_failure = True
         print('dist xbin', tabcol)
         for val in dist[tabcol].values:
@@ -267,7 +267,8 @@ def test_dist_table_sum_row(pit_subsample, gst_sample, cit_crosssample):
                                     'weighted_deciles', 'GTI')
     allrow1 = tb1[-1:]
     allrow2 = tb2[-4:-3]
-    assert np.allclose(allrow1, allrow2)
+    assert np.allclose(allrow1.values.astype('float'),
+                       allrow2.values.astype('float'))
 
 
 def test_read_egg_csv():
