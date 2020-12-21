@@ -14,19 +14,19 @@ assert isinstance(recs, Records)
 assert recs.data_year == 2017
 assert recs.current_year == 2017
 
-# create GSTRecords object containing gst.csv and gst_weights.csv input data
-grecs = GSTRecords()
-
-assert isinstance(grecs, GSTRecords)
-assert grecs.data_year == 2017
-assert grecs.current_year == 2017
-
 # create CorpRecords object containing cit.csv and cit_weights.csv input data
 crecs = CorpRecords()
 
 assert isinstance(crecs, CorpRecords)
 assert crecs.data_year == 2017
 assert crecs.current_year == 2017
+
+# create GSTRecords object containing gst.csv and gst_weights.csv input data
+grecs = GSTRecords()
+
+assert isinstance(grecs, GSTRecords)
+assert grecs.data_year == 2017
+assert grecs.current_year == 2017
 
 # create Policy object containing current-law policy
 pol = Policy()
