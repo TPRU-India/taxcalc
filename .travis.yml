@@ -12,8 +12,8 @@ install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - conda config --set always_yes yes --set changeps1 no
   - conda update conda
-  - conda create -n taxcalc-dev python=$TRAVIS_PYTHON_VERSION;
-  - source activate taxcalc-dev
+  - conda create -n taxcalc-india-dev python=$TRAVIS_PYTHON_VERSION;
+  - source activate taxcalc-india-dev
   - conda env update -f environment.yml
   - pip install pyyaml
   # Changed the code to take care of the pep8 test failure
