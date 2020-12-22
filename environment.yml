@@ -1,4 +1,4 @@
-name: taxcalc-india-dev
+name: taxcalc-dev
 dependencies:
 - python
 - "numpy>=1.13"
