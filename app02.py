@@ -9,7 +9,6 @@ from taxcalc import *
 
 # create Records object containing pit.csv and pit_weights.csv input data
 recs = Records()
-
 grecs = GSTRecords()
 
 # create CorpRecords object using cross-section data
